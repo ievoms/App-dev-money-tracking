@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#1A2460"
+    android:background="@color/background"
     tools:context=".LoginActivity">
 
     <Button
@@ -12,7 +12,7 @@
         android:layout_width="156dp"
         android:layout_height="42dp"
         android:background="@drawable/button_background"
-        android:backgroundTint="#512DA8"
+        android:backgroundTint="@color/accentRed"
         android:text="Sing in"
         android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -32,8 +32,8 @@
         android:hint="password"
         android:inputType="textPassword"
         android:singleLine="true"
-        android:textColor="#9C27B0"
-        android:textColorHint="#2DFFFFFF"
+        android:textColor="@color/primary"
+        android:textColorHint="@color/placeholder"
         app:layout_constraintBottom_toTopOf="@+id/loginButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -85,8 +85,8 @@
         android:hint="email"
         android:inputType="textEmailAddress"
         android:singleLine="true"
-        android:textColor="#9C27B0"
-        android:textColorHint="#2DFFFFFF"
+        android:textColor="@color/primary"
+        android:textColorHint="@color/placeholder"
         app:layout_constraintBottom_toTopOf="@+id/loginPasswordEditText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -116,7 +116,7 @@
         android:id="@+id/loginEmailError"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="#D32F2F"
+        android:textColor="@color/accentRed"
         android:textSize="10sp"
         app:layout_constraintBottom_toTopOf="@+id/loginPasswordEditText"
         app:layout_constraintStart_toStartOf="@+id/loginEmailEditText"
@@ -126,7 +126,7 @@
         android:id="@+id/loginPasswordError"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="#D32F2F"
+        android:textColor="@color/accentRed"
         android:textSize="10sp"
         app:layout_constraintStart_toStartOf="@+id/loginPasswordEditText"
         app:layout_constraintTop_toBottomOf="@+id/loginPasswordEditText" />
@@ -152,7 +152,7 @@
         android:layout_marginTop="28dp"
         android:text="Sign Up"
         android:textAllCaps="false"
-        android:textColor="#D32F2F"
+        android:textColor="@color/accentRed"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.709"
