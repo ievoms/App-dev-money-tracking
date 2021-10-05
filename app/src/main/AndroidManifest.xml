@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.App_dev_money_tracking">
         <activity
-            android:name=".Home"
+            android:name=".Home_activity"
             android:exported="true" />
         <activity
             android:name=".LoginActivity"
