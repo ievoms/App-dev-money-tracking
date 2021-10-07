@@ -76,9 +76,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    private void setErrorMessage(TextView errorField, String errorMessage) {
-        errorField.setText(errorMessage);
-    }
+
 
     private void ClearErrorMessage(EditText input, final TextView errorField) {
         input.addTextChangedListener(new TextWatcher() {
@@ -101,6 +99,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private class LoginValidator {
+
         private String email;
         private String password;
 

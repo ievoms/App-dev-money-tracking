@@ -17,7 +17,8 @@
             layout="@layout/logo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="2" />
+            android:layout_weight="2"
+            />
 
         <TextView
             android:id="@+id/signupTitle"
@@ -38,103 +39,74 @@
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:src="@drawable/ic_launcher_foreground"
+
         tools:srcCompat="@drawable/ic_person_icon_foreground" />
 
-    <LinearLayout
+    <include
+        android:id="@+id/signupEmailEditText"
+        layout="@layout/input"
         android:layout_width="250dp"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
         android:layout_gravity="center"
-        android:layout_marginTop="16dp"
-        android:orientation="vertical">
+        android:layout_marginTop="10dp"
+        android:hint="email"
+        android:inputType="textEmailAddress" />
 
-        <EditText
-            android:id="@+id/signupEmailEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:backgroundTint="#FFFFFF"
-            android:color="#FFFFFF"
-            android:hint="email"
-            android:inputType="textEmailAddress"
-            android:singleLine="true"
-            android:textColor="#9C27B0"
-            android:textColorHint="#2DFFFFFF" />
+    <TextView
+        android:id="@+id/signupEmailError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textColor="#D32F2F"
+        android:textSize="10sp" />
 
-        <TextView
-            android:id="@+id/signupEmailError"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:textColor="#D32F2F"
-            android:textSize="10sp" />
-    </LinearLayout>
 
-    <LinearLayout
+    <include
+        android:id="@+id/signupPasswordEditText"
+        layout="@layout/input"
         android:layout_width="250dp"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
         android:layout_gravity="center"
-        android:layout_marginTop="16dp"
-        android:orientation="vertical">
+        android:layout_marginTop="10dp"
+        android:hint="password"
+        android:inputType="textPassword" />
 
-        <EditText
-            android:id="@+id/signupPasswordEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:backgroundTint="#FFFFFF"
-            android:color="#FFFFFF"
-            android:hint="password"
-            android:inputType="textPassword"
-            android:singleLine="true"
-            android:textColor="#9C27B0"
-            android:textColorHint="#2DFFFFFF" />
+    <TextView
+        android:id="@+id/signupPasswordError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textColor="#D32F2F"
+        android:textSize="10sp" />
 
-        <TextView
-            android:id="@+id/signupPasswordError"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:textColor="#D32F2F"
-            android:textSize="10sp" />
-    </LinearLayout>
 
-    <LinearLayout
+    <include
+        android:id="@+id/signupPassword2EditText"
+        layout="@layout/input"
         android:layout_width="250dp"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
         android:layout_gravity="center"
-        android:layout_marginTop="16dp"
-        android:orientation="vertical">
+        android:layout_marginTop="10dp"
+        android:hint="password repeat"
+        android:inputType="textPassword" />
 
-        <EditText
-            android:id="@+id/signupPassword2EditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:backgroundTint="#FFFFFF"
-            android:color="#FFFFFF"
-            android:hint="password repeat"
-            android:inputType="textPassword"
-            android:singleLine="true"
-            android:textColor="#9C27B0"
-            android:textColorHint="#2DFFFFFF" />
-
-        <TextView
-            android:id="@+id/signupPassword2Error"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:textColor="#D32F2F"
-            android:textSize="10sp" />
-    </LinearLayout>
+    <TextView
+        android:id="@+id/signupPassword2Error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textColor="#D32F2F"
+        android:textSize="10sp" />
 
     <Button
         android:id="@+id/signupButton"
-        android:layout_width="187dp"
-        android:layout_height="wrap_content"
+        android:layout_width="182dp"
+        android:layout_height="49dp"
         android:layout_gravity="center"
         android:layout_marginTop="16dp"
         android:background="@drawable/button_background"
         android:backgroundTint="#512DA8"
+        android:inputType="textPassword"
         android:text="Sing up"
         android:textColor="#FFFFFF" />
 
@@ -151,31 +123,21 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
 
         <ImageView
             android:id="@+id/signupFacebookIcon"
-            android:layout_width="0dp"
-            android:layout_height="70dp"
-            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             app:srcCompat="@mipmap/ic_facebook_foreground" />
+
 
         <ImageView
             android:id="@+id/signupGoogleIcon"
-            android:layout_width="0dp"
-            android:layout_height="70dp"
-            android:layout_weight="1"
-            app:srcCompat="@mipmap/ic_google_foreground" />
-
-        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            app:srcCompat="@mipmap/ic_google_foreground" />
     </LinearLayout>
 
 
