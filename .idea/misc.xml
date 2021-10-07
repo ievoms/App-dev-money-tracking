@@ -13,7 +13,14 @@
         <entry key="..\:/AppProject/App-dev-money-tracking/app/src/main/res/layout/user_category_input_layout.xml" value="0.33" />
         <entry key="..\:/Projects/App_dev_money_tracking/app/src/main/res/drawable/button_background.xml" value="0.4453125" />
         <entry key="..\:/Projects/App_dev_money_tracking/app/src/main/res/drawable/ic_google_background.xml" value="0.4453125" />
+        <entry key="..\:/Projects/App_dev_money_tracking/app/src/main/res/drawable/ic_wallet_icon_background.xml" value="0.2635416666666667" />
         <entry key="..\:/Projects/App_dev_money_tracking/app/src/main/res/layout/activity_login.xml" value="0.4" />
+        <entry key="..\:/Projects/App_dev_money_tracking/app/src/main/res/layout/activity_main.xml" value="0.26875" />
+        <entry key="..\:/Projects/App_dev_money_tracking/app/src/main/res/layout/activity_sign_up.xml" value="0.33" />
+        <entry key="..\:/Projects/App_dev_money_tracking/app/src/main/res/layout/input.xml" value="0.16032608695652173" />
+        <entry key="..\:/Projects/App_dev_money_tracking/app/src/main/res/layout/logo.xml" value="0.24739583333333334" />
+        <entry key="..\:/Projects/App_dev_money_tracking/app/src/main/res/layout/startup_page.xml" value="0.26875" />
+        <entry key="..\:/Projects/App_dev_money_tracking/app/src/main/res/mipmap-anydpi-v26/ic_wallet_icon.xml" value="0.2635416666666667" />
       </map>
     </option>
   </component>

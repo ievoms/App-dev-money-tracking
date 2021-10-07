@@ -2,6 +2,8 @@ package com.example.app_dev_money_tracking;
 
 import static android.view.View.*;
 
+import static com.example.app_dev_money_tracking.HelperFunctions.setErrorMessage;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -47,9 +49,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private OnClickListener onSignupButtonClick() {
-        return v -> {
-            startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
-        };
+        return v -> startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
     }
 
     private OnClickListener onSocialButtonClick() {
@@ -74,9 +74,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    private void setErrorMessage(TextView errorField, String errorMessage) {
-        errorField.setText(errorMessage);
-    }
+
 
     private void ClearErrorMessage(EditText input, final TextView errorField) {
         input.addTextChangedListener(new TextWatcher() {
@@ -99,6 +97,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private class LoginValidator {
+
         private String email;
         private String password;
 
