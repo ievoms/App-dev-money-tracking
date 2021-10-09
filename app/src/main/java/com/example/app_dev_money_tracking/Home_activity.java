@@ -60,7 +60,8 @@ public class Home_activity extends AppCompatActivity
         set_record_data();
         setAdapters();
         Currency_conversion_data curr = new Currency_conversion_data();
-        double rate = curr.convert(   user_settings.get_currency(),"EUR",1.0);
+        String currency = user_settings.get_currency();
+        double rate = curr.convert( currency,"EUR",1.0);
     }
     public void On_show_more_click(View view)
     {
