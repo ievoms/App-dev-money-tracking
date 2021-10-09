@@ -62,10 +62,11 @@ public class SignUpActivity extends AppCompatActivity {
             String password = signupValidator.getPassword();
             String password2 = signupValidator.getPassword2();
             if (signupValidator.isValid()) {
-
                 if (!password.equals(password2)) {
                     setErrorMessage(password2Error, "Passwords must match");
-                } else {
+                } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches())
+                    setErrorMessage(emailError, "Must be an email");
+                else {
                     startActivity(new Intent(SignUpActivity.this, MainActivity.class));
                 }
             }
@@ -113,18 +114,15 @@ public class SignUpActivity extends AppCompatActivity {
         public SignUpActivity.SignupValidator invoke() {
             email = emailInput.getText().toString();
             password = passwordInput.getText().toString();
+            password2 = password2Input.getText().toString();
             if (email.isEmpty()) setErrorMessage(emailError, "Email is required");
             if (password.isEmpty()) setErrorMessage(passwordError, "Password is required");
             if (password2.isEmpty()) setErrorMessage(password2Error, "Password repeat is required");
-            if (!Patterns.EMAIL_ADDRESS.matcher(email).matches())
-                setErrorMessage(emailError, "Must be an email");
-
             return this;
         }
 
         private boolean isValid() {
-            return !password.isEmpty() && !email.isEmpty() && !password2.isEmpty()
-                    ;
+            return !password.isEmpty() && !email.isEmpty() && !password2.isEmpty();
         }
     }
 }

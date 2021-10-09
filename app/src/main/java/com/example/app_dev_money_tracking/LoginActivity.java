@@ -58,18 +58,20 @@ public class LoginActivity extends AppCompatActivity {
 
     private OnClickListener onLoginButtonClick() {
         return v -> {
-            HelperFunctions.hideSoftKeyboard(LoginActivity.this, v);
-            LoginValidator loginValidator = new LoginValidator().invoke();
-            String email = loginValidator.getEmail();
-            String password = loginValidator.getPassword();
-            if (loginValidator.isValid()) {
-
-                if (!email.equals("a@a.a") || !password.equals("a")) {
-                    Toast.makeText(LoginActivity.this, "Email or password is incorrect", Toast.LENGTH_SHORT).show();
-                } else {
-                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                }
-            }
+            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+//            HelperFunctions.hideSoftKeyboard(LoginActivity.this, v);
+//            LoginValidator loginValidator = new LoginValidator().invoke();
+//            String email = loginValidator.getEmail();
+//            String password = loginValidator.getPassword();
+//            if (loginValidator.isValid()) {
+//
+//                if (!email.equals("a@a.a") || !password.equals("a")) {
+//                    Toast.makeText(LoginActivity.this, "Email or password is incorrect", Toast.LENGTH_SHORT).show();
+//                } else {
+//                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+//
+//                }
+//            }
         };
     }
 
