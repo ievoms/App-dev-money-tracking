@@ -3,24 +3,16 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/AppProject/App-dev-money-tracking/app/src/main/res/drawable/button_background.xml" value="0.27870370370370373" />
-        <entry key="..\:/AppProject/App-dev-money-tracking/app/src/main/res/drawable/round_background.xml" value="0.28425925925925927" />
-        <entry key="..\:/AppProject/App-dev-money-tracking/app/src/main/res/layout/activity_home.xml" value="0.22" />
         <entry key="..\:/AppProject/App-dev-money-tracking/app/src/main/res/layout/activity_login.xml" value="0.2957427536231884" />
         <entry key="..\:/AppProject/App-dev-money-tracking/app/src/main/res/layout/activity_main.xml" value="0.2957427536231884" />
-        <entry key="..\:/AppProject/App-dev-money-tracking/app/src/main/res/layout/activity_new_record.xml" value="0.25" />
-        <entry key="..\:/AppProject/App-dev-money-tracking/app/src/main/res/layout/categories_item.xml" value="0.36614583333333334" />
-        <entry key="..\:/AppProject/App-dev-money-tracking/app/src/main/res/layout/user_category_input_layout.xml" value="0.33" />
+        <entry key="..\:/Mokslai/Ketvirtas_kursas(2)/app_dev/App-dev-money-tracking/app/src/main/res/layout/activity_home.xml" value="0.4" />
+        <entry key="..\:/Mokslai/Ketvirtas_kursas(2)/app_dev/App-dev-money-tracking/app/src/main/res/layout/activity_login.xml" value="0.6" />
+        <entry key="..\:/Mokslai/Ketvirtas_kursas(2)/app_dev/App-dev-money-tracking/app/src/main/res/layout/activity_main.xml" value="0.12916666666666668" />
+        <entry key="..\:/Mokslai/Ketvirtas_kursas(2)/app_dev/App-dev-money-tracking/app/src/main/res/layout/home_acc_adp.xml" value="0.536" />
+        <entry key="..\:/Mokslai/Ketvirtas_kursas(2)/app_dev/App-dev-money-tracking/app/src/main/res/layout/home_expanses_adp.xml" value="0.536" />
         <entry key="..\:/Projects/App_dev_money_tracking/app/src/main/res/drawable/button_background.xml" value="0.4453125" />
         <entry key="..\:/Projects/App_dev_money_tracking/app/src/main/res/drawable/ic_google_background.xml" value="0.4453125" />
-        <entry key="..\:/Projects/App_dev_money_tracking/app/src/main/res/drawable/ic_wallet_icon_background.xml" value="0.2635416666666667" />
         <entry key="..\:/Projects/App_dev_money_tracking/app/src/main/res/layout/activity_login.xml" value="0.4" />
-        <entry key="..\:/Projects/App_dev_money_tracking/app/src/main/res/layout/activity_main.xml" value="0.26875" />
-        <entry key="..\:/Projects/App_dev_money_tracking/app/src/main/res/layout/activity_sign_up.xml" value="0.33" />
-        <entry key="..\:/Projects/App_dev_money_tracking/app/src/main/res/layout/input.xml" value="0.16032608695652173" />
-        <entry key="..\:/Projects/App_dev_money_tracking/app/src/main/res/layout/logo.xml" value="0.24739583333333334" />
-        <entry key="..\:/Projects/App_dev_money_tracking/app/src/main/res/layout/startup_page.xml" value="0.26875" />
-        <entry key="..\:/Projects/App_dev_money_tracking/app/src/main/res/mipmap-anydpi-v26/ic_wallet_icon.xml" value="0.2635416666666667" />
         <entry key="..\:/Projects/App_dev_money_tracking/app/src/main/res/layout/activity_main.xml" value="0.24739583333333334" />
         <entry key="..\:/Projects/App_dev_money_tracking/app/src/main/res/layout/activity_sign_up.xml" value="0.25" />
         <entry key="..\:/Projects/App_dev_money_tracking/app/src/main/res/layout/edit_text.xml" value="0.4157608695652174" />
