@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    android:background="#1A2460"
+    android:background="@color/background"
     android:orientation="vertical"
     tools:context=".SignUpActivity">
 
@@ -57,15 +57,15 @@
             android:hint="email"
             android:inputType="textEmailAddress"
             android:singleLine="true"
-            android:textColor="#9C27B0"
-            android:textColorHint="#2DFFFFFF" />
+            android:textColor="@color/primary"
+            android:textColorHint="@color/placeholder"/>
 
         <TextView
             android:id="@+id/signupEmailError"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
-            android:textColor="#D32F2F"
+            android:textColor="@color/accentRed"
             android:textSize="10sp" />
     </LinearLayout>
 
@@ -86,15 +86,15 @@
             android:hint="password"
             android:inputType="textPassword"
             android:singleLine="true"
-            android:textColor="#9C27B0"
-            android:textColorHint="#2DFFFFFF" />
+            android:textColor="@color/primary"
+            android:textColorHint="@color/placeholder" />
 
         <TextView
             android:id="@+id/signupPasswordError"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:textColor="#D32F2F"
+            android:textColor="@color/accentRed"
             android:textSize="10sp" />
     </LinearLayout>
 
@@ -115,15 +115,15 @@
             android:hint="password repeat"
             android:inputType="textPassword"
             android:singleLine="true"
-            android:textColor="#9C27B0"
-            android:textColorHint="#2DFFFFFF" />
+            android:textColor="@color/primary"
+            android:textColorHint="@color/placeholder" />
 
         <TextView
             android:id="@+id/signupPassword2Error"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:textColor="#D32F2F"
+            android:textColor="@color/accentRed"
             android:textSize="10sp" />
     </LinearLayout>
 
@@ -134,7 +134,7 @@
         android:layout_gravity="center"
         android:layout_marginTop="16dp"
         android:background="@drawable/button_background"
-        android:backgroundTint="#512DA8"
+        android:backgroundTint="@color/primary"
         android:text="Sing up"
         android:textColor="#FFFFFF" />
 
@@ -201,7 +201,7 @@
             android:text="Sign Up"
             android:textAlignment="textStart"
             android:textAllCaps="false"
-            android:textColor="#D32F2F"
+            android:textColor="@color/accentRed"
             android:textSize="14sp" />
 
 
