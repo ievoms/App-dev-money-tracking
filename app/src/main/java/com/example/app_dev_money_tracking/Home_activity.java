@@ -1,13 +1,16 @@
 package com.example.app_dev_money_tracking;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.text.PrecomputedTextCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
@@ -18,40 +21,78 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
-import java.lang.reflect.Array;
-import java.nio.file.Files;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.Date;
+
+import javax.xml.transform.Result;
 
 public class Home_activity extends AppCompatActivity
 {
 
     private PieChart pieChart;
     private ArrayList<Account> accounts;
+    private ArrayList<Exp_inc_record> records;
     private RecyclerView Accounts_recycler;
+    private RecyclerView Records_recycler;
+    private User_settings user_settings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
 //        getSupportActionBar().hide();
+        user_settings = User_settings.instanciate("user1",this);
+        user_settings.set_currency("EUR");
         setContentView(R.layout.activity_home);
         pieChart = findViewById(R.id.Piechart_view);
         Accounts_recycler = findViewById(R.id.Rec_view_list_of_acc);
+        Records_recycler = findViewById(R.id.Rec_view_expanses);
         SetupPieChart();
         loadData();
 
         accounts = new ArrayList<>();
+        records = new ArrayList<>();
         setAccountInfo();
-        setAdapter();
+        set_record_data();
+        setAdapters();
+        Currency_conversion_data curr = new Currency_conversion_data();
+        double rate = curr.convert(   user_settings.get_currency(),"EUR",1.0);
+    }
+    public void On_show_more_click(View view)
+    {
+        Toast.makeText(this, "Not Implemented yet", Toast.LENGTH_SHORT).show();
     }
 
-    private void setAdapter()
+    public void On_add_record_click(View view)
     {
-         Account_list_adapter adapter = new Account_list_adapter(accounts);
-         RecyclerView.LayoutManager layout_manager = new LinearLayoutManager(getApplicationContext());
-         Accounts_recycler.setLayoutManager(layout_manager);
-         Accounts_recycler.setItemAnimator(new DefaultItemAnimator());
-         Accounts_recycler.setAdapter(adapter);
+        Toast.makeText(this, "Not Implemented yet", Toast.LENGTH_SHORT).show();
+    }
+
+    private void set_record_data()
+    {
+        records.clear();
+        records.add(new Exp_inc_record(new Date(), 50.0, accounts.get(0), 'E', "Medical"));
+        records.add(new Exp_inc_record(new Date(), 8000.5, accounts.get(0), 'E', "Food"));
+        records.add(new Exp_inc_record(new Date(), 80.53, accounts.get(1), 'E', "Entertainment"));
+    }
+
+    private void setAdapters()
+    {
+        Account_list_adapter adapter = new Account_list_adapter(accounts);
+        RecyclerView.LayoutManager layout_manager = new LinearLayoutManager(getApplicationContext());
+        Accounts_recycler.setLayoutManager(layout_manager);
+        Accounts_recycler.setItemAnimator(new DefaultItemAnimator());
+        Accounts_recycler.setAdapter(adapter);
+
+        Expanse_list_adapter adapter_exp = new Expanse_list_adapter(records);
+        RecyclerView.LayoutManager layout_manager2 = new LinearLayoutManager(getApplicationContext());
+        Records_recycler.setLayoutManager(layout_manager2);
+        Records_recycler.setItemAnimator(new DefaultItemAnimator());
+        Records_recycler.setAdapter(adapter_exp);
     }
 
     private void setAccountInfo()

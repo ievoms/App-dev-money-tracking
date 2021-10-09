@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 class Account_list_adapter extends RecyclerView.Adapter<Account_list_adapter.MyViewHolder>
 {
     private ArrayList<Account> account_list;
+    private Account_list_adapter adapter;
 
     public Account_list_adapter(ArrayList<Account> accounts)
     {
@@ -26,6 +28,7 @@ class Account_list_adapter extends RecyclerView.Adapter<Account_list_adapter.MyV
         private EditText balance_text;
         private Button btn_adjust_balance;
         private TextView Txt_acc_name;
+        private Button Btn_adjust_blnc;
 
         public MyViewHolder(final View view)
         {
@@ -33,6 +36,7 @@ class Account_list_adapter extends RecyclerView.Adapter<Account_list_adapter.MyV
             balance_text = view.findViewById(R.id.Txt_e_balance);
             btn_adjust_balance = view.findViewById(R.id.Btn_adjust_balance);
             Txt_acc_name = view.findViewById(R.id.Txt_acc_list_name);
+            Btn_adjust_blnc = view.findViewById(R.id.Btn_adjust_balance);
         }
     }
 
@@ -51,6 +55,17 @@ class Account_list_adapter extends RecyclerView.Adapter<Account_list_adapter.MyV
         double balance = account_list.get(position).getBalance();
         holder.balance_text.setText(balance + "");
         holder.Txt_acc_name.setText(account_name);
+        Account current = account_list.get(position);
+        holder.Btn_adjust_blnc.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                current.setBalance(Double.parseDouble(holder.balance_text.getText().toString()));
+                Toast.makeText(view.getContext(), "Balance adjusted", Toast.LENGTH_SHORT).show();
+                notifyDataSetChanged();
+            }
+        });
     }
 
     @Override
