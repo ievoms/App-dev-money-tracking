@@ -33,12 +33,14 @@ class User_settings
         pref = ctx.getSharedPreferences(uname, Context.MODE_PRIVATE);
         editor = pref.edit();
         editor.putString(cur_setting, currency);
+        editor.apply();
     }
     public String get_currency()
     {
+        pref = ctx.getSharedPreferences(uname, Context.MODE_PRIVATE);
         String result = "";
         pref = ctx.getSharedPreferences(uname, Context.MODE_PRIVATE);
-        pref.getString(cur_setting,result);
+        result = pref.getString(cur_setting,result);
         return result;
     }
 

@@ -53,6 +53,7 @@ class Account_list_adapter extends RecyclerView.Adapter<Account_list_adapter.MyV
     {
         String account_name = account_list.get(position).getAccountName();
         double balance = account_list.get(position).getBalance();
+
         holder.balance_text.setText(balance + "");
         holder.Txt_acc_name.setText(account_name);
         Account current = account_list.get(position);

@@ -58,7 +58,7 @@ class Currency_conversion_data
         this.codeFrom = codeFrom;
         this.amount = amount;
         url_to_execute = "https://api.exchangerate.host/convert?from="
-                + codeFrom + "&to=" + codeTo + "&amaount=1";
+                + codeFrom + "&to=" + codeTo + "&amount=1";
         get_data_async async_data = new get_data_async();
         JSONObject jsonObject = null;
         try {
