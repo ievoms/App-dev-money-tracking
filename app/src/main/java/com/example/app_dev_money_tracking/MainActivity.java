@@ -17,6 +17,7 @@ import com.google.android.material.navigation.NavigationView;
 public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout drawer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,12 +31,15 @@ public class MainActivity extends AppCompatActivity {
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setCheckedItem(R.id.nav_home);
         navigationView.setNavigationItemSelectedListener(item -> {
-            switch (item.getItemId()){
+            switch (item.getItemId()) {
                 case R.id.nav_home:
                     startActivity(new Intent(MainActivity.this, Home_activity.class));
                     break;
                 case R.id.nav_new_record:
                     startActivity(new Intent(MainActivity.this, NewRecord.class));
+                    break;
+                case R.id.nav_categories:
+                    startActivity(new Intent(MainActivity.this, CategoriesActivity.class));
                     break;
             }
 

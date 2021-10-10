@@ -88,6 +88,9 @@ public class Home_activity extends AppCompatActivity {
                 case R.id.nav_new_record:
                     startActivity(new Intent(Home_activity.this, NewRecord.class));
                     break;
+                case R.id.nav_categories:
+                    startActivity(new Intent(Home_activity.this, CategoriesActivity.class));
+                    break;
             }
 
             return true;

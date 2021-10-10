@@ -53,7 +53,6 @@ public class NewRecord extends AppCompatActivity {
 
         User_settings settings = User_settings.instanciate("user1", getApplicationContext());
 
-
         btn_open_category_input = (Button) findViewById(R.id.open_category_input);
         imgViewClose = (ImageView)findViewById(R.id.imageClose);
         ImgViewDone = (ImageView)findViewById(R.id.imageDone);
@@ -192,8 +191,10 @@ public class NewRecord extends AppCompatActivity {
                 case R.id.nav_new_record:
                     startActivity(new Intent(NewRecord.this, NewRecord.class));
                     break;
+                case R.id.nav_categories:
+                    startActivity(new Intent(NewRecord.this, CategoriesActivity.class));
+                    break;
             }
-
             return true;
         });
 
