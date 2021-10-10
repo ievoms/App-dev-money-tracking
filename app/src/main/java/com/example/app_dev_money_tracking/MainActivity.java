@@ -28,17 +28,14 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setCheckedItem(R.id.nav_categories);
+        navigationView.setCheckedItem(R.id.nav_home);
         navigationView.setNavigationItemSelectedListener(item -> {
             switch (item.getItemId()){
                 case R.id.nav_home:
                     startActivity(new Intent(MainActivity.this, Home_activity.class));
                     break;
-                case R.id.nav_categories:
-                    startActivity(new Intent(MainActivity.this, MainActivity.class));
-                    break;
-                case R.id.nav_records:
-                    startActivity(new Intent(MainActivity.this, MainActivity.class));
+                case R.id.nav_new_record:
+                    startActivity(new Intent(MainActivity.this, NewRecord.class));
                     break;
             }
 

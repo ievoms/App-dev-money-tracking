@@ -39,7 +39,7 @@ import java.util.Date;
 
 import javax.xml.transform.Result;
 
-public class Home_activity extends AppCompatActivity{
+public class Home_activity extends AppCompatActivity {
 
     private PieChart pieChart;
     private ArrayList<Account> accounts;
@@ -49,14 +49,11 @@ public class Home_activity extends AppCompatActivity{
     private User_settings user_settings;
     private DrawerLayout drawer;
 
-    private Button btnAddRecord;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        getSupportActionBar().hide();
 
-        user_settings = User_settings.instanciate("user1",this);
+        user_settings = User_settings.instanciate("user1", this);
         user_settings.set_currency("EUR");
         setContentView(R.layout.activity_home);
         pieChart = findViewById(R.id.Piechart_view);
@@ -65,18 +62,9 @@ public class Home_activity extends AppCompatActivity{
         SetupPieChart();
         loadData();
 
-        btnAddRecord = (Button)findViewById(R.id.button2);  // mine
-//        btnAddRecord.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                OpenNewRecord(); // Open activity for temporary
-//            }
-//        });
-
         records = new ArrayList<>();
         accounts = user_settings.retrieveAccounts();
-        if (accounts == null)
-        {
+        if (accounts == null) {
             accounts = new ArrayList<>();
             setAccountInfo();
         }
@@ -93,15 +81,12 @@ public class Home_activity extends AppCompatActivity{
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setCheckedItem(R.id.nav_home);
         navigationView.setNavigationItemSelectedListener(item -> {
-            switch (item.getItemId()){
+            switch (item.getItemId()) {
                 case R.id.nav_home:
                     startActivity(new Intent(Home_activity.this, Home_activity.class));
                     break;
-                case R.id.nav_categories:
-                    startActivity(new Intent(Home_activity.this, MainActivity.class));
-                    break;
-                case R.id.nav_records:
-                    startActivity(new Intent(Home_activity.this, MainActivity.class));
+                case R.id.nav_new_record:
+                    startActivity(new Intent(Home_activity.this, NewRecord.class));
                     break;
             }
 
@@ -128,8 +113,7 @@ public class Home_activity extends AppCompatActivity{
         Toast.makeText(this, "Not Implemented yet", Toast.LENGTH_SHORT).show();
     }
 
-    public void On_add_record_click(View view)
-    {
+    public void On_add_record_click(View view) {
         Intent intent = new Intent(Home_activity.this, NewRecord.class);
         startActivity(intent);
     }
