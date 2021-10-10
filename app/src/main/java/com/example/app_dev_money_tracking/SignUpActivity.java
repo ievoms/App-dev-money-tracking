@@ -67,7 +67,7 @@ public class SignUpActivity extends AppCompatActivity {
                 } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches())
                     setErrorMessage(emailError, "Must be an email");
                 else {
-                    startActivity(new Intent(SignUpActivity.this, MainActivity.class));
+                    startActivity(new Intent(SignUpActivity.this, Home_activity.class));
                 }
             }
         };
