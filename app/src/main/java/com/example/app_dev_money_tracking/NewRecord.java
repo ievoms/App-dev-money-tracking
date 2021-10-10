@@ -1,12 +1,17 @@
 package com.example.app_dev_money_tracking;
 
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.ColorUtils;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -20,12 +25,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.navigation.NavigationView;
+
 import java.util.ArrayList;
 
 public class NewRecord extends AppCompatActivity {
 
     private ImageView imgViewClose, ImgViewDone;
-    private TextView txtHeader, txtOperationRecord, txtCurrencyRecord, txtCategoryChoose, txtChosenCategory;
+    private TextView  txtOperationRecord, txtCurrencyRecord, txtCategoryChoose, txtChosenCategory;
     private TextView txtAccountChoose, txtChosenAccount;
     private Button btnIncome, btnExpense, btn_open_category_input;
     private EditText editTxtAmount;
@@ -37,12 +44,12 @@ public class NewRecord extends AppCompatActivity {
     private CategoriesAdapter adapter;
 
     private ArrayList<Categories> categoriesList;
+    private DrawerLayout drawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_record);
-        getSupportActionBar().hide();  // To hide default activity bar
 
         User_settings settings = User_settings.instanciate("user1", getApplicationContext());
 
@@ -50,7 +57,6 @@ public class NewRecord extends AppCompatActivity {
         btn_open_category_input = (Button) findViewById(R.id.open_category_input);
         imgViewClose = (ImageView)findViewById(R.id.imageClose);
         ImgViewDone = (ImageView)findViewById(R.id.imageDone);
-        txtHeader = (TextView)findViewById(R.id.textHeader);
         btnIncome = (Button)findViewById(R.id.btnRecordTypeIncome);
         btnExpense = (Button)findViewById(R.id.btnRecordTypeExpense);
         editTxtAmount = (EditText)findViewById(R.id.editAmount);
@@ -134,6 +140,8 @@ public class NewRecord extends AppCompatActivity {
 //              txtAccountChoose.setText("Account");
             }
         });
+        ImgViewDone.setOnClickListener(view -> startActivity(new Intent(NewRecord.this, Home_activity.class)));
+        imgViewClose.setOnClickListener(view -> startActivity(new Intent(NewRecord.this, Home_activity.class)));
 
         btnIncome.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -168,5 +176,39 @@ public class NewRecord extends AppCompatActivity {
 
             }
         });
+
+        // Menu navigation
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        drawer = findViewById(R.id.drawer_layout);
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setCheckedItem(R.id.nav_new_record);
+        toolbar.setTitle("Add new record");
+        navigationView.setNavigationItemSelectedListener(item -> {
+            switch (item.getItemId()){
+                case R.id.nav_home:
+                    startActivity(new Intent(NewRecord.this, Home_activity.class));
+                    break;
+                case R.id.nav_new_record:
+                    startActivity(new Intent(NewRecord.this, NewRecord.class));
+                    break;
+            }
+
+            return true;
+        });
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+    }
+    @Override
+    public void onBackPressed() {
+
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
     }
 }

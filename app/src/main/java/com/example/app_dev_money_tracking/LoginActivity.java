@@ -68,15 +68,16 @@ public class LoginActivity extends AppCompatActivity {
 //                if (!email.equals("a@a.a") || !password.equals("a")) {
 //                    Toast.makeText(LoginActivity.this, "Email or password is incorrect", Toast.LENGTH_SHORT).show();
 //                } else {
-//                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
-//
+//                  startActivity(new Intent(LoginActivity.this, MainActivity.class));
 //                }
 //            }
         };
     }
 
 
-
+    private void setErrorMessage(TextView errorField, String errorMessage) {
+        errorField.setText(errorMessage);
+    }
 
     private void ClearErrorMessage(EditText input, final TextView errorField) {
         input.addTextChangedListener(new TextWatcher() {
@@ -99,7 +100,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private class LoginValidator {
-
         private String email;
         private String password;
 

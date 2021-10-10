@@ -14,10 +14,12 @@
         android:theme="@style/Theme.App_dev_money_tracking">
         <activity
             android:name=".NewRecord"
-            android:exported="true" />
+            android:exported="true"
+            android:label="Add new record" />
         <activity
             android:name=".Home_activity"
-            android:exported="true" />
+            android:exported="true"
+            android:label="Home" />
         <activity
             android:name=".SignUpActivity"
             android:exported="true" />
@@ -30,7 +32,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SignUpActivity"
+            android:name=".MainActivity"
             android:exported="true" />
 
 
