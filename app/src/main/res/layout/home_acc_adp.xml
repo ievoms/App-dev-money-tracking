@@ -36,6 +36,7 @@
         android:layout_marginEnd="10dp"
         android:background="@drawable/button_background"
         android:text="Adjust balance"
+        android:textColor="#FFFFFF"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@+id/Txt_e_balance"
         app:layout_constraintEnd_toEndOf="parent"
