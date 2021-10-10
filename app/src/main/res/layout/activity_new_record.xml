@@ -24,60 +24,58 @@
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/background"
             tools:context=".NewRecord">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/headerConst"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:background="#005666"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:ignore="ExtraText">
+<!--            <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--                android:id="@+id/headerConst"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="50dp"-->
+<!--                android:background="#005666"-->
+<!--                app:layout_constraintTop_toTopOf="parent"-->
+<!--                tools:ignore="ExtraText">-->
 
-                <ImageView
-                    android:id="@+id/imageClose"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_marginEnd="355dp"
-                    android:visibility="visible"
-                    app:layout_constraintBottom_toBottomOf="@id/headerConst"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintLeft_toLeftOf="@id/headerConst"
-                    app:layout_constraintTop_toTopOf="@id/headerConst"
-                    app:srcCompat="@drawable/closeicon" />
-
-                <ImageView
-                    android:id="@+id/imageDone"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_marginStart="355dp"
-                    app:layout_constraintBottom_toBottomOf="@id/headerConst"
-                    app:layout_constraintRight_toRightOf="@id/headerConst"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/headerConst"
-                    app:layout_constraintVertical_bias="0.52"
-                    app:srcCompat="@drawable/doneicon" />
-
-<!--                <TextView-->
-<!--                    android:id="@+id/textHeader"-->
-<!--                    android:layout_width="200dp"-->
+<!--                <ImageView-->
+<!--                    android:id="@+id/imageClose"-->
+<!--                    android:layout_width="25dp"-->
 <!--                    android:layout_height="25dp"-->
-<!--                    android:text="Add New Record"-->
-<!--                    android:textAlignment="center"-->
-<!--                    android:textColor="#FFFFFF"-->
-<!--                    android:textSize="20sp"-->
+<!--                    android:layout_marginEnd="355dp"-->
+<!--                    android:visibility="visible"-->
 <!--                    app:layout_constraintBottom_toBottomOf="@id/headerConst"-->
+<!--                    app:layout_constraintEnd_toEndOf="parent"-->
 <!--                    app:layout_constraintLeft_toLeftOf="@id/headerConst"-->
-<!--                    app:layout_constraintRight_toRightOf="@id/headerConst"-->
-<!--                    app:layout_constraintTop_toTopOf="@id/headerConst" />-->
+<!--                    app:layout_constraintTop_toTopOf="@id/headerConst"-->
+<!--                    app:srcCompat="@drawable/closeicon" />-->
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+<!--                <ImageView-->
+<!--                    android:id="@+id/imageDone"-->
+<!--                    android:layout_width="25dp"-->
+<!--                    android:layout_height="25dp"-->
+<!--                    android:layout_marginStart="355dp"-->
+<!--                    app:layout_constraintBottom_toBottomOf="@id/headerConst"-->
+<!--                    app:layout_constraintRight_toRightOf="@id/headerConst"-->
+<!--                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                    app:layout_constraintTop_toTopOf="@id/headerConst"-->
+<!--                    app:layout_constraintVertical_bias="0.52"-->
+<!--                    app:srcCompat="@drawable/doneicon" />-->
+
+<!--&lt;!&ndash;                <TextView&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:id="@+id/textHeader"&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:layout_width="200dp"&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:layout_height="25dp"&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:text="Add New Record"&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:textAlignment="center"&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:textColor="#FFFFFF"&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:textSize="20sp"&ndash;&gt;-->
+<!--&lt;!&ndash;                    app:layout_constraintBottom_toBottomOf="@id/headerConst"&ndash;&gt;-->
+<!--&lt;!&ndash;                    app:layout_constraintLeft_toLeftOf="@id/headerConst"&ndash;&gt;-->
+<!--&lt;!&ndash;                    app:layout_constraintRight_toRightOf="@id/headerConst"&ndash;&gt;-->
+<!--&lt;!&ndash;                    app:layout_constraintTop_toTopOf="@id/headerConst" />&ndash;&gt;-->
+
+<!--            </androidx.constraintlayout.widget.ConstraintLayout>-->
 
 
             <Button
@@ -91,7 +89,9 @@
                 app:layout_constraintBottom_toTopOf="@+id/AmountConstraint"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toLeftOf="@id/btnRecordTypeExpense"
-                app:layout_constraintTop_toBottomOf="@id/headerConst" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.222" />
+
 
             <Button
                 android:id="@+id/btnRecordTypeExpense"
@@ -104,13 +104,14 @@
                 app:layout_constraintBottom_toTopOf="@+id/AmountConstraint"
                 app:layout_constraintLeft_toRightOf="@id/btnRecordTypeIncome"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/headerConst" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.187" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/AmountConstraint"
                 android:layout_width="match_parent"
                 android:layout_height="210dp"
-                android:layout_marginTop="120dp"
+                android:layout_marginTop="48dp"
                 android:background="@drawable/round_background"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -197,17 +198,18 @@
                     app:layout_constraintVertical_bias="1.0" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/CategoriesRecycle"
-                android:layout_width="383dp"
-                android:layout_height="280dp"
+                android:layout_width="407dp"
+                android:layout_height="304dp"
                 android:layout_marginTop="-55dp"
                 android:background="@drawable/round_background"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/AmountConstraint" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/AmountConstraint"
+                app:layout_constraintVertical_bias="0.193" />
 
             <Button
                 android:id="@+id/open_category_input"
@@ -222,7 +224,7 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/CategoriesRecycle"
-                app:layout_constraintVertical_bias="0.411" />
+                app:layout_constraintVertical_bias="0.208" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

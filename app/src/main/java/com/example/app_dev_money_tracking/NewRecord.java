@@ -31,7 +31,7 @@ import java.util.ArrayList;
 
 public class NewRecord extends AppCompatActivity {
 
-    private ImageView imgViewClose, ImgViewDone;
+//    private ImageView imgViewClose, ImgViewDone;
     private TextView  txtOperationRecord, txtCurrencyRecord, txtCategoryChoose, txtChosenCategory;
     private TextView txtAccountChoose, txtChosenAccount;
     private Button btnIncome, btnExpense, btn_open_category_input;
@@ -54,8 +54,8 @@ public class NewRecord extends AppCompatActivity {
         User_settings settings = User_settings.instanciate("user1", getApplicationContext());
 
         btn_open_category_input = (Button) findViewById(R.id.open_category_input);
-        imgViewClose = (ImageView)findViewById(R.id.imageClose);
-        ImgViewDone = (ImageView)findViewById(R.id.imageDone);
+//        imgViewClose = (ImageView)findViewById(R.id.imageClose);
+//        ImgViewDone = (ImageView)findViewById(R.id.imageDone);
         btnIncome = (Button)findViewById(R.id.btnRecordTypeIncome);
         btnExpense = (Button)findViewById(R.id.btnRecordTypeExpense);
         editTxtAmount = (EditText)findViewById(R.id.editAmount);
@@ -139,8 +139,8 @@ public class NewRecord extends AppCompatActivity {
 //              txtAccountChoose.setText("Account");
             }
         });
-        ImgViewDone.setOnClickListener(view -> startActivity(new Intent(NewRecord.this, Home_activity.class)));
-        imgViewClose.setOnClickListener(view -> startActivity(new Intent(NewRecord.this, Home_activity.class)));
+//        ImgViewDone.setOnClickListener(view -> startActivity(new Intent(NewRecord.this, Home_activity.class)));
+//        imgViewClose.setOnClickListener(view -> startActivity(new Intent(NewRecord.this, Home_activity.class)));
 
         btnIncome.setOnClickListener(new View.OnClickListener() {
             @Override
