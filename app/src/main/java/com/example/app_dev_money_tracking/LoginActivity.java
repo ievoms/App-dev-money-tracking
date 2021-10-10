@@ -58,7 +58,10 @@ public class LoginActivity extends AppCompatActivity {
 
     private OnClickListener onLoginButtonClick() {
         return v -> {
-            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+
+            Intent intent =new Intent(LoginActivity.this, MainActivity.class);
+            startActivity(intent);
+            overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
 //            HelperFunctions.hideSoftKeyboard(LoginActivity.this, v);
 //            LoginValidator loginValidator = new LoginValidator().invoke();
 //            String email = loginValidator.getEmail();

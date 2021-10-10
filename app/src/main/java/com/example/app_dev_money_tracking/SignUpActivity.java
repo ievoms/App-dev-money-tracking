@@ -68,6 +68,7 @@ public class SignUpActivity extends AppCompatActivity {
                     setErrorMessage(emailError, "Must be an email");
                 else {
                     startActivity(new Intent(SignUpActivity.this, MainActivity.class));
+
                 }
             }
         };
