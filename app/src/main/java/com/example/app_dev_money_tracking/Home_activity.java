@@ -60,12 +60,12 @@ public class Home_activity extends AppCompatActivity
         loadData();
 
         btnAddRecord = (Button)findViewById(R.id.button2);  // mine
-        btnAddRecord.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                OpenNewRecord(); // Open activity for temporary
-            }
-        });
+//        btnAddRecord.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                OpenNewRecord(); // Open activity for temporary
+//            }
+//        });
 
         accounts = new ArrayList<>();
         records = new ArrayList<>();
@@ -80,20 +80,16 @@ public class Home_activity extends AppCompatActivity
 
     }
 
-    // Open other activity for temporary
-    public void OpenNewRecord() {
-        Intent intent = new Intent(Home_activity.this, NewRecord.class);
-        startActivity(intent);
-    }
 
-//    public void On_show_more_click(View view)
-//    {
-//        Toast.makeText(this, "Not Implemented yet", Toast.LENGTH_SHORT).show();
-//    }
+    public void On_show_more_click(View view)
+    {
+        Toast.makeText(this, "Not Implemented yet", Toast.LENGTH_SHORT).show();
+    }
 
     public void On_add_record_click(View view)
     {
-        Toast.makeText(this, "Not Implemented yet", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(Home_activity.this, NewRecord.class);
+        startActivity(intent);
     }
 
     private void set_record_data()
