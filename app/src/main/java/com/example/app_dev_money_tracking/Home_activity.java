@@ -67,9 +67,13 @@ public class Home_activity extends AppCompatActivity
 //            }
 //        });
 
-        accounts = new ArrayList<>();
         records = new ArrayList<>();
-        setAccountInfo();
+        accounts = user_settings.retrieveAccounts();
+        if (accounts == null)
+        {
+            accounts = new ArrayList<>();
+            setAccountInfo();
+        }
         set_record_data();
         setAdapters();
         Currency_conversion_data curr = new Currency_conversion_data();
@@ -118,6 +122,7 @@ public class Home_activity extends AppCompatActivity
         accounts.add(new Account(1000.2, "Cash"));
         accounts.add(new Account(3000.2, "Bank"));
         accounts.add(new Account(5000, "Savings"));
+        user_settings.SaveAccounts(accounts);
     }
 
     private void SetupPieChart()

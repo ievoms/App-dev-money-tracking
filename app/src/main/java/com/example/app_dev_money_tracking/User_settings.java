@@ -14,6 +14,8 @@ class User_settings
 {
     final static String cur_setting = "base_currency";
     final static String record_setting = "record";
+    final static String account_setting = "accounts";
+
     Context ctx;
     String uname;
     static User_settings singleton;
@@ -72,6 +74,24 @@ class User_settings
 //            recordList = new ArrayList<Categories>();
 
         return recordList;
+    }
+
+    public void SaveAccounts(ArrayList<Account> List) {
+        pref = ctx.getSharedPreferences(uname, Context.MODE_PRIVATE);
+        editor = pref.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(List);
+        editor.putString(account_setting, json);
+        editor.apply();
+    }
+
+    public ArrayList<Account> retrieveAccounts() {
+        pref = ctx.getSharedPreferences(uname, Context.MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = pref.getString(account_setting, null);
+        Type type = new TypeToken<ArrayList<Account>>() {}.getType();
+        ArrayList<Account> accounts = gson.fromJson(json, type);
+        return accounts;
     }
 
 }

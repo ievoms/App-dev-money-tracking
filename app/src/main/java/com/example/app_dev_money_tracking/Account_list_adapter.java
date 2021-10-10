@@ -63,6 +63,8 @@ class Account_list_adapter extends RecyclerView.Adapter<Account_list_adapter.MyV
             public void onClick(View view)
             {
                 current.setBalance(Double.parseDouble(holder.balance_text.getText().toString()));
+                User_settings settings = User_settings.instanciate("user1",view.getContext());
+                settings.SaveAccounts(account_list);
                 Toast.makeText(view.getContext(), "Balance adjusted", Toast.LENGTH_SHORT).show();
                 notifyDataSetChanged();
             }
