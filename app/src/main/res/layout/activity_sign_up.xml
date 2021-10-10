@@ -188,7 +188,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="2"
-            android:text="Dont have an account? "
+            android:text="Already have an account? "
             android:textAlignment="textEnd"
             android:textColor="#FFFFFF" />
 
@@ -198,7 +198,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Sign Up"
+            android:text="Sign In"
             android:textAlignment="textStart"
             android:textAllCaps="false"
             android:textColor="@color/accentRed"
