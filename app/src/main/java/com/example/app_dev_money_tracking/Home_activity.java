@@ -1,7 +1,12 @@
 package com.example.app_dev_money_tracking;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.text.PrecomputedTextCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -10,6 +15,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -22,6 +28,7 @@ import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.google.android.material.navigation.NavigationView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,8 +39,7 @@ import java.util.Date;
 
 import javax.xml.transform.Result;
 
-public class Home_activity extends AppCompatActivity
-{
+public class Home_activity extends AppCompatActivity{
 
     private PieChart pieChart;
     private ArrayList<Account> accounts;
@@ -41,12 +47,12 @@ public class Home_activity extends AppCompatActivity
     private RecyclerView Accounts_recycler;
     private RecyclerView Records_recycler;
     private User_settings user_settings;
+    private DrawerLayout drawer;
 
     private Button btnAddRecord;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        getSupportActionBar().hide();
 
@@ -78,12 +84,47 @@ public class Home_activity extends AppCompatActivity
         setAdapters();
         Currency_conversion_data curr = new Currency_conversion_data();
         String currency = user_settings.get_currency();
-        double rate = curr.convert( currency,"EUR",1.0);
+        double rate = curr.convert(currency, "EUR", 1.0);
+
+        // Menu navigation
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        drawer = findViewById(R.id.drawer_layout);
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setCheckedItem(R.id.nav_home);
+        navigationView.setNavigationItemSelectedListener(item -> {
+            switch (item.getItemId()){
+                case R.id.nav_home:
+                    startActivity(new Intent(Home_activity.this, Home_activity.class));
+                    break;
+                case R.id.nav_categories:
+                    startActivity(new Intent(Home_activity.this, MainActivity.class));
+                    break;
+                case R.id.nav_records:
+                    startActivity(new Intent(Home_activity.this, MainActivity.class));
+                    break;
+            }
+
+            return true;
+        });
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
     }
 
+    @Override
+    public void onBackPressed() {
 
-    public void On_show_more_click(View view)
-    {
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    public void On_show_more_click(View view) {
         Toast.makeText(this, "Not Implemented yet", Toast.LENGTH_SHORT).show();
     }
 
@@ -93,16 +134,14 @@ public class Home_activity extends AppCompatActivity
         startActivity(intent);
     }
 
-    private void set_record_data()
-    {
+    private void set_record_data() {
         records.clear();
         records.add(new Exp_inc_record(new Date(), 50.0, accounts.get(0), 'E', "Medical"));
         records.add(new Exp_inc_record(new Date(), 8000.5, accounts.get(0), 'E', "Food"));
         records.add(new Exp_inc_record(new Date(), 80.53, accounts.get(1), 'E', "Entertainment"));
     }
 
-    private void setAdapters()
-    {
+    private void setAdapters() {
         Account_list_adapter adapter = new Account_list_adapter(accounts);
         RecyclerView.LayoutManager layout_manager = new LinearLayoutManager(getApplicationContext());
         Accounts_recycler.setLayoutManager(layout_manager);
@@ -116,8 +155,7 @@ public class Home_activity extends AppCompatActivity
         Records_recycler.setAdapter(adapter_exp);
     }
 
-    private void setAccountInfo()
-    {
+    private void setAccountInfo() {
         accounts.clear();
         accounts.add(new Account(1000.2, "Cash"));
         accounts.add(new Account(3000.2, "Bank"));
@@ -125,8 +163,7 @@ public class Home_activity extends AppCompatActivity
         user_settings.SaveAccounts(accounts);
     }
 
-    private void SetupPieChart()
-    {
+    private void SetupPieChart() {
         pieChart.setDrawHoleEnabled(true);
         pieChart.setUsePercentValues(true);
         pieChart.setDrawEntryLabels(false);
@@ -150,8 +187,7 @@ public class Home_activity extends AppCompatActivity
         l.setEnabled(true);
     }
 
-    private void loadData()
-    {
+    private void loadData() {
         String lbl_food = "Food and drinks";
         String lbl_medical = "Medical";
         String lbl_entertainment = "Entertainment";
