@@ -6,10 +6,12 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.animation.Easing;
@@ -40,11 +42,14 @@ public class Home_activity extends AppCompatActivity
     private RecyclerView Records_recycler;
     private User_settings user_settings;
 
+    private Button btnAddRecord;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
 //        getSupportActionBar().hide();
+
         user_settings = User_settings.instanciate("user1",this);
         user_settings.set_currency("EUR");
         setContentView(R.layout.activity_home);
@@ -54,6 +59,14 @@ public class Home_activity extends AppCompatActivity
         SetupPieChart();
         loadData();
 
+        btnAddRecord = (Button)findViewById(R.id.button2);  // mine
+        btnAddRecord.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                OpenNewRecord(); // Open activity for temporary
+            }
+        });
+
         accounts = new ArrayList<>();
         records = new ArrayList<>();
         setAccountInfo();
@@ -62,11 +75,21 @@ public class Home_activity extends AppCompatActivity
         Currency_conversion_data curr = new Currency_conversion_data();
         String currency = user_settings.get_currency();
         double rate = curr.convert( currency,"EUR",1.0);
+
+
+
     }
-    public void On_show_more_click(View view)
-    {
-        Toast.makeText(this, "Not Implemented yet", Toast.LENGTH_SHORT).show();
+
+    // Open other activity for temporary
+    public void OpenNewRecord() {
+        Intent intent = new Intent(Home_activity.this, NewRecord.class);
+        startActivity(intent);
     }
+
+//    public void On_show_more_click(View view)
+//    {
+//        Toast.makeText(this, "Not Implemented yet", Toast.LENGTH_SHORT).show();
+//    }
 
     public void On_add_record_click(View view)
     {
