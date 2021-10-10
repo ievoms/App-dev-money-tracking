@@ -75,9 +75,6 @@ public class Home_activity extends AppCompatActivity
         Currency_conversion_data curr = new Currency_conversion_data();
         String currency = user_settings.get_currency();
         double rate = curr.convert( currency,"EUR",1.0);
-
-
-
     }
 
     // Open other activity for temporary
@@ -86,10 +83,10 @@ public class Home_activity extends AppCompatActivity
         startActivity(intent);
     }
 
-//    public void On_show_more_click(View view)
-//    {
-//        Toast.makeText(this, "Not Implemented yet", Toast.LENGTH_SHORT).show();
-//    }
+    public void On_show_more_click(View view)
+    {
+        Toast.makeText(this, "Not Implemented yet", Toast.LENGTH_SHORT).show();
+    }
 
     public void On_add_record_click(View view)
     {
