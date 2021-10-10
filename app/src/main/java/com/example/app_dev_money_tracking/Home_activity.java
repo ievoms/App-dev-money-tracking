@@ -67,11 +67,11 @@ public class Home_activity extends AppCompatActivity
 //            }
 //        });
 
-        accounts = new ArrayList<>();
         records = new ArrayList<>();
         accounts = user_settings.retrieveAccounts();
         if (accounts == null)
         {
+            accounts = new ArrayList<>();
             setAccountInfo();
         }
         set_record_data();
