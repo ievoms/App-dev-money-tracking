@@ -1,5 +1,7 @@
 package com.example.app_dev_money_tracking;
 
+import android.content.Context;
+
 import java.util.ArrayList;
 
 public class Categories {
@@ -28,7 +30,7 @@ public class Categories {
         this.categoryImg = categoryImg;
     }
 
-    static public ArrayList<Categories> getData() {
+    static public ArrayList<Categories> getData(Context ctx) {
         ArrayList<Categories> categoriesList = new ArrayList<Categories>();
         String[] categories = {"Food & Drinks", "Shopping", "Housing", "Transportation", "Vehicle", "Entertainment", "Medical",
                 "Investments", };
@@ -42,6 +44,8 @@ public class Categories {
 
             categoriesList.add(category);
         }
+        User_settings settings = User_settings.instanciate("user1", ctx);
+        settings.saveRecordList(categoriesList);
         return categoriesList;
     }
 }

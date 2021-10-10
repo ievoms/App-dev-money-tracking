@@ -20,6 +20,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 public class NewRecord extends AppCompatActivity {
 
     private ImageView imgViewClose, ImgViewDone;
@@ -34,11 +36,16 @@ public class NewRecord extends AppCompatActivity {
     private RecyclerView categoryRecycler;
     private CategoriesAdapter adapter;
 
+    private ArrayList<Categories> categoriesList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_record);
         getSupportActionBar().hide();  // To hide default activity bar
+
+        User_settings settings = User_settings.instanciate("user1", getApplicationContext());
+
 
         btn_open_category_input = (Button) findViewById(R.id.open_category_input);
         imgViewClose = (ImageView)findViewById(R.id.imageClose);
@@ -58,7 +65,11 @@ public class NewRecord extends AppCompatActivity {
 
 
         categoryRecycler = (RecyclerView)findViewById(R.id.CategoriesRecycle);
-        adapter = new CategoriesAdapter(Categories.getData(), this);
+        categoriesList = settings.retrieveRecordList();
+        if(categoriesList == null) {
+            categoriesList = Categories.getData(this);
+        }
+        adapter = new CategoriesAdapter(categoriesList, this);
         categoryRecycler.setHasFixedSize(true);
         LinearLayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         categoryRecycler.setLayoutManager(manager);
@@ -87,6 +98,11 @@ public class NewRecord extends AppCompatActivity {
                         EditText cat_name_input = new_categ_layout.findViewById(R.id.category_input);
                         if(cat_name_input.getText().toString().length() != 0) {
                             Toast.makeText(NewRecord.this, "Your category was created", Toast.LENGTH_SHORT).show();
+                            Categories newRecord = new Categories(cat_name_input.getText().toString(), R.drawable.car);
+                            categoriesList.add(newRecord);
+
+                            settings.saveRecordList(categoriesList);
+                            adapter.notifyDataSetChanged();
                         }
                         else {
                             Toast.makeText(NewRecord.this, "Category name can't be empty. Try again", Toast.LENGTH_SHORT).show();
