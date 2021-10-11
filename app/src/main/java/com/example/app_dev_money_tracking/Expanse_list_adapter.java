@@ -68,6 +68,8 @@ class Expanse_list_adapter extends RecyclerView.Adapter<Expanse_list_adapter.MyV
     @Override
     public int getItemCount()
     {
+        if(record_list != null)
         return record_list.size();
+        else return 0;
     }
 }

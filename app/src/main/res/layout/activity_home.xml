@@ -22,7 +22,7 @@
             android:background="@color/primary"
             android:elevation="4dp"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -201,10 +201,26 @@
                         android:textColor="#C6A9A9"
                         android:textSize="10sp" />
 
-                    <com.github.mikephil.charting.charts.PieChart
-                        android:id="@+id/Piechart_view"
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <com.github.mikephil.charting.charts.PieChart
+                            android:id="@+id/Piechart_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="132dp"
+                            android:layout_weight="1" />
+
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recordsFromPie"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+
+
+                    </LinearLayout>
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>

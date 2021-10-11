@@ -23,10 +23,13 @@ import android.widget.Toast;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.material.navigation.NavigationView;
 
@@ -44,10 +47,12 @@ public class Home_activity extends AppCompatActivity {
     private PieChart pieChart;
     private ArrayList<Account> accounts;
     private ArrayList<Exp_inc_record> records;
+    private ArrayList<Exp_inc_record> records2;
     private RecyclerView Accounts_recycler;
     private RecyclerView Records_recycler;
     private User_settings user_settings;
     private DrawerLayout drawer;
+    RecyclerView recordsFromPie;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +64,7 @@ public class Home_activity extends AppCompatActivity {
         pieChart = findViewById(R.id.Piechart_view);
         Accounts_recycler = findViewById(R.id.Rec_view_list_of_acc);
         Records_recycler = findViewById(R.id.Rec_view_expanses);
+        recordsFromPie = findViewById(R.id.recordsFromPie);
         SetupPieChart();
         loadData();
 
@@ -124,8 +130,13 @@ public class Home_activity extends AppCompatActivity {
     private void set_record_data() {
         records.clear();
         records.add(new Exp_inc_record(new Date(), 50.0, accounts.get(0), 'E', "Medical"));
-        records.add(new Exp_inc_record(new Date(), 8000.5, accounts.get(0), 'E', "Food"));
+        records.add(new Exp_inc_record(new Date(), 8000.5, accounts.get(0), 'E', "Food and drinks"));
         records.add(new Exp_inc_record(new Date(), 80.53, accounts.get(1), 'E', "Entertainment"));
+        records.add(new Exp_inc_record(new Date(), 50.0, accounts.get(0), 'E', "Gifts"));
+        records.add(new Exp_inc_record(new Date(), 8000.5, accounts.get(0), 'E', "Food and drinks"));
+        records.add(new Exp_inc_record(new Date(), 80.53, accounts.get(1), 'E', "Home"));
+        records.add(new Exp_inc_record(new Date(), 80.53, accounts.get(1), 'E', "Home"));
+        records.add(new Exp_inc_record(new Date(), 80.53, accounts.get(1), 'E', "Home"));
     }
 
     private void setAdapters() {
@@ -148,9 +159,11 @@ public class Home_activity extends AppCompatActivity {
         accounts.add(new Account(3000.2, "Bank"));
         accounts.add(new Account(5000, "Savings"));
         user_settings.SaveAccounts(accounts);
+
     }
 
     private void SetupPieChart() {
+
         pieChart.setDrawHoleEnabled(true);
         pieChart.setUsePercentValues(true);
         pieChart.setDrawEntryLabels(false);
@@ -188,6 +201,7 @@ public class Home_activity extends AppCompatActivity {
         entries.add(new PieEntry(0.25f, lbl_gifts));
         entries.add(new PieEntry(0.2f, lbl_home));
 
+
         ArrayList<Integer> colors = new ArrayList<>();
         for (int color : ColorTemplate.MATERIAL_COLORS) {
             colors.add(color);
@@ -198,6 +212,7 @@ public class Home_activity extends AppCompatActivity {
         PieDataSet dataset = new PieDataSet(entries, "");
         dataset.setColors(colors);
 
+
         PieData data = new PieData(dataset);
         data.setDrawValues(true);
         data.setValueFormatter(new PercentFormatter(pieChart));
@@ -206,9 +221,35 @@ public class Home_activity extends AppCompatActivity {
         data.setValueTextColor(Color.BLACK);
         data.setHighlightEnabled(true);
 
+
         pieChart.setData(data);
         pieChart.invalidate();
         pieChart.animateY(1400, Easing.EaseInOutQuad);
+
+        pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+            @Override
+            public void onValueSelected(Entry e, Highlight h) {
+                records2=new ArrayList<>();
+                int hIndex = (int) h.getX();
+                PieEntry entry = entries.get(hIndex);
+                String label = entry.getLabel();
+                for (Exp_inc_record record : records) {
+                    if (record.category == label)
+                        records2.add(record);
+                }
+                Expanse_list_adapter adapter_exp = new Expanse_list_adapter(records2);
+                RecyclerView.LayoutManager layout_manager2 = new LinearLayoutManager(getApplicationContext());
+                recordsFromPie.setLayoutManager(layout_manager2);
+                recordsFromPie.setItemAnimator(new DefaultItemAnimator());
+                recordsFromPie.setAdapter(adapter_exp);
+            }
+
+            @Override
+            public void onNothingSelected() {
+
+            }
+        });
+
     }
 
 }

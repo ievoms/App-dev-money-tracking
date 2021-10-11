@@ -68,7 +68,7 @@ public class LoginActivity extends AppCompatActivity {
 //                if (!email.equals("a@a.a") || !password.equals("a")) {
 //                    Toast.makeText(LoginActivity.this, "Email or password is incorrect", Toast.LENGTH_SHORT).show();
 //                } else {
-//                  startActivity(new Intent(LoginActivity.this, MainActivity.class));
+//                  startActivity(new Intent(LoginActivity.this, Home_activity.class));
 //                }
 //            }
         };
