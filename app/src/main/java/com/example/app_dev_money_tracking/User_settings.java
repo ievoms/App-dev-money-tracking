@@ -108,7 +108,7 @@ class User_settings
         pref = ctx.getSharedPreferences(uname, Context.MODE_PRIVATE);
         String email = "";
         pref = ctx.getSharedPreferences(uname, Context.MODE_PRIVATE);
-        email = pref.getString(user_email,email);
+        email = pref.getString(user_email, email);
         return email;
     }
 
