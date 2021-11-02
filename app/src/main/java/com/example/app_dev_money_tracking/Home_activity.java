@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.animation.Easing;
@@ -75,11 +76,16 @@ public class Home_activity extends AppCompatActivity {
         double rate = curr.convert(currency, "EUR", 1.0);
 
         // Menu navigation
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setCheckedItem(R.id.nav_home);
+        View header = navigationView.getHeaderView(0);
+        TextView emailDisplay = header.findViewById(R.id.userEmailDisplay);
+        User_settings user_settings = User_settings.instanciate("user1", this);
+        emailDisplay.setText(user_settings.getUserEmail());
         navigationView.setNavigationItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.nav_home:

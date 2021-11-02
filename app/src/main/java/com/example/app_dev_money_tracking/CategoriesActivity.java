@@ -10,7 +10,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.google.android.material.navigation.NavigationView;
 
@@ -48,6 +50,10 @@ public class CategoriesActivity extends AppCompatActivity {
         drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setCheckedItem(R.id.nav_categories);
+        View header = navigationView.getHeaderView(0);
+        TextView emailDisplay = header.findViewById(R.id.userEmailDisplay);
+        User_settings user_settings = User_settings.instanciate("user1", this);
+        emailDisplay.setText(user_settings.getUserEmail());
         navigationView.setNavigationItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.nav_home:

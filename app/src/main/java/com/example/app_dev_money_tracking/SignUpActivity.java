@@ -73,7 +73,7 @@ public class SignUpActivity extends AppCompatActivity {
                         UserModel userModel = new UserModel(-1, email, password);
                         boolean successFullInsert = db.addUser(userModel);
                         if (successFullInsert) {
-                            startActivity(new Intent(SignUpActivity.this, MainActivity.class));
+                            startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
                         } else {
                             Toast.makeText(SignUpActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
                         }

@@ -183,6 +183,10 @@ public class NewRecord extends AppCompatActivity {
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setCheckedItem(R.id.nav_new_record);
         toolbar.setTitle("Add new record");
+        View header = navigationView.getHeaderView(0);
+        TextView emailDisplay = header.findViewById(R.id.userEmailDisplay);
+        User_settings user_settings = User_settings.instanciate("user1", this);
+        emailDisplay.setText(user_settings.getUserEmail());
         navigationView.setNavigationItemSelectedListener(item -> {
             switch (item.getItemId()){
                 case R.id.nav_home:
