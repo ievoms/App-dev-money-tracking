@@ -2,6 +2,7 @@ package com.example.app_dev_money_tracking;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Handler;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -29,30 +30,18 @@ class Currency_conversion_data
     LoadingDialog ldialog;
     Context ctx;
 
-//    double rate;
-//    Currency_conversion_data singleton;
-
-//    public Currency_conversion_data instanciate(String codeFrom, String codeTo)
-//    {
-//        if (singleton == null) {
-//            return singleton = new Currency_conversion_data(codeFrom, codeTo);
-//        } else {
-//            return singleton;
-//        }
-//    }
-
     private class get_data_async extends AsyncTask<String, String, String>
     {
+
         @Override
         protected String doInBackground(String... strings)
         {
-            Currency_conversion_data curr = new Currency_conversion_data(ctx);
-            String String2Json = curr.http_call(url_to_execute);
+            String String2Json = Currency_conversion_data.http_call(url_to_execute);
             return String2Json;
         }
     }
 
-    public Currency_conversion_data(Context ctx)
+    public Currency_conversion_data( Context ctx )
     {
         this.ctx = ctx;
         ldialog = new LoadingDialog(ctx);
@@ -74,25 +63,22 @@ class Currency_conversion_data
             try {
                 jsonObject = new JSONObject(js);
             } catch (JSONException e) {
-                ldialog.dismiss();
                 e.printStackTrace();
             }
             try {
                 double a = jsonObject.getDouble("result");
                 res = a;
             } catch (JSONException e) {
-                ldialog.dismiss();
                 e.printStackTrace();
             }
         } catch (ExecutionException | InterruptedException e) {
-            ldialog.dismiss();
             e.printStackTrace();
         }
         ldialog.dismiss();
         return res;
     }
 
-    public String http_call(String api_url)
+    public static String http_call(String api_url)
     {
         String result = null;
         try {
@@ -112,7 +98,7 @@ class Currency_conversion_data
         return result;
     }
 
-    private String stream_toString(InputStream inputStream)
+    private static String stream_toString(InputStream inputStream)
     {
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
         StringBuilder builder = new StringBuilder();
