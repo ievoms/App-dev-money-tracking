@@ -74,7 +74,7 @@ public class Home_activity extends AppCompatActivity {
         }
         set_record_data();
         setAdapters();
-        Currency_conversion_data curr = new Currency_conversion_data(getApplicationContext());
+        Currency_conversion_data curr = new Currency_conversion_data(Home_activity.this);
         String currency = user_settings.get_currency();
         double rate = curr.convert(currency, "EUR", 1.0);
 

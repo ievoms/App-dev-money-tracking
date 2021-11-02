@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Mokslai/Ketvirtas_kursas(2)/app_dev/App-dev-money-tracking/app/src/main/res/layout/activity_convert_currency.xml" value="0.2269021739130435" />
         <entry key="..\:/Mokslai/Ketvirtas_kursas(2)/app_dev/App-dev-money-tracking/app/src/main/res/layout/activity_home.xml" value="0.1" />
         <entry key="..\:/Mokslai/Ketvirtas_kursas(2)/app_dev/App-dev-money-tracking/app/src/main/res/layout/activity_login.xml" value="0.1" />
         <entry key="..\:/Mokslai/Ketvirtas_kursas(2)/app_dev/App-dev-money-tracking/app/src/main/res/layout/loading.xml" value="0.2341485507246377" />
@@ -12,7 +13,7 @@
     </option>
   </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="JDK" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_13" project-jdk-name="JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
