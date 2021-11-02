@@ -24,10 +24,13 @@ import android.widget.Toast;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.material.navigation.NavigationView;
 
@@ -71,7 +74,7 @@ public class Home_activity extends AppCompatActivity {
         }
         set_record_data();
         setAdapters();
-        Currency_conversion_data curr = new Currency_conversion_data();
+        Currency_conversion_data curr = new Currency_conversion_data(getApplicationContext());
         String currency = user_settings.get_currency();
         double rate = curr.convert(currency, "EUR", 1.0);
 
@@ -157,6 +160,22 @@ public class Home_activity extends AppCompatActivity {
     }
 
     private void SetupPieChart() {
+        pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener()
+    {
+        @Override
+        public void onValueSelected(Entry e, Highlight h)
+        {
+            Toast.makeText(getApplicationContext(),"",Toast.LENGTH_SHORT).show();
+            h.getDataIndex();
+
+        }
+
+        @Override
+        public void onNothingSelected()
+        {
+
+        }
+    });
         pieChart.setDrawHoleEnabled(true);
         pieChart.setUsePercentValues(true);
         pieChart.setDrawEntryLabels(false);
