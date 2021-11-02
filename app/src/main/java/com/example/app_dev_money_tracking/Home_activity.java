@@ -1,8 +1,10 @@
 package com.example.app_dev_money_tracking;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.text.PrecomputedTextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -11,7 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -30,8 +34,14 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.material.navigation.NavigationView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Date;
+
+import javax.xml.transform.Result;
 
 public class Home_activity extends AppCompatActivity {
 
@@ -68,6 +78,7 @@ public class Home_activity extends AppCompatActivity {
         user_settings.set_currency("EUR");
         setContentView(R.layout.activity_home);
         pieChart = findViewById(R.id.Piechart_view);
+        Accounts_recycler = findViewById(R.id.Rec_view_list_of_acc);
         Records_recycler = findViewById(R.id.Rec_view_expanses);
         SetupPieChart();
         loadData();
@@ -80,7 +91,9 @@ public class Home_activity extends AppCompatActivity {
         }
         set_record_data();
         setAdapters();
-
+        Currency_conversion_data curr = new Currency_conversion_data(getApplicationContext());
+        String currency = user_settings.get_currency();
+        double rate = curr.convert(currency, "EUR", 1.0);
 
         // Menu navigation
 
@@ -146,6 +159,12 @@ public class Home_activity extends AppCompatActivity {
     }
 
     private void setAdapters() {
+        Account_list_adapter adapter = new Account_list_adapter(accounts);
+        RecyclerView.LayoutManager layout_manager = new LinearLayoutManager(getApplicationContext());
+        Accounts_recycler.setLayoutManager(layout_manager);
+        Accounts_recycler.setItemAnimator(new DefaultItemAnimator());
+        Accounts_recycler.setAdapter(adapter);
+
         Expanse_list_adapter adapter_exp = new Expanse_list_adapter(records);
         RecyclerView.LayoutManager layout_manager2 = new LinearLayoutManager(getApplicationContext());
         Records_recycler.setLayoutManager(layout_manager2);
