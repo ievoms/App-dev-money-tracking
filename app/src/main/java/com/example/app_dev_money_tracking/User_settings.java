@@ -15,6 +15,8 @@ class User_settings
     final static String cur_setting = "base_currency";
     final static String record_setting = "record";
     final static String account_setting = "accounts";
+    final static String user_email = "email";
+    final static String user_is_admin = "false";
 
     Context ctx;
     String uname;
@@ -92,6 +94,22 @@ class User_settings
         Type type = new TypeToken<ArrayList<Account>>() {}.getType();
         ArrayList<Account> accounts = gson.fromJson(json, type);
         return accounts;
+    }
+
+    public void setUserEmail(String email)
+    {
+        pref = ctx.getSharedPreferences(uname, Context.MODE_PRIVATE);
+        editor = pref.edit();
+        editor.putString(user_email, email);
+        editor.apply();
+    }
+    public String getUserEmail()
+    {
+        pref = ctx.getSharedPreferences(uname, Context.MODE_PRIVATE);
+        String email = "";
+        pref = ctx.getSharedPreferences(uname, Context.MODE_PRIVATE);
+        email = pref.getString(user_email,email);
+        return email;
     }
 
 }
