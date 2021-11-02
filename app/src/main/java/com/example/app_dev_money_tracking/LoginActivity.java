@@ -62,14 +62,14 @@ public class LoginActivity extends AppCompatActivity {
             LoginValidator loginValidator = new LoginValidator().invoke();
             String email = loginValidator.getEmail();
             String password = loginValidator.getPassword();
-            if (loginValidator.isValid()) {
+//            if (loginValidator.isValid()) {
 
-                if (!email.equals("a@a.a") || !password.equals("a")) {
-                    Toast.makeText(LoginActivity.this, "Email or password is incorrect", Toast.LENGTH_SHORT).show();
-                } else {
+//                if (!email.equals("a@a.a") || !password.equals("a")) {
+//                    Toast.makeText(LoginActivity.this, "Email or password is incorrect", Toast.LENGTH_SHORT).show();
+//                } else {
                   startActivity(new Intent(LoginActivity.this, Home_activity.class));
-                }
-            }
+//                }
+//            }
         };
     }
 

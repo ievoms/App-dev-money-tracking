@@ -1,5 +1,6 @@
 package com.example.app_dev_money_tracking;
 
+import android.content.Context;
 import android.os.AsyncTask;
 
 import org.json.JSONException;
@@ -25,6 +26,8 @@ class Currency_conversion_data
     String codeTo;
     String url_to_execute;
     double amount;
+    LoadingDialog ldialog;
+    Context ctx;
 
 //    double rate;
 //    Currency_conversion_data singleton;
@@ -43,17 +46,22 @@ class Currency_conversion_data
         @Override
         protected String doInBackground(String... strings)
         {
-            Currency_conversion_data curr = new Currency_conversion_data();
+            Currency_conversion_data curr = new Currency_conversion_data(ctx);
             String String2Json = curr.http_call(url_to_execute);
             return String2Json;
         }
     }
 
-    public Currency_conversion_data()
-    { }
+    public Currency_conversion_data(Context ctx)
+    {
+        this.ctx = ctx;
+        ldialog = new LoadingDialog(ctx);
+        ldialog.setCanceledOnTouchOutside(false);
+    }
 
     public double convert(String codeFrom, String codeTo, double amount)
     {
+        ldialog.show();
         this.codeTo = codeTo;
         this.codeFrom = codeFrom;
         this.amount = amount;
@@ -66,17 +74,21 @@ class Currency_conversion_data
             try {
                 jsonObject = new JSONObject(js);
             } catch (JSONException e) {
+                ldialog.dismiss();
                 e.printStackTrace();
             }
             try {
                 double a = jsonObject.getDouble("result");
                 res = a;
             } catch (JSONException e) {
+                ldialog.dismiss();
                 e.printStackTrace();
             }
         } catch (ExecutionException | InterruptedException e) {
+            ldialog.dismiss();
             e.printStackTrace();
         }
+        ldialog.dismiss();
         return res;
     }
 

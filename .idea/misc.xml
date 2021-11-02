@@ -3,6 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Mokslai/Ketvirtas_kursas(2)/app_dev/App-dev-money-tracking/app/src/main/res/layout/activity_home.xml" value="0.1" />
+        <entry key="..\:/Mokslai/Ketvirtas_kursas(2)/app_dev/App-dev-money-tracking/app/src/main/res/layout/activity_login.xml" value="0.1" />
+        <entry key="..\:/Mokslai/Ketvirtas_kursas(2)/app_dev/App-dev-money-tracking/app/src/main/res/layout/loading.xml" value="0.2341485507246377" />
         <entry key="..\:/Projects/App_dev_money_tracking/app/src/main/res/layout/activity_new_record.xml" value="0.22" />
         <entry key="..\:/Projects/App_dev_money_tracking/app/src/main/res/menu/drawer_menu.xml" value="0.24739583333333334" />
       </map>
