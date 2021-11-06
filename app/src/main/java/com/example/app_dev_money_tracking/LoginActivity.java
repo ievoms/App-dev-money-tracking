@@ -2,12 +2,9 @@ package com.example.app_dev_money_tracking;
 
 import static android.view.View.*;
 
-import static com.example.app_dev_money_tracking.HelperFunctions.setErrorMessage;
-
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -63,8 +60,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private OnClickListener onLoginButtonClick() {
         return v -> {
-//            startActivity(new Intent(LoginActivity.this, Home_activity.class));
-            onLoginButtonFunction(v);
+            startActivity(new Intent(LoginActivity.this, Home_activity.class));
+//            onLoginButtonFunction(v);
         };
     }
 
@@ -75,7 +72,7 @@ public class LoginActivity extends AppCompatActivity {
         String password = loginValidator.getPassword();
         if (loginValidator.isValid()) {
             Database db = new Database(LoginActivity.this);
-            UserModel userModel = db.getUser(email);
+            UserModel userModel = db.getUserByEmail(email);
             if (userModel != null) {
                 if (userModel.getPassword().equals(password)) {
 //                        Toast.makeText(LoginActivity.this, "SUCCESS", Toast.LENGTH_SHORT).show();

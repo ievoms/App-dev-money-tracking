@@ -22,8 +22,14 @@ public class Database extends SQLiteOpenHelper {
     public static final String LOGIN_TABLE = "LOGIN_TABLE";
     public static final String COLUMN_LOGIN_EMAIL = "LOGIN_EMAIL";
     public static final String COLUMN_LOGIN_PASSWORD = "LOGIN_PASSWORD";
+    public static final String COLUMN_BALANCE = "BALANCE";
 
-    private static final String CREATE_TABLE_LOGIN = "CREATE TABLE IF NOT EXISTS " + LOGIN_TABLE + " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_LOGIN_EMAIL + " TEXT, " + COLUMN_LOGIN_PASSWORD + " TEXT )";
+    private static final String CREATE_TABLE_LOGIN = "CREATE TABLE IF NOT EXISTS " + LOGIN_TABLE +
+            " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            COLUMN_LOGIN_EMAIL + " TEXT, " +
+            COLUMN_LOGIN_PASSWORD + " TEXT, " +
+            COLUMN_BALANCE + " INTEGER )";
+
     private static final String CREATE_TABLE_RECORDS = "CREATE TABLE IF NOT EXISTS " + RECORDS_TABLE +
             " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             COLUMN_AMOUNT + " INTEGER, " +
@@ -83,6 +89,7 @@ public class Database extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put(COLUMN_LOGIN_EMAIL, userModel.getEmail());
         contentValues.put(COLUMN_LOGIN_PASSWORD, userModel.getPassword());
+        contentValues.put(COLUMN_BALANCE, 0);
         long insert = db.insert(LOGIN_TABLE, null, contentValues);
         if (insert == -1) {
             return false;
@@ -91,7 +98,17 @@ public class Database extends SQLiteOpenHelper {
         }
     }
 
-    public UserModel getUser(String emailInput) {
+    public boolean updateUser(UserModel user) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COLUMN_LOGIN_EMAIL, user.getEmail());
+        contentValues.put(COLUMN_LOGIN_PASSWORD, user.getPassword());
+        contentValues.put(COLUMN_BALANCE, user.getBalance());
+        int affectedRows = db.update(LOGIN_TABLE, contentValues, "ID = " + user.getId(), null);
+        return affectedRows == 0 ? false : true;
+    }
+
+    public UserModel getUserByEmail(String emailInput) {
         SQLiteDatabase db = this.getReadableDatabase();
         String queryString = "SELECT * FROM " + LOGIN_TABLE + " WHERE " + COLUMN_LOGIN_EMAIL + " = '" + emailInput + "'";
         Cursor cursor = db.rawQuery(queryString, null);
@@ -101,7 +118,8 @@ public class Database extends SQLiteOpenHelper {
                 int id = cursor.getInt(cursor.getColumnIndex(COLUMN_ID));
                 String email = cursor.getString(cursor.getColumnIndex(COLUMN_LOGIN_EMAIL));
                 String password = cursor.getString(cursor.getColumnIndex(COLUMN_LOGIN_PASSWORD));
-                UserModel user = new UserModel(id, email, password);
+                int balance = cursor.getInt(cursor.getColumnIndex(COLUMN_BALANCE));
+                UserModel user = new UserModel(id, email, password, balance);
                 return user;
 
             } else return null;
