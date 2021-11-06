@@ -198,6 +198,9 @@ public class NewRecord extends AppCompatActivity {
                 case R.id.nav_categories:
                     startActivity(new Intent(NewRecord.this, CategoriesActivity.class));
                     break;
+                case R.id.nav_converter:
+                    startActivity(new Intent(NewRecord.this, Convert_currency_activity.class));
+                    break;
             }
             return true;
         });

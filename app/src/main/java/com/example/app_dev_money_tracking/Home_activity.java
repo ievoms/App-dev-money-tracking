@@ -115,6 +115,7 @@ public class Home_activity extends AppCompatActivity {
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+        //
 
     }
 
@@ -159,22 +160,19 @@ public class Home_activity extends AppCompatActivity {
     }
 
     private void SetupPieChart() {
-        pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener()
-    {
-        @Override
-        public void onValueSelected(Entry e, Highlight h)
-        {
-            Toast.makeText(getApplicationContext(),"",Toast.LENGTH_SHORT).show();
-            h.getDataIndex();
+        pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+            @Override
+            public void onValueSelected(Entry e, Highlight h) {
+                Toast.makeText(getApplicationContext(), "", Toast.LENGTH_SHORT).show();
+                h.getDataIndex();
 
-        }
+            }
 
-        @Override
-        public void onNothingSelected()
-        {
+            @Override
+            public void onNothingSelected() {
 
-        }
-    });
+            }
+        });
         pieChart.setDrawHoleEnabled(true);
         pieChart.setUsePercentValues(true);
         pieChart.setDrawEntryLabels(false);

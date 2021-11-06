@@ -26,6 +26,7 @@ public class CategoriesActivity extends AppCompatActivity {
 
     private ArrayList<Categories> categoriesList;
     private DrawerLayout drawer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,9 +34,9 @@ public class CategoriesActivity extends AppCompatActivity {
 
         User_settings settings = User_settings.instanciate("user1", getApplicationContext());
 
-        categoryRecycler=findViewById(R.id.recViewCategories);
+        categoryRecycler = findViewById(R.id.recViewCategories);
         categoriesList = settings.retrieveRecordList();
-        if(categoriesList == null) {
+        if (categoriesList == null) {
             categoriesList = Categories.getData(this);
         }
         adapter = new CategoriesAdapter(categoriesList, this);
@@ -65,8 +66,10 @@ public class CategoriesActivity extends AppCompatActivity {
                 case R.id.nav_categories:
                     startActivity(new Intent(CategoriesActivity.this, CategoriesActivity.class));
                     break;
+                case R.id.nav_converter:
+                    startActivity(new Intent(CategoriesActivity.this, Convert_currency_activity.class));
+                    break;
             }
-
             return true;
         });
 

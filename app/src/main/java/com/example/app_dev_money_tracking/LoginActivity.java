@@ -63,29 +63,33 @@ public class LoginActivity extends AppCompatActivity {
 
     private OnClickListener onLoginButtonClick() {
         return v -> {
-//            startActivity(new Intent(LoginActivity.this, Home_activity.class));
-            HelperFunctions.hideSoftKeyboard(LoginActivity.this, v);
-            LoginValidator loginValidator = new LoginValidator().invoke();
-            String email = loginValidator.getEmail();
-            String password = loginValidator.getPassword();
-            if (loginValidator.isValid()) {
-                LoginDatabaseHelper db = new LoginDatabaseHelper(LoginActivity.this);
-                UserModel userModel = db.getUser(email);
-                if (userModel != null) {
-                    if (userModel.getPassword().equals(password)) {
-//                        Toast.makeText(LoginActivity.this, "SUCCESS", Toast.LENGTH_SHORT).show();
-                        settings.setUserEmail(email);
-                        startActivity(new Intent(LoginActivity.this, Home_activity.class));
-                    } else {
-                        Toast.makeText(LoginActivity.this, "Password is incorrect", Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    Toast.makeText(LoginActivity.this, "User with this email does not exists", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(LoginActivity.this, Home_activity.class));
+//            onLoginButtonFunction(v);
+        };
+    }
 
+    private void onLoginButtonFunction(View v) {
+        HelperFunctions.hideSoftKeyboard(LoginActivity.this, v);
+        LoginValidator loginValidator = new LoginValidator().invoke();
+        String email = loginValidator.getEmail();
+        String password = loginValidator.getPassword();
+        if (loginValidator.isValid()) {
+            LoginDatabaseHelper db = new LoginDatabaseHelper(LoginActivity.this);
+            UserModel userModel = db.getUser(email);
+            if (userModel != null) {
+                if (userModel.getPassword().equals(password)) {
+//                        Toast.makeText(LoginActivity.this, "SUCCESS", Toast.LENGTH_SHORT).show();
+                    settings.setUserEmail(email);
+                    startActivity(new Intent(LoginActivity.this, Home_activity.class));
+                } else {
+                    Toast.makeText(LoginActivity.this, "Password is incorrect", Toast.LENGTH_SHORT).show();
                 }
+            } else {
+                Toast.makeText(LoginActivity.this, "User with this email does not exists", Toast.LENGTH_SHORT).show();
 
             }
-        };
+
+        }
     }
 
 
