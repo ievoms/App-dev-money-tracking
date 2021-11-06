@@ -69,8 +69,8 @@ public class SignUpActivity extends AppCompatActivity {
                     setErrorMessage(emailError, "Must be an email");
                 else {
                     Database db = new Database(SignUpActivity.this);
-                    if (db.getUser(email) == null) {
-                        UserModel userModel = new UserModel(-1, email, password);
+                    if (db.getUserByEmail(email) == null) {
+                        UserModel userModel = new UserModel(-1, email, password,0);
                         boolean successFullInsert = db.addUser(userModel);
                         if (successFullInsert) {
                             startActivity(new Intent(SignUpActivity.this, LoginActivity.class));

@@ -4,11 +4,13 @@ public class UserModel {
     private int id;
     private String email;
     private String password;
+    private int balance;
 
-    public UserModel(int id, String email, String password) {
+    public UserModel(int id, String email, String password, int balance) {
         this.id = id;
         this.email = email;
         this.password = password;
+        this.balance = balance;
     }
 
     public int getId() {
@@ -35,12 +37,12 @@ public class UserModel {
         this.password = password;
     }
 
-    @Override
-    public String toString() {
-        return "LoginModel{" +
-                "id=" + id +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                '}';
+    public int getBalance() {
+        return balance;
     }
+
+    public void setBalance(int balance) {
+        this.balance = balance;
+    }
+
 }

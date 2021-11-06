@@ -14,9 +14,11 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.app_dev_money_tracking.RecordTypeModel.RecordTypeKey;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
@@ -39,49 +41,51 @@ public class Home_activity extends AppCompatActivity {
     private RecyclerView Records_recycler;
     private User_settings user_settings;
     private DrawerLayout drawer;
-    private TextView balance_text;
+//    private TextView balance_text;
 
 
-//    private Button addRecordHomeButton;
+    //    private Button addRecordHomeButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Database recordsDB =new Database(this);
-        records = recordsDB.getRecords();
-        Button adjustBalance = (Button) findViewById(R.id.btn_adjust_b);
-        Button addRecordHomeButton = findViewById(R.id.add_record_home_button);
-//        addRecordHomeButton.setOnClickListener(onAddRecordButtonClick());
-
-
-//        btn_adjust_balan.setOnClickListener(new View.OnClickListener()
-//        {
-//            @Override
-//            public void onClick(View v)
-//            {
-//                if (accounts.size() > 0)
-//                {
-//                    accounts.get(0).setBalance(Double.parseDouble(balance_text.getText().toString()));
-//                    user_settings.SaveAccounts(accounts);
-//                }
-//            }
-//        });
-
-        balance_text = findViewById(R.id.txt_e_balance);
-        user_settings = User_settings.instanciate("user1", this);
-        user_settings.set_currency("EUR");
         setContentView(R.layout.activity_home);
+
+
+        user_settings = User_settings.instanciate("user1", this);
+        Database db = new Database(this);
+
+        records = db.getRecords();
+        UserModel user = db.getUserByEmail(user_settings.getUserEmail());
+        int balance = user.getBalance();
+        EditText balanceText = findViewById(R.id.homeBalanceDisplay);
+        Button adjustBalance = findViewById(R.id.btn_adjust_b);
+        TextView calculatedBalance = findViewById(R.id.calculatedBalance);
+        Button addRecordHomeButton = findViewById(R.id.add_record_home_button);
+        addRecordHomeButton.setOnClickListener(onAddRecordButtonClick());
+
+
+        adjustBalance.setOnClickListener(v -> {
+            HelperFunctions.hideSoftKeyboard(Home_activity.this, v);
+            user.setBalance(Integer.parseInt(balanceText.getText().toString()));
+            boolean inserted = db.updateUser(user);
+            if (inserted) {
+                Toast.makeText(Home_activity.this, "Balance updated", Toast.LENGTH_SHORT).show();
+                calculatedBalance.setText(String.valueOf(calculateCurrentBalance(records, user.getBalance())));
+            } else {
+                Toast.makeText(Home_activity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+            }
+
+        });
+
+        balanceText.setText(String.valueOf(balance));
+        calculatedBalance.setText(String.valueOf(calculateCurrentBalance(records, balance)));
+
+        user_settings.set_currency("EUR");
+
         pieChart = findViewById(R.id.Piechart_view);
         Records_recycler = findViewById(R.id.Rec_view_expanses);
         SetupPieChart();
         loadData();
-
-//        records = new ArrayList<>();
-        accounts = user_settings.retrieveAccounts();
-        if (accounts == null) {
-            accounts = new ArrayList<>();
-            setAccountInfo();
-        }
-//        set_record_data();
 
         setAdapters();
 
@@ -95,7 +99,6 @@ public class Home_activity extends AppCompatActivity {
         navigationView.setCheckedItem(R.id.nav_home);
         View header = navigationView.getHeaderView(0);
         TextView emailDisplay = header.findViewById(R.id.userEmailDisplay);
-        User_settings user_settings = User_settings.instanciate("user1", this);
         emailDisplay.setText(user_settings.getUserEmail());
         navigationView.setNavigationItemSelectedListener(item -> {
             switch (item.getItemId()) {
@@ -123,30 +126,28 @@ public class Home_activity extends AppCompatActivity {
         //
 
     }
+
+    private int calculateCurrentBalance(List<RecordsModel> records, int balance) {
+        int expences = 0;
+        int intakes = 0;
+        for (RecordsModel record : records) {
+            if (record.getRecordType().equals(RecordTypeKey.E)) {
+                expences += record.getAmount();
+            } else {
+                intakes += record.getAmount();
+            }
+        }
+        return balance - expences + intakes;
+    }
+
     private View.OnClickListener onAddRecordButtonClick() {
         return v -> startActivity(new Intent(Home_activity.this, NewRecord.class));
     }
 
-    @Override
-    public void onBackPressed() {
-
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }
 
     public void On_show_more_click(View view) {
         Toast.makeText(this, "Not Implemented yet", Toast.LENGTH_SHORT).show();
     }
-
-//    private void set_record_data() {
-//        records.clear();
-//        records.add(new Exp_inc_record(new Date(), 50.0, accounts.get(0), 'E', "Medical"));
-//        records.add(new Exp_inc_record(new Date(), 8000.5, accounts.get(0), 'E', "Food"));
-//        records.add(new Exp_inc_record(new Date(), 80.53, accounts.get(0), 'E', "Entertainment"));
-//    }
 
     private void setAdapters() {
         Expanse_list_adapter adapter_exp = new Expanse_list_adapter(records);
@@ -156,11 +157,6 @@ public class Home_activity extends AppCompatActivity {
         Records_recycler.setAdapter(adapter_exp);
     }
 
-    private void setAccountInfo() {
-        accounts.clear();
-        accounts.add(new Account(1000.2, "Cash"));
-        user_settings.SaveAccounts(accounts);
-    }
 
     private void SetupPieChart() {
         pieChart.setDrawHoleEnabled(true);
@@ -221,6 +217,16 @@ public class Home_activity extends AppCompatActivity {
         pieChart.setData(data);
         pieChart.invalidate();
         pieChart.animateY(1400, Easing.EaseInOutQuad);
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
     }
 
 }
