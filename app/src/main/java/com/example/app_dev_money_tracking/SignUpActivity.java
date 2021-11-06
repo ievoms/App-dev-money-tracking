@@ -68,7 +68,7 @@ public class SignUpActivity extends AppCompatActivity {
                 } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches())
                     setErrorMessage(emailError, "Must be an email");
                 else {
-                    LoginDatabaseHelper db = new LoginDatabaseHelper(SignUpActivity.this);
+                    Database db = new Database(SignUpActivity.this);
                     if (db.getUser(email) == null) {
                         UserModel userModel = new UserModel(-1, email, password);
                         boolean successFullInsert = db.addUser(userModel);

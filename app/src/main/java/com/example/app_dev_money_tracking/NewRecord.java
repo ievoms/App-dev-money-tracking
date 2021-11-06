@@ -175,7 +175,7 @@ public class NewRecord extends AppCompatActivity {
             String date = formater.format(todayDate);
             String amountString = editTxtAmount.getText().toString();
             if (!amountString.equals("")  || amountString.equals(null)) {
-                RecordsDatabaseHelper recordsDB = new RecordsDatabaseHelper(NewRecord.this);
+                Database recordsDB = new Database(NewRecord.this);
                 RecordsModel newRecord = new RecordsModel(-1, Integer.parseInt(amountString), date, selectedCategoryId, selectedRecordType);
                 boolean successfullInsert = recordsDB.addRecord(newRecord);
                 if (successfullInsert) {

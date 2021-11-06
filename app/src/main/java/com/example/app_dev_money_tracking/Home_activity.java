@@ -46,7 +46,7 @@ public class Home_activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        RecordsDatabaseHelper recordsDB =new RecordsDatabaseHelper(this);
+        Database recordsDB =new Database(this);
         records = recordsDB.getRecords();
         Button adjustBalance = (Button) findViewById(R.id.btn_adjust_b);
         Button addRecordHomeButton = findViewById(R.id.add_record_home_button);
