@@ -1,10 +1,8 @@
 package com.example.app_dev_money_tracking;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.text.PrecomputedTextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -13,9 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -24,42 +20,39 @@ import android.widget.Toast;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
-import com.github.mikephil.charting.highlight.Highlight;
-import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.material.navigation.NavigationView;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
-import java.util.Date;
-
-import javax.xml.transform.Result;
+import java.util.List;
 
 public class Home_activity extends AppCompatActivity {
-
     private PieChart pieChart;
+
     private ArrayList<Account> accounts;
-    private ArrayList<Exp_inc_record> records;
+    private List<RecordsModel> records;
     private RecyclerView Accounts_recycler;
     private RecyclerView Records_recycler;
     private User_settings user_settings;
     private DrawerLayout drawer;
     private TextView balance_text;
-    private Button btn_adjust_balan;
 
+
+//    private Button addRecordHomeButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        RecordsDatabaseHelper recordsDB =new RecordsDatabaseHelper(this);
+        records = recordsDB.getRecords();
+        Button adjustBalance = (Button) findViewById(R.id.btn_adjust_b);
+        Button addRecordHomeButton = findViewById(R.id.add_record_home_button);
+//        addRecordHomeButton.setOnClickListener(onAddRecordButtonClick());
 
-        btn_adjust_balan = (Button) findViewById(R.id.btn_adjust_b);
+
 //        btn_adjust_balan.setOnClickListener(new View.OnClickListener()
 //        {
 //            @Override
@@ -82,13 +75,14 @@ public class Home_activity extends AppCompatActivity {
         SetupPieChart();
         loadData();
 
-        records = new ArrayList<>();
+//        records = new ArrayList<>();
         accounts = user_settings.retrieveAccounts();
         if (accounts == null) {
             accounts = new ArrayList<>();
             setAccountInfo();
         }
-        set_record_data();
+//        set_record_data();
+
         setAdapters();
 
 
@@ -129,6 +123,9 @@ public class Home_activity extends AppCompatActivity {
         //
 
     }
+    private View.OnClickListener onAddRecordButtonClick() {
+        return v -> startActivity(new Intent(Home_activity.this, NewRecord.class));
+    }
 
     @Override
     public void onBackPressed() {
@@ -144,17 +141,12 @@ public class Home_activity extends AppCompatActivity {
         Toast.makeText(this, "Not Implemented yet", Toast.LENGTH_SHORT).show();
     }
 
-    public void On_add_record_click(View view) {
-        Intent intent = new Intent(Home_activity.this, NewRecord.class);
-        startActivity(intent);
-    }
-
-    private void set_record_data() {
-        records.clear();
-        records.add(new Exp_inc_record(new Date(), 50.0, accounts.get(0), 'E', "Medical"));
-        records.add(new Exp_inc_record(new Date(), 8000.5, accounts.get(0), 'E', "Food"));
-        records.add(new Exp_inc_record(new Date(), 80.53, accounts.get(0), 'E', "Entertainment"));
-    }
+//    private void set_record_data() {
+//        records.clear();
+//        records.add(new Exp_inc_record(new Date(), 50.0, accounts.get(0), 'E', "Medical"));
+//        records.add(new Exp_inc_record(new Date(), 8000.5, accounts.get(0), 'E', "Food"));
+//        records.add(new Exp_inc_record(new Date(), 80.53, accounts.get(0), 'E', "Entertainment"));
+//    }
 
     private void setAdapters() {
         Expanse_list_adapter adapter_exp = new Expanse_list_adapter(records);

@@ -18,12 +18,13 @@
         app:srcCompat="@android:drawable/presence_away"
         tools:srcCompat="@tools:sample/avatars" />
 
+
     <TextView
         android:id="@+id/Txt_home_cat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="8dp"
         android:text="Bar cafe"
         android:textColor="#FFFFFF"
         android:textSize="16sp"
@@ -33,41 +34,31 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/Txt_home_acc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:text="Cash"
-        android:textColor="#C6A9A9"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/Txt_home_cat"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/Txt_home_cat" />
-
-    <TextView
         android:id="@+id/Txt_home_record_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginBottom="8dp"
         android:text="Today"
         android:textColor="#C6A9A9"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/Txt_home_amount"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/Txt_home_amount" />
+        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/Txt_home_cat"
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/Txt_home_amount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_width="62dp"
+        android:layout_height="29dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="68dp"
         android:shadowColor="#FFFFFF"
         android:text="-40€"
         android:textColor="#F44336"
-        android:textSize="16sp"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
@@ -78,5 +69,5 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="239dp" />
+        app:layout_constraintGuide_begin="299dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

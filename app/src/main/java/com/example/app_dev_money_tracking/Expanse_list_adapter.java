@@ -1,6 +1,9 @@
 package com.example.app_dev_money_tracking;
 
+import static com.example.app_dev_money_tracking.RecordTypeModel.*;
+
 import android.content.Context;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
@@ -22,33 +25,31 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.BreakIterator;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import javax.net.ssl.HttpsURLConnection;
 
-class Expanse_list_adapter extends RecyclerView.Adapter<Expanse_list_adapter.MyViewHolder>
-{
-    private ArrayList<Exp_inc_record> record_list;
+class Expanse_list_adapter extends RecyclerView.Adapter<Expanse_list_adapter.MyViewHolder> {
+    private List<RecordsModel> record_list;
 
-    public Expanse_list_adapter(ArrayList<Exp_inc_record> records)
-    {
+    public Expanse_list_adapter(List<RecordsModel> records) {
         this.record_list = records;
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder
-    {
+    public class MyViewHolder extends RecyclerView.ViewHolder {
+        public BreakIterator RecordType;
         private TextView Category;
         private TextView Account_name;
         private TextView Amount;
         private TextView Date;
 
-        public MyViewHolder(final View view)
-        {
+        public MyViewHolder(final View view) {
             super(view);
             Category = view.findViewById(R.id.Txt_home_cat);
-            Account_name = view.findViewById(R.id.Txt_home_acc);
             Amount = view.findViewById(R.id.Txt_home_amount);
             Date = view.findViewById(R.id.Txt_home_record_date);
 
@@ -58,34 +59,34 @@ class Expanse_list_adapter extends RecyclerView.Adapter<Expanse_list_adapter.MyV
 
     @NonNull
     @Override
-    public Expanse_list_adapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
-    {
+    public Expanse_list_adapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.home_expanses_adp, parent, false);
         return new MyViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull Expanse_list_adapter.MyViewHolder holder, int position)
-    {
-        String category = record_list.get(position).getCategory();
-        Account account = record_list.get(position).getAccount();
-        Date date = record_list.get(position).getDate();
+    public void onBindViewHolder(@NonNull Expanse_list_adapter.MyViewHolder holder, int position) {
+        int categoryId = record_list.get(position).getCategoryId();
+        String date = record_list.get(position).getDate();
         double amount = record_list.get(position).getAmount();
+        RecordTypeKey recordType = record_list.get(position).getRecordType();
 
-        holder.Date.setText(DateFormat.format("EE, MM d, yyyy ", date.getTime()));
+        holder.Date.setText(date);
         holder.Amount.setText(amount + "€");
-        holder.Account_name.setText(account.getAccountName());
-        holder.Category.setText(category);
+        if (recordType.equals(RecordTypeKey.E)) {
+            holder.Amount.setTextColor(Color.RED);
+        } else {
+            holder.Amount.setTextColor(Color.GREEN);
+        }
+//        holder.Category.setText();
     }
 
     @Override
-    public int getItemCount()
-    {
-        return record_list.size();
+    public int getItemCount() {
+        return record_list == null ? 0 : record_list.size();
     }
 
-    static class Currency_conversion_data
-    {
+    static class Currency_conversion_data {
         private static final String TAG = Currency_conversion_data.class.getSimpleName();
         private double res;
         String codeFrom;
@@ -95,26 +96,22 @@ class Expanse_list_adapter extends RecyclerView.Adapter<Expanse_list_adapter.MyV
         LoadingDialog ldialog;
         Context ctx;
 
-        private class get_data_async extends AsyncTask<String, String, String>
-        {
+        private class get_data_async extends AsyncTask<String, String, String> {
 
             @Override
-            protected String doInBackground(String... strings)
-            {
+            protected String doInBackground(String... strings) {
                 String String2Json = Currency_conversion_data.http_call(url_to_execute);
                 return String2Json;
             }
         }
 
-        public Currency_conversion_data( Context ctx )
-        {
+        public Currency_conversion_data(Context ctx) {
             this.ctx = ctx;
             ldialog = new LoadingDialog(ctx);
             ldialog.setCanceledOnTouchOutside(false);
         }
 
-        public double convert(String codeFrom, String codeTo, double amount)
-        {
+        public double convert(String codeFrom, String codeTo, double amount) {
             ldialog.show();
             this.codeTo = codeTo;
             this.codeFrom = codeFrom;
@@ -143,8 +140,7 @@ class Expanse_list_adapter extends RecyclerView.Adapter<Expanse_list_adapter.MyV
             return res;
         }
 
-        public static String http_call(String api_url)
-        {
+        public static String http_call(String api_url) {
             String result = null;
             try {
                 URL url = new URL(api_url);
@@ -163,8 +159,7 @@ class Expanse_list_adapter extends RecyclerView.Adapter<Expanse_list_adapter.MyV
             return result;
         }
 
-        private static String stream_toString(InputStream inputStream)
-        {
+        private static String stream_toString(InputStream inputStream) {
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
             StringBuilder builder = new StringBuilder();
 

@@ -15,10 +15,9 @@ public class LoginDatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_LOGIN_EMAIL = "LOGIN_EMAIL";
     public static final String COLUMN_LOGIN_PASSWORD = "LOGIN_PASSWORD";
     public static final String COLUMN_ID = "ID";
-    private ContentValues contentValues;
 
     public LoginDatabaseHelper(@Nullable Context context) {
-        super(context, "login.db", null, 1);
+        super(context, "moneyApp.db", null, 1);
     }
 
     @Override
