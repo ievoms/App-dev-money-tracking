@@ -10,7 +10,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.google.android.material.navigation.NavigationView;
 
@@ -24,6 +26,7 @@ public class CategoriesActivity extends AppCompatActivity {
 
     private ArrayList<Categories> categoriesList;
     private DrawerLayout drawer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,9 +34,9 @@ public class CategoriesActivity extends AppCompatActivity {
 
         User_settings settings = User_settings.instanciate("user1", getApplicationContext());
 
-        categoryRecycler=findViewById(R.id.recViewCategories);
+        categoryRecycler = findViewById(R.id.recViewCategories);
         categoriesList = settings.retrieveRecordList();
-        if(categoriesList == null) {
+        if (categoriesList == null) {
             categoriesList = Categories.getData(this);
         }
         adapter = new CategoriesAdapter(categoriesList, this);
@@ -48,6 +51,10 @@ public class CategoriesActivity extends AppCompatActivity {
         drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setCheckedItem(R.id.nav_categories);
+        View header = navigationView.getHeaderView(0);
+        TextView emailDisplay = header.findViewById(R.id.userEmailDisplay);
+        User_settings user_settings = User_settings.instanciate("user1", this);
+        emailDisplay.setText(user_settings.getUserEmail());
         navigationView.setNavigationItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.nav_home:
@@ -59,8 +66,10 @@ public class CategoriesActivity extends AppCompatActivity {
                 case R.id.nav_categories:
                     startActivity(new Intent(CategoriesActivity.this, CategoriesActivity.class));
                     break;
+                case R.id.nav_converter:
+                    startActivity(new Intent(CategoriesActivity.this, Convert_currency_activity.class));
+                    break;
             }
-
             return true;
         });
 

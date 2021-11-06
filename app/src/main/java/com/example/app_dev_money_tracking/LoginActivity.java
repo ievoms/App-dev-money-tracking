@@ -7,6 +7,7 @@ import static com.example.app_dev_money_tracking.HelperFunctions.setErrorMessage
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -22,6 +23,7 @@ public class LoginActivity extends AppCompatActivity {
 
     EditText emailInput, passwordInput;
     TextView emailError, passwordError;
+    private User_settings settings;
 
 
     @Override
@@ -46,6 +48,9 @@ public class LoginActivity extends AppCompatActivity {
         ClearErrorMessage(emailInput, emailError);
         ClearErrorMessage(passwordInput, passwordError);
 
+        settings = User_settings.instanciate("user1", getApplicationContext());
+
+
     }
 
     private OnClickListener onSignupButtonClick() {
@@ -58,19 +63,33 @@ public class LoginActivity extends AppCompatActivity {
 
     private OnClickListener onLoginButtonClick() {
         return v -> {
-            HelperFunctions.hideSoftKeyboard(LoginActivity.this, v);
-            LoginValidator loginValidator = new LoginValidator().invoke();
-            String email = loginValidator.getEmail();
-            String password = loginValidator.getPassword();
-//            if (loginValidator.isValid()) {
-
-//                if (!email.equals("a@a.a") || !password.equals("a")) {
-//                    Toast.makeText(LoginActivity.this, "Email or password is incorrect", Toast.LENGTH_SHORT).show();
-//                } else {
-                  startActivity(new Intent(LoginActivity.this, Home_activity.class));
-//                }
-//            }
+            startActivity(new Intent(LoginActivity.this, Home_activity.class));
+//            onLoginButtonFunction(v);
         };
+    }
+
+    private void onLoginButtonFunction(View v) {
+        HelperFunctions.hideSoftKeyboard(LoginActivity.this, v);
+        LoginValidator loginValidator = new LoginValidator().invoke();
+        String email = loginValidator.getEmail();
+        String password = loginValidator.getPassword();
+        if (loginValidator.isValid()) {
+            LoginDatabaseHelper db = new LoginDatabaseHelper(LoginActivity.this);
+            UserModel userModel = db.getUser(email);
+            if (userModel != null) {
+                if (userModel.getPassword().equals(password)) {
+//                        Toast.makeText(LoginActivity.this, "SUCCESS", Toast.LENGTH_SHORT).show();
+                    settings.setUserEmail(email);
+                    startActivity(new Intent(LoginActivity.this, Home_activity.class));
+                } else {
+                    Toast.makeText(LoginActivity.this, "Password is incorrect", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Toast.makeText(LoginActivity.this, "User with this email does not exists", Toast.LENGTH_SHORT).show();
+
+            }
+
+        }
     }
 
 
@@ -122,7 +141,7 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         private boolean isValid() {
-            return !password.isEmpty() && !email.isEmpty();
+            return !password.isEmpty() && !email.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches();
         }
     }
 }

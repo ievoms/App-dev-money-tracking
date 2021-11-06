@@ -68,9 +68,21 @@ public class SignUpActivity extends AppCompatActivity {
                 } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches())
                     setErrorMessage(emailError, "Must be an email");
                 else {
-                    startActivity(new Intent(SignUpActivity.this, Home_activity.class));
+                    LoginDatabaseHelper db = new LoginDatabaseHelper(SignUpActivity.this);
+                    if (db.getUser(email) == null) {
+                        UserModel userModel = new UserModel(-1, email, password);
+                        boolean successFullInsert = db.addUser(userModel);
+                        if (successFullInsert) {
+                            startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
+                        } else {
+                            Toast.makeText(SignUpActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Toast.makeText(SignUpActivity.this, "User with this email already exists", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
+
         };
     }
 
