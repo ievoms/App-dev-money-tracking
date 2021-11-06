@@ -1,5 +1,7 @@
 package com.example.app_dev_money_tracking;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;

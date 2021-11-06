@@ -34,8 +34,14 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.material.navigation.NavigationView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Date;
+
+import javax.xml.transform.Result;
 
 public class Home_activity extends AppCompatActivity {
 
@@ -112,6 +118,7 @@ public class Home_activity extends AppCompatActivity {
                     startActivity(new Intent(Home_activity.this, Convert_currency_activity.class));
                     break;
             }
+
             return true;
         });
 
@@ -164,19 +171,6 @@ public class Home_activity extends AppCompatActivity {
     }
 
     private void SetupPieChart() {
-        pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
-            @Override
-            public void onValueSelected(Entry e, Highlight h) {
-                Toast.makeText(getApplicationContext(), "", Toast.LENGTH_SHORT).show();
-                h.getDataIndex();
-
-            }
-
-            @Override
-            public void onNothingSelected() {
-
-            }
-        });
         pieChart.setDrawHoleEnabled(true);
         pieChart.setUsePercentValues(true);
         pieChart.setDrawEntryLabels(false);
