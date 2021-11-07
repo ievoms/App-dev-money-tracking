@@ -146,13 +146,13 @@ public class Home_activity extends AppCompatActivity {
                 double amount =record.getAmount();
                 if (record.getRecordType().equals(RecordTypeKey.E)) {
                     if (!user.getCurrency().equals(record.getCurrency())) {
-                        Expanse_list_adapter.Currency_conversion_data curr = new Expanse_list_adapter.Currency_conversion_data(Home_activity.this);
+                        Currency_conversion_data curr = new Currency_conversion_data(Home_activity.this);
                         amount = Double.parseDouble(formatter.format(curr.convert(record.getCurrency(), user.getCurrency(), amount)));
                     }
                     expences += amount;
                 } else {
                     if (!user.getCurrency().equals(record.getCurrency())) {
-                        Expanse_list_adapter.Currency_conversion_data curr = new Expanse_list_adapter.Currency_conversion_data(Home_activity.this);
+                        Currency_conversion_data curr = new Currency_conversion_data(Home_activity.this);
                         amount = Double.parseDouble(formatter.format(curr.convert(record.getCurrency(), user.getCurrency(), amount)));
                     }
                     intakes += amount;
