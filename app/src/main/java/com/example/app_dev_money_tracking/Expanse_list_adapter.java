@@ -26,7 +26,10 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.BreakIterator;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Currency;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -35,9 +38,11 @@ import javax.net.ssl.HttpsURLConnection;
 
 class Expanse_list_adapter extends RecyclerView.Adapter<Expanse_list_adapter.MyViewHolder> {
     private List<RecordsModel> record_list;
+    private Context context;
 
-    public Expanse_list_adapter(List<RecordsModel> records) {
+    public Expanse_list_adapter(Context context, List<RecordsModel> records) {
         this.record_list = records;
+        this.context = context;
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -66,13 +71,26 @@ class Expanse_list_adapter extends RecyclerView.Adapter<Expanse_list_adapter.MyV
 
     @Override
     public void onBindViewHolder(@NonNull Expanse_list_adapter.MyViewHolder holder, int position) {
+        User_settings user_settings = User_settings.instanciate("user1", context);
+        Database db = new Database(context);
+        UserModel user = db.getUserByEmail(user_settings.getUserEmail());
+        String currency = record_list.get(position).getCurrency();
+
+        Currency c = Currency.getInstance(user.getCurrency());
+        String currencySymbol = c.getSymbol();
+
         int categoryId = record_list.get(position).getCategoryId();
         String date = record_list.get(position).getDate();
         double amount = record_list.get(position).getAmount();
+        NumberFormat formatter = new DecimalFormat("#0.00");
+        if (!user.getCurrency().equals(currency.toString())) {
+            Currency_conversion_data curr = new Currency_conversion_data(context);
+            amount = Double.parseDouble(formatter.format(curr.convert(currency.toString(), user.getCurrency(), amount)));
+        }
         RecordTypeKey recordType = record_list.get(position).getRecordType();
 
         holder.Date.setText(date);
-        holder.Amount.setText(amount + "€");
+        holder.Amount.setText(amount + currencySymbol);
         if (recordType.equals(RecordTypeKey.E)) {
             holder.Amount.setTextColor(Color.RED);
         } else {

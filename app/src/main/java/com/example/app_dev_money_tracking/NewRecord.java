@@ -49,7 +49,7 @@ public class NewRecord extends AppCompatActivity {
     private TextView txtAccountChoose, txtChosenAccount;
     private Button btnIncome, btnExpense, btnAddRecord, btn_open_category_input;
     private EditText editTxtAmount;
-    private TextView categoryName,error;
+    private TextView categoryName, error;
 
     private LinearLayout category_text_linear;
 
@@ -58,8 +58,8 @@ public class NewRecord extends AppCompatActivity {
 
     private ArrayList<Categories> categoriesList;
     private DrawerLayout drawer;
-    private int selectedCategoryId=0;
-    private RecordTypeKey selectedRecordType= RecordTypeKey.E;
+    private int selectedCategoryId = 0;
+    private RecordTypeKey selectedRecordType = RecordTypeKey.E;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -83,7 +83,9 @@ public class NewRecord extends AppCompatActivity {
         txtChosenCategory = (TextView) findViewById(R.id.chosenCategory);
         category_text_linear = (LinearLayout) findViewById(R.id.text_layout_category_item);
         categoryName = (TextView) findViewById(R.id.categories_item_name);
-        error= findViewById(R.id.new_record_error);
+        TextView currencyDisplay = findViewById(R.id.recordCurrency);
+        error = findViewById(R.id.new_record_error);
+        currencyDisplay.setText(user.getCurrency());
 
 
         btnExpense.setBackgroundColor(Color.rgb(153, 50, 204));
@@ -155,7 +157,7 @@ public class NewRecord extends AppCompatActivity {
             txtOperationRecord.setText("-");
             txtCategoryChoose.setText("Category");
             txtChosenCategory.setText("Select Category Below");
-            selectedRecordType=RecordTypeKey.E;
+            selectedRecordType = RecordTypeKey.E;
 //              txtAccountChoose.setText("Account");
         });
 //        ImgViewDone.setOnClickListener(view -> startActivity(new Intent(NewRecord.this, Home_activity.class)));
@@ -167,7 +169,7 @@ public class NewRecord extends AppCompatActivity {
             txtOperationRecord.setText("+");
             txtCategoryChoose.setText("Category");
             txtChosenCategory.setText("Select Category Below");
-            selectedRecordType=RecordTypeKey.I;
+            selectedRecordType = RecordTypeKey.I;
 //                txtAccountChoose.setText("Account");
         });
         btnAddRecord.setOnClickListener(v -> {
@@ -176,16 +178,16 @@ public class NewRecord extends AppCompatActivity {
             Date todayDate = new Date();
             String date = formater.format(todayDate);
             String amountString = editTxtAmount.getText().toString();
-            if (!amountString.equals("")  || amountString.equals(null)) {
+            if (!amountString.equals("") || amountString.equals(null)) {
                 Database recordsDB = new Database(NewRecord.this);
-                RecordsModel newRecord = new RecordsModel(-1, Integer.parseInt(amountString), date, selectedCategoryId, selectedRecordType);
+                RecordsModel newRecord = new RecordsModel(-1, Integer.parseInt(amountString), date, selectedCategoryId, selectedRecordType, user.getCurrency());
                 boolean successfullInsert = recordsDB.addRecord(newRecord);
                 if (successfullInsert) {
                     startActivity(new Intent(NewRecord.this, Home_activity.class));
                 } else {
                     Toast.makeText(NewRecord.this, "Something went wrong", Toast.LENGTH_SHORT).show();
                 }
-            }else{
+            } else {
                 error.setText("Amount field can not be blank");
             }
 

@@ -26,20 +26,23 @@ public class Database extends SQLiteOpenHelper {
     public static final String COLUMN_LOGIN_PASSWORD = "LOGIN_PASSWORD";
     public static final String COLUMN_BALANCE = "BALANCE";
     public static final String COLUMN_ADMIN = "ADMIN";
+    public static final String COLUMN_CURRENCY = "CURRENCY";
 
     private static final String CREATE_TABLE_LOGIN = "CREATE TABLE IF NOT EXISTS " + LOGIN_TABLE +
             " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             COLUMN_LOGIN_EMAIL + " TEXT, " +
             COLUMN_LOGIN_PASSWORD + " TEXT, " +
             COLUMN_ADMIN + " INTEGER DEFAULT 0, " +
-            COLUMN_BALANCE + " INTEGER )";
+            COLUMN_BALANCE + " INTEGER, " +
+            COLUMN_CURRENCY + " TEXT )";
 
     private static final String CREATE_TABLE_RECORDS = "CREATE TABLE IF NOT EXISTS " + RECORDS_TABLE +
             " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             COLUMN_AMOUNT + " INTEGER, " +
             COLUMN_DATE + " TEXT, " +
             COLUMN_CATEGORY_ID + " INTEGER, " +
-            COLUMN_RECORD_TYPE + " INTEGER)";
+            COLUMN_RECORD_TYPE + " INTEGER, " +
+            COLUMN_CURRENCY + " TEXT )";
 
     public Database(@Nullable Context context) {
         super(context, "moneyApp.db", null, 1);
@@ -58,6 +61,7 @@ public class Database extends SQLiteOpenHelper {
         contentValues.put(COLUMN_DATE, String.valueOf(record.getDate()));
         contentValues.put(COLUMN_CATEGORY_ID, record.getCategoryId());
         contentValues.put(COLUMN_RECORD_TYPE, String.valueOf(record.getRecordType()));
+        contentValues.put(COLUMN_CURRENCY, String.valueOf(record.getCurrency()));
         long insert = db.insert(RECORDS_TABLE, null, contentValues);
         if (insert == -1) {
             return false;
@@ -79,7 +83,8 @@ public class Database extends SQLiteOpenHelper {
                 int categoryId = cursor.getInt(3);
                 String recordType = cursor.getString(4);
                 RecordTypeKey recordEnum = RecordTypeKey.valueOf(recordType);
-                RecordsModel newRecord = new RecordsModel(recordsId, amount, date, categoryId, recordEnum);
+                String currency = cursor.getString(5);
+                RecordsModel newRecord = new RecordsModel(recordsId, amount, date, categoryId, recordEnum, currency);
                 records.add(newRecord);
             } while (cursor.moveToNext());
         } else return null;
@@ -94,6 +99,8 @@ public class Database extends SQLiteOpenHelper {
         contentValues.put(COLUMN_LOGIN_EMAIL, userModel.getEmail());
         contentValues.put(COLUMN_LOGIN_PASSWORD, userModel.getPassword());
         contentValues.put(COLUMN_BALANCE, 0);
+        contentValues.put(COLUMN_ADMIN, 0);
+        contentValues.put(COLUMN_CURRENCY,userModel.getCurrency());
         long insert = db.insert(LOGIN_TABLE, null, contentValues);
         if (insert == -1) {
             return false;
@@ -109,6 +116,7 @@ public class Database extends SQLiteOpenHelper {
         contentValues.put(COLUMN_LOGIN_PASSWORD, user.getPassword());
         contentValues.put(COLUMN_BALANCE, user.getBalance());
         contentValues.put(COLUMN_ADMIN, user.getAdmin());
+        contentValues.put(COLUMN_CURRENCY, user.getCurrency());
         int affectedRows = db.update(LOGIN_TABLE, contentValues, "ID = " + user.getId(), null);
         return affectedRows == 0 ? false : true;
     }
@@ -125,9 +133,9 @@ public class Database extends SQLiteOpenHelper {
                 String password = cursor.getString(cursor.getColumnIndex(COLUMN_LOGIN_PASSWORD));
                 int balance = cursor.getInt(cursor.getColumnIndex(COLUMN_BALANCE));
                 int admin = cursor.getInt(cursor.getColumnIndex(COLUMN_ADMIN));
-                UserModel user = new UserModel(id, email, password, balance,admin);
+                String currency = cursor.getString(cursor.getColumnIndex(COLUMN_CURRENCY));
+                UserModel user = new UserModel(id, email, password, balance,admin, currency);
                 return user;
-
             } else return null;
         } else return null;
     }

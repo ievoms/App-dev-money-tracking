@@ -3,6 +3,7 @@ package com.example.app_dev_money_tracking;
 import androidx.appcompat.app.AppCompatActivity;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -21,31 +22,66 @@ public class Convert_currency_activity extends AppCompatActivity
 {
     ArrayAdapter<String> currencies;
     Spinner cur_from;
-    Spinner cur_to;
-    Button Btn_convert;
+    Spinner cur_to, changeCurrencySelect;
+    Button Btn_convert, changeCurrencyButton;
     TextView Txt_cur_from;
     TextView Txt_cur_to;
     private DrawerLayout drawer;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_convert_currency);
 
         cur_from = findViewById(R.id.DD_cur_from);
         cur_to = findViewById(R.id.DD_cur_to);
+        changeCurrencySelect = findViewById(R.id.change_user_currency_spinner);
+        changeCurrencyButton = findViewById(R.id.change_user_currency_button);
         Btn_convert = findViewById(R.id.Btn_convert);
         Txt_cur_from = findViewById(R.id.Txt_conv_from);
         Txt_cur_to = findViewById(R.id.Txt_conv_to);
 
         currencies = new ArrayAdapter<>(Convert_currency_activity.this,
-                                        android.R.layout.simple_list_item_1,
-                                        getResources().getStringArray(R.array.currency_names));
+                android.R.layout.simple_list_item_1,
+                getResources().getStringArray(R.array.currency_names));
 
         currencies.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         cur_from.setAdapter(currencies);
         cur_to.setAdapter(currencies);
+        changeCurrencySelect.setAdapter(currencies);
+
+        User_settings settings = User_settings.instanciate("user1", getApplicationContext());
+        Database db = new Database(this);
+        UserModel user = db.getUserByEmail(settings.getUserEmail());
+
+        // does not work, need to fix
+        if (user.getCurrency() != null) {
+            int spinnerPosition = currencies.getPosition(user.getCurrency());
+            changeCurrencySelect.setSelection(spinnerPosition);
+        }
+
+
+        Btn_convert.setOnClickListener(v -> {
+            String[] currency_codes = getResources().getStringArray(R.array.currency);
+            String value_from = currency_codes[cur_from.getSelectedItemPosition()];
+            String value_to = currency_codes[cur_to.getSelectedItemPosition()];
+            ;
+            Expanse_list_adapter.Currency_conversion_data curr = new Expanse_list_adapter.Currency_conversion_data(Convert_currency_activity.this);
+            Double amount = Double.parseDouble(Txt_cur_from.getText().toString());
+            double converted = curr.convert(value_from, value_to, amount);
+            Txt_cur_to.setText(converted + "");
+        });
+
+        changeCurrencyButton.setOnClickListener(v -> {
+            String[] currency_codes = getResources().getStringArray(R.array.currency);
+            user.setCurrency(currency_codes[changeCurrencySelect.getSelectedItemPosition()]);
+            boolean updated = db.updateUser(user);
+            if (updated) {
+                Toast.makeText(Convert_currency_activity.this, "Currency updated", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(Convert_currency_activity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         // Menu navigation
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -55,9 +91,6 @@ public class Convert_currency_activity extends AppCompatActivity
         navigationView.setCheckedItem(R.id.nav_converter);
         View header = navigationView.getHeaderView(0);
         TextView emailDisplay = header.findViewById(R.id.userEmailDisplay);
-        User_settings settings = User_settings.instanciate("user1", getApplicationContext());
-        Database db = new Database(this);
-        UserModel user = db.getUserByEmail(settings.getUserEmail());
         emailDisplay.setText(settings.getUserEmail());
         navigationView.setNavigationItemSelectedListener(item -> {
             switch (item.getItemId()) {
@@ -88,16 +121,7 @@ public class Convert_currency_activity extends AppCompatActivity
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-
-        Btn_convert.setOnClickListener(v -> {
-            String[] currency_codes = getResources().getStringArray(R.array.currency);
-            String value_from = currency_codes[cur_from.getSelectedItemPosition()];
-            String value_to = currency_codes[cur_to.getSelectedItemPosition()];;
-            Currency_conversion_data curr = new Currency_conversion_data(Convert_currency_activity.this);
-            Double amount = Double.parseDouble(Txt_cur_from.getText().toString());
-            double converted = curr.convert(value_from, value_to, amount);
-            Txt_cur_to.setText(converted + "");
-        });
     }
+
 
 }
