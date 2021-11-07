@@ -1,5 +1,14 @@
 package com.example.app_dev_money_tracking;
 
+import android.content.Intent;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -9,24 +18,17 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
-import android.graphics.Color;
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import com.example.app_dev_money_tracking.RecordTypeModel.RecordTypeKey;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.material.navigation.NavigationView;
 
@@ -35,6 +37,8 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Currency;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class Home_activity extends AppCompatActivity {
     private PieChart pieChart;
@@ -46,6 +50,8 @@ public class Home_activity extends AppCompatActivity {
     private User_settings user_settings;
     private DrawerLayout drawer;
     UserModel user;
+    Database db;
+    RecyclerView recordsFromPie;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +60,7 @@ public class Home_activity extends AppCompatActivity {
 
 
         user_settings = User_settings.instanciate("user1", this);
-        Database db = new Database(this);
+        db = new Database(this);
         user = db.getUserByEmail(user_settings.getUserEmail());
         int balance = user.getBalance();
         String userCurrency = user.getCurrency();
@@ -62,6 +68,7 @@ public class Home_activity extends AppCompatActivity {
         EditText balanceText = findViewById(R.id.homeBalanceDisplay);
         Button adjustBalance = findViewById(R.id.btn_adjust_b);
         TextView calculatedBalance = findViewById(R.id.calculatedBalance);
+        recordsFromPie = findViewById(R.id.recordsFromPie);
         Button addRecordHomeButton = findViewById(R.id.add_record_home_button);
         addRecordHomeButton.setOnClickListener(onAddRecordButtonClick());
 
@@ -82,7 +89,7 @@ public class Home_activity extends AppCompatActivity {
         balanceText.setText(String.valueOf(balance));
         Currency c = Currency.getInstance(user.getCurrency());
         String currencySymbol = c.getSymbol();
-        calculatedBalance.setText(String.valueOf(calculateCurrentBalance(records, balance)+currencySymbol));
+        calculatedBalance.setText(String.valueOf(calculateCurrentBalance(records, balance) + currencySymbol));
 
         user_settings.set_currency("EUR");
 
@@ -143,7 +150,7 @@ public class Home_activity extends AppCompatActivity {
         NumberFormat formatter = new DecimalFormat("#0.00");
         if (records != null) {
             for (RecordsModel record : records) {
-                double amount =record.getAmount();
+                double amount = record.getAmount();
                 if (record.getRecordType().equals(RecordTypeKey.E)) {
                     if (!user.getCurrency().equals(record.getCurrency())) {
                         Currency_conversion_data curr = new Currency_conversion_data(Home_activity.this);
@@ -173,7 +180,7 @@ public class Home_activity extends AppCompatActivity {
     }
 
     private void setAdapters() {
-        Expanse_list_adapter adapter_exp = new Expanse_list_adapter(Home_activity.this,records);
+        Expanse_list_adapter adapter_exp = new Expanse_list_adapter(Home_activity.this, records);
         RecyclerView.LayoutManager layout_manager2 = new LinearLayoutManager(getApplicationContext());
         Records_recycler.setLayoutManager(layout_manager2);
         Records_recycler.setItemAnimator(new DefaultItemAnimator());
@@ -206,18 +213,20 @@ public class Home_activity extends AppCompatActivity {
     }
 
     private void loadData() {
-        String lbl_food = "Food and drinks";
-        String lbl_medical = "Medical";
-        String lbl_entertainment = "Entertainment";
-        String lbl_gifts = "Gifts";
-        String lbl_home = "Home";
+        List<Categories> categories = db.getCategories();
+        Map<Integer, Long> counted = records.stream()
+                .collect(Collectors.groupingBy(RecordsModel::getCategoryId, Collectors.counting()));
 
         ArrayList<PieEntry> entries = new ArrayList<>();
-        entries.add(new PieEntry(0.1f, lbl_food));
-        entries.add(new PieEntry(0.2f, lbl_medical));
-        entries.add(new PieEntry(0.25f, lbl_entertainment));
-        entries.add(new PieEntry(0.25f, lbl_gifts));
-        entries.add(new PieEntry(0.2f, lbl_home));
+
+        int totalRecords = records.size();
+
+        counted.forEach((key, value) -> {
+            Categories cat = categories.stream().filter(c -> c.getId() == key).findAny().get();
+            float weight = value.floatValue() / totalRecords;
+            entries.add(new PieEntry(weight, cat.getCategoryName()));
+
+        });
 
         ArrayList<Integer> colors = new ArrayList<>();
         for (int color : ColorTemplate.MATERIAL_COLORS) {
@@ -240,6 +249,31 @@ public class Home_activity extends AppCompatActivity {
         pieChart.setData(data);
         pieChart.invalidate();
         pieChart.animateY(1400, Easing.EaseInOutQuad);
+        pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+            @Override
+            public void onValueSelected(Entry e, Highlight h) {
+                ArrayList<RecordsModel> records2 = new ArrayList<>();
+                int hIndex = (int) h.getX();
+                PieEntry entry = entries.get(hIndex);
+                String label = entry.getLabel();
+                for (RecordsModel record : records) {
+                    int recordId = record.getCategoryId();
+                    String c = db.getCategoryById(recordId).getCategoryName();
+                    if (c.equals(label))
+                        records2.add(record);
+                }
+                Expanse_list_adapter adapter_exp = new Expanse_list_adapter(Home_activity.this, records2);
+                RecyclerView.LayoutManager layout_manager2 = new LinearLayoutManager(getApplicationContext());
+                recordsFromPie.setLayoutManager(layout_manager2);
+                recordsFromPie.setItemAnimator(new DefaultItemAnimator());
+                recordsFromPie.setAdapter(adapter_exp);
+            }
+
+            @Override
+            public void onNothingSelected() {
+
+            }
+        });
     }
 
     @Override
