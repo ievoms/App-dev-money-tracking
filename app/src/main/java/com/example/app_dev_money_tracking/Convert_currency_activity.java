@@ -3,7 +3,6 @@ package com.example.app_dev_money_tracking;
 import androidx.appcompat.app.AppCompatActivity;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -94,7 +93,7 @@ public class Convert_currency_activity extends AppCompatActivity
             String[] currency_codes = getResources().getStringArray(R.array.currency);
             String value_from = currency_codes[cur_from.getSelectedItemPosition()];
             String value_to = currency_codes[cur_to.getSelectedItemPosition()];;
-            Expanse_list_adapter.Currency_conversion_data curr = new Expanse_list_adapter.Currency_conversion_data(Convert_currency_activity.this);
+            Currency_conversion_data curr = new Currency_conversion_data(Convert_currency_activity.this);
             Double amount = Double.parseDouble(Txt_cur_from.getText().toString());
             double converted = curr.convert(value_from, value_to, amount);
             Txt_cur_to.setText(converted + "");
