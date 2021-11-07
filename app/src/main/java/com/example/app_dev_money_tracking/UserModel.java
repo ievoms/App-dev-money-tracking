@@ -5,12 +5,14 @@ public class UserModel {
     private String email;
     private String password;
     private int balance;
+    private int admin;
 
-    public UserModel(int id, String email, String password, int balance) {
+    public UserModel(int id, String email, String password, int balance, int admin) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.balance = balance;
+        this.admin=admin;
     }
 
     public int getId() {
@@ -45,4 +47,11 @@ public class UserModel {
         this.balance = balance;
     }
 
+    public int getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(int admin) {
+        this.admin = admin;
+    }
 }

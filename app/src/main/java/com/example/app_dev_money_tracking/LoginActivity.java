@@ -60,8 +60,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private OnClickListener onLoginButtonClick() {
         return v -> {
-            startActivity(new Intent(LoginActivity.this, Home_activity.class));
-//            onLoginButtonFunction(v);
+//            startActivity(new Intent(LoginActivity.this, Home_activity.class));
+            onLoginButtonFunction(v);
         };
     }
 

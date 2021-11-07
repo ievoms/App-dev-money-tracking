@@ -1,5 +1,7 @@
 package com.example.app_dev_money_tracking;
 
+import static com.example.app_dev_money_tracking.RecordTypeModel.*;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -23,11 +25,13 @@ public class Database extends SQLiteOpenHelper {
     public static final String COLUMN_LOGIN_EMAIL = "LOGIN_EMAIL";
     public static final String COLUMN_LOGIN_PASSWORD = "LOGIN_PASSWORD";
     public static final String COLUMN_BALANCE = "BALANCE";
+    public static final String COLUMN_ADMIN = "ADMIN";
 
     private static final String CREATE_TABLE_LOGIN = "CREATE TABLE IF NOT EXISTS " + LOGIN_TABLE +
             " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             COLUMN_LOGIN_EMAIL + " TEXT, " +
             COLUMN_LOGIN_PASSWORD + " TEXT, " +
+            COLUMN_ADMIN + " INTEGER DEFAULT 0, " +
             COLUMN_BALANCE + " INTEGER )";
 
     private static final String CREATE_TABLE_RECORDS = "CREATE TABLE IF NOT EXISTS " + RECORDS_TABLE +
@@ -74,7 +78,7 @@ public class Database extends SQLiteOpenHelper {
                 String date = cursor.getString(2);
                 int categoryId = cursor.getInt(3);
                 String recordType = cursor.getString(4);
-                RecordTypeModel.RecordTypeKey recordEnum = RecordTypeModel.RecordTypeKey.valueOf(recordType);
+                RecordTypeKey recordEnum = RecordTypeKey.valueOf(recordType);
                 RecordsModel newRecord = new RecordsModel(recordsId, amount, date, categoryId, recordEnum);
                 records.add(newRecord);
             } while (cursor.moveToNext());
@@ -104,6 +108,7 @@ public class Database extends SQLiteOpenHelper {
         contentValues.put(COLUMN_LOGIN_EMAIL, user.getEmail());
         contentValues.put(COLUMN_LOGIN_PASSWORD, user.getPassword());
         contentValues.put(COLUMN_BALANCE, user.getBalance());
+        contentValues.put(COLUMN_ADMIN, user.getAdmin());
         int affectedRows = db.update(LOGIN_TABLE, contentValues, "ID = " + user.getId(), null);
         return affectedRows == 0 ? false : true;
     }
@@ -119,7 +124,8 @@ public class Database extends SQLiteOpenHelper {
                 String email = cursor.getString(cursor.getColumnIndex(COLUMN_LOGIN_EMAIL));
                 String password = cursor.getString(cursor.getColumnIndex(COLUMN_LOGIN_PASSWORD));
                 int balance = cursor.getInt(cursor.getColumnIndex(COLUMN_BALANCE));
-                UserModel user = new UserModel(id, email, password, balance);
+                int admin = cursor.getInt(cursor.getColumnIndex(COLUMN_ADMIN));
+                UserModel user = new UserModel(id, email, password, balance,admin);
                 return user;
 
             } else return null;

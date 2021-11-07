@@ -14,9 +14,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.App_dev_money_tracking">
         <activity
+            android:name=".PremiumContent"
+            android:exported="true"
+            android:label="Try premium" />
+        <activity
             android:name=".Convert_currency_activity"
             android:exported="false"
             android:label="Currency converter" />
+
         <activity
             android:name=".CategoriesActivity"
             android:exported="true"
@@ -35,7 +40,6 @@
         <activity
             android:name=".LoginActivity"
             android:exported="true">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -41,10 +42,7 @@ public class Home_activity extends AppCompatActivity {
     private RecyclerView Records_recycler;
     private User_settings user_settings;
     private DrawerLayout drawer;
-//    private TextView balance_text;
 
-
-    //    private Button addRecordHomeButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,10 +51,9 @@ public class Home_activity extends AppCompatActivity {
 
         user_settings = User_settings.instanciate("user1", this);
         Database db = new Database(this);
-
-        records = db.getRecords();
         UserModel user = db.getUserByEmail(user_settings.getUserEmail());
         int balance = user.getBalance();
+        records = db.getRecords();
         EditText balanceText = findViewById(R.id.homeBalanceDisplay);
         Button adjustBalance = findViewById(R.id.btn_adjust_b);
         TextView calculatedBalance = findViewById(R.id.calculatedBalance);
@@ -112,10 +109,16 @@ public class Home_activity extends AppCompatActivity {
                     startActivity(new Intent(Home_activity.this, CategoriesActivity.class));
                     break;
                 case R.id.nav_converter:
-                    startActivity(new Intent(Home_activity.this, Convert_currency_activity.class));
+                    if (user.getAdmin() == 0) {
+                        Toast.makeText(Home_activity.this, "This feature only available for premium members", Toast.LENGTH_SHORT).show();
+                    } else {
+                        startActivity(new Intent(Home_activity.this, Convert_currency_activity.class));
+                    }
+                    break;
+                case R.id.nav_tryPremium:
+                    startActivity(new Intent(Home_activity.this, PremiumContent.class));
                     break;
             }
-
             return true;
         });
 
@@ -130,14 +133,17 @@ public class Home_activity extends AppCompatActivity {
     private int calculateCurrentBalance(List<RecordsModel> records, int balance) {
         int expences = 0;
         int intakes = 0;
-        for (RecordsModel record : records) {
-            if (record.getRecordType().equals(RecordTypeKey.E)) {
-                expences += record.getAmount();
-            } else {
-                intakes += record.getAmount();
+        if (records != null) {
+            for (RecordsModel record : records) {
+                if (record.getRecordType().equals(RecordTypeKey.E)) {
+                    expences += record.getAmount();
+                } else {
+                    intakes += record.getAmount();
+                }
             }
+            return balance - expences + intakes;
         }
-        return balance - expences + intakes;
+        return balance;
     }
 
     private View.OnClickListener onAddRecordButtonClick() {

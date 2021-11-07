@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 
@@ -33,6 +34,8 @@ public class CategoriesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_categories);
 
         User_settings settings = User_settings.instanciate("user1", getApplicationContext());
+        Database db = new Database(this);
+        UserModel user = db.getUserByEmail(settings.getUserEmail());
 
         categoryRecycler = findViewById(R.id.recViewCategories);
         categoriesList = settings.retrieveRecordList();
@@ -67,7 +70,14 @@ public class CategoriesActivity extends AppCompatActivity {
                     startActivity(new Intent(CategoriesActivity.this, CategoriesActivity.class));
                     break;
                 case R.id.nav_converter:
-                    startActivity(new Intent(CategoriesActivity.this, Convert_currency_activity.class));
+                    if (user.getAdmin() == 0) {
+                        Toast.makeText(CategoriesActivity.this, "This feature only available for premium members", Toast.LENGTH_SHORT).show();
+                    } else {
+                        startActivity(new Intent(CategoriesActivity.this, Convert_currency_activity.class));
+                    }
+                    break;
+                case R.id.nav_tryPremium:
+                    startActivity(new Intent(CategoriesActivity.this, PremiumContent.class));
                     break;
             }
             return true;
