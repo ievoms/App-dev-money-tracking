@@ -73,6 +73,8 @@ class Expanse_list_adapter extends RecyclerView.Adapter<Expanse_list_adapter.MyV
     public void onBindViewHolder(@NonNull Expanse_list_adapter.MyViewHolder holder, int position) {
         User_settings user_settings = User_settings.instanciate("user1", context);
         Database db = new Database(context);
+
+
         UserModel user = db.getUserByEmail(user_settings.getUserEmail());
         String currency = record_list.get(position).getCurrency();
 
@@ -80,6 +82,7 @@ class Expanse_list_adapter extends RecyclerView.Adapter<Expanse_list_adapter.MyV
         String currencySymbol = c.getSymbol();
 
         int categoryId = record_list.get(position).getCategoryId();
+        Categories category = db.getCategoryById(categoryId);
         String date = record_list.get(position).getDate();
         double amount = record_list.get(position).getAmount();
         NumberFormat formatter = new DecimalFormat("#0.00");
@@ -96,7 +99,7 @@ class Expanse_list_adapter extends RecyclerView.Adapter<Expanse_list_adapter.MyV
         } else {
             holder.Amount.setTextColor(Color.GREEN);
         }
-//        holder.Category.setText();
+        holder.Category.setText(category.getCategoryName());
     }
 
     @Override
