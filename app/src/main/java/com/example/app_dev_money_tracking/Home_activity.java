@@ -9,12 +9,15 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,25 +36,30 @@ import com.google.android.material.navigation.NavigationView;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+
+import java.util.Calendar;
+
 import java.util.Currency;
+
 import java.util.List;
 
 public class Home_activity extends AppCompatActivity {
     private PieChart pieChart;
-
-    private ArrayList<Account> accounts;
     private List<RecordsModel> records;
-    private RecyclerView Accounts_recycler;
     private RecyclerView Records_recycler;
     private User_settings user_settings;
     private DrawerLayout drawer;
+
+    private Button show_more;
+
+
     UserModel user;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
 
         user_settings = User_settings.instanciate("user1", this);
         Database db = new Database(this);
@@ -61,6 +69,7 @@ public class Home_activity extends AppCompatActivity {
         records = db.getRecords();
         EditText balanceText = findViewById(R.id.homeBalanceDisplay);
         Button adjustBalance = findViewById(R.id.btn_adjust_b);
+        show_more = findViewById(R.id.Btn_show_more);
         TextView calculatedBalance = findViewById(R.id.calculatedBalance);
         Button addRecordHomeButton = findViewById(R.id.add_record_home_button);
         addRecordHomeButton.setOnClickListener(onAddRecordButtonClick());
@@ -79,6 +88,15 @@ public class Home_activity extends AppCompatActivity {
 
         });
 
+        show_more.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                startActivity(new Intent(Home_activity.this, All_records.class));
+            }
+        });
+
         balanceText.setText(String.valueOf(balance));
         Currency c = Currency.getInstance(user.getCurrency());
         String currencySymbol = c.getSymbol();
@@ -92,7 +110,6 @@ public class Home_activity extends AppCompatActivity {
         loadData();
 
         setAdapters();
-
 
         // Menu navigation
 
@@ -168,9 +185,6 @@ public class Home_activity extends AppCompatActivity {
     }
 
 
-    public void On_show_more_click(View view) {
-        Toast.makeText(this, "Not Implemented yet", Toast.LENGTH_SHORT).show();
-    }
 
     private void setAdapters() {
         Expanse_list_adapter adapter_exp = new Expanse_list_adapter(Home_activity.this,records);
