@@ -38,6 +38,7 @@ public class All_records extends AppCompatActivity
     Database db;
     List<RecordsModel> all_records;
     List<RecordsModel> filtered_records;
+    List<Categories> categories;
     private RecyclerView Records_recycler;
     Spinner filter_type;
     Spinner filter_cat;
@@ -58,16 +59,9 @@ public class All_records extends AppCompatActivity
         Records_recycler = findViewById(R.id.rec_view_all_records);
         date_from = findViewById(R.id.Txt_date_from);
         date_to = findViewById(R.id.Txt_date_to);
-
-        //Spinners
-        String[] typeString = new String[]{"All", "Income", "Expanse"};
-        typeString_codes = new RecordTypeKey[]{RecordTypeKey.A, RecordTypeKey.I, RecordTypeKey.E};
-        types = new ArrayAdapter<>(All_records.this, android.R.layout.simple_list_item_1, typeString);
-        filter_type = findViewById(R.id.SP_filter_type);
-        types.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        filter_type.setAdapter(types);
-
-        ft_cats = new ArrayAdapter<>(All_records.this, android.R.layout.simple_list_item_1, typeString);
+        categories = db.getCategories();
+//      Initialise spinners
+        spinners();
 
         if (DT_date_fr == null) {
             DT_date_fr = new Date_custom(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
@@ -139,12 +133,38 @@ public class All_records extends AppCompatActivity
 
     public void set_adapters()
     {
-        Expanse_list_adapter adapter_exp = new Expanse_list_adapter(All_records.this,filtered_records);
+        Expanse_list_adapter adapter_exp = new Expanse_list_adapter(All_records.this, filtered_records);
         RecyclerView.LayoutManager layout_manager2 = new LinearLayoutManager(getApplicationContext());
         Records_recycler.setLayoutManager(layout_manager2);
         Records_recycler.setItemAnimator(new DefaultItemAnimator());
         Records_recycler.setAdapter(adapter_exp);
     }
+
+    public void spinners()
+    {
+        //  Map category names to spinner
+        String[] cat_names = new String[categories.size() + 1];
+        cat_names[0] = "All";
+        int i = 1;
+        for (Categories c : categories) {
+            cat_names[i] = c.getCategoryName();
+            i++;
+        }
+
+        //Spinners
+        ft_cats = new ArrayAdapter<>(All_records.this, android.R.layout.simple_list_item_1, cat_names);
+        filter_cat = findViewById(R.id.Sp_filter_category);
+        ft_cats.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        filter_cat.setAdapter(ft_cats);
+
+        String[] typeString = new String[]{"All", "Income", "Expanse"};
+        typeString_codes = new RecordTypeKey[]{RecordTypeKey.A, RecordTypeKey.I, RecordTypeKey.E};
+        types = new ArrayAdapter<>(All_records.this, android.R.layout.simple_list_item_1, typeString);
+        filter_type = findViewById(R.id.SP_filter_type);
+        types.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        filter_type.setAdapter(types);
+    }
+
 
     public void On_filter_click(View view)
     {
@@ -187,17 +207,26 @@ public class All_records extends AppCompatActivity
             RecordTypeModel.RecordTypeKey tp_key = rec.getRecordType();
             RecordTypeKey tp_spin = typeString_codes[filter_type.getSelectedItemPosition()];
 
-            if ( tp_spin.equals(RecordTypeKey.A) || tp_key.equals(tp_spin) )
-            {
+            if (tp_spin.equals(RecordTypeKey.A) || tp_key.equals(tp_spin)) {
                 b_type = true;
             }
 
-            if (b_date && b_type) {
-                filtered_records.add(rec);
+            int pos = filter_cat.getSelectedItemPosition() - 1;
+            if (pos >= 0) {
+                int cat_id = categories.get(pos).getId();
+                if (filter_cat.getSelectedItemPosition() == 0 || rec.getCategoryId() == cat_id) {
+                    b_cat = true;
+                }
+            }
+            else
+            {
+                b_cat = true;
             }
 
+            if (b_date && b_type && b_cat) {
+                filtered_records.add(rec);
+            }
         }
-
         set_adapters();
     }
 
