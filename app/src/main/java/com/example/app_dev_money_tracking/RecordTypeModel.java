@@ -1,7 +1,7 @@
 package com.example.app_dev_money_tracking;
 
 public class RecordTypeModel {
-    public enum RecordTypeKey{I,E};
+    public enum RecordTypeKey{I,E,A};
     private RecordTypeKey id;
     private String recordType;
 

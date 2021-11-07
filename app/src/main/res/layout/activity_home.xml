@@ -180,7 +180,7 @@
                         android:orientation="horizontal">
 
                         <Button
-                            android:id="@+id/button"
+                            android:id="@+id/Btn_show_more"
                             android:layout_width="140dp"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="30dp"

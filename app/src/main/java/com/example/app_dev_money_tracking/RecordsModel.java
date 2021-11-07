@@ -1,7 +1,6 @@
 package com.example.app_dev_money_tracking;
 
 import com.example.app_dev_money_tracking.RecordTypeModel.RecordTypeKey;
-
 import java.util.Date;
 
 public class RecordsModel {
