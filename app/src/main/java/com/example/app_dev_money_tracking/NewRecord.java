@@ -17,13 +17,17 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.Icon;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -59,8 +63,15 @@ public class NewRecord extends AppCompatActivity {
 
     private List<Categories> categoriesList;
     private DrawerLayout drawer;
-    private int selectedCategoryId =-1;
+    private int selectedCategoryId = -1;
     private RecordTypeKey selectedRecordType = RecordTypeKey.E;
+
+    int[] pictures = {R.drawable.charity, R.drawable.clotheshanger, R.drawable.commission, R.drawable.debt, R.drawable.dumbbell,
+            R.drawable.family, R.drawable.fastfoodd, R.drawable.giftboxwithbow, R.drawable.governance, R.drawable.graduationcapp,
+            R.drawable.healthcare, R.drawable.housedecorationn, R.drawable.insurance, R.drawable.investment,
+            R.drawable.key, R.drawable.movies, R.drawable.pawprint, R.drawable.piggybankk, R.drawable.salary, R.drawable.subscription,
+            R.drawable.utilities, R.drawable.car, R.drawable.shoppingbag};
+    GridView gridView;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -84,6 +95,7 @@ public class NewRecord extends AppCompatActivity {
         txtChosenCategory = (TextView) findViewById(R.id.chosenCategory);
         category_text_linear = (LinearLayout) findViewById(R.id.text_layout_category_item);
         categoryName = (TextView) findViewById(R.id.categories_item_name);
+        gridView = findViewById(R.id.simpleGridView);
         TextView currencyDisplay = findViewById(R.id.recordCurrency);
         error = findViewById(R.id.new_record_error);
         currencyDisplay.setText(user.getCurrency());
@@ -109,7 +121,7 @@ public class NewRecord extends AppCompatActivity {
             public void onItemClick(Categories categories, int position) {
                 Toast.makeText(getApplicationContext(), "Category " + categories.getCategoryName() + " was chosen", Toast.LENGTH_SHORT).show();
                 txtChosenCategory.setText(categories.getCategoryName());
-                selectedCategoryId = position+1;
+                selectedCategoryId = position + 1;
             }
         });
 
@@ -119,27 +131,38 @@ public class NewRecord extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(NewRecord.this);
-                final View new_categ_layout = getLayoutInflater().inflate(R.layout.user_category_input_layout, null);
-                builder.setView(new_categ_layout);
+                final View categoryLayout = getLayoutInflater().inflate(R.layout.user_category_input_layout, null);
+                IconAdapter iconAdapter = new IconAdapter(NewRecord.this, pictures);
+//                final View chooseIcon = getLayoutInflater().inflate(R.layout.user_category_input_layout, null);
+                builder.setView(categoryLayout); // setting icons view in the alert box
+                gridView = categoryLayout.findViewById(R.id.simpleGridView);
+                gridView.setAdapter(iconAdapter);
+                builder.setView(categoryLayout);
 
-                builder.setPositiveButton("Create", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        EditText cat_name_input = new_categ_layout.findViewById(R.id.category_input);
-                        if (cat_name_input.getText().toString().length() != 0) {
-                            Toast.makeText(NewRecord.this, "Your category was created", Toast.LENGTH_SHORT).show();
-                            Categories newCategory = new Categories(-1,cat_name_input.getText().toString(), R.drawable.car);
-
-                            categoriesList.add(newCategory);
-                            db.addCategory(newCategory);
-//                            categoriesList = db.getCategories();
-                            adapter.notifyDataSetChanged();
-                        } else {
-                            Toast.makeText(NewRecord.this, "Category name can't be empty. Try again", Toast.LENGTH_SHORT).show();
-
-                        }
-                    }
+                final int[] iconId = {pictures[0]};
+                gridView.setOnItemClickListener((adapterView, view1, i, l) -> {
+                    ImageView image = view1.findViewById(R.id.categoryIcon);
+                    image.setBackgroundColor(Color.GRAY);
+                    iconId[0] = pictures[i];
                 });
+
+                        builder.setPositiveButton("Create", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                EditText cat_name_input = categoryLayout.findViewById(R.id.category_input);
+                                if (cat_name_input.getText().toString().length() != 0) {
+                                    Toast.makeText(NewRecord.this, "Your category was created", Toast.LENGTH_SHORT).show();
+                                    Categories newCategory = new Categories(-1, cat_name_input.getText().toString(), iconId[0]);
+
+                                    categoriesList.add(newCategory);
+                                    db.addCategory(newCategory);
+                                    adapter.notifyDataSetChanged();
+                                } else {
+                                    Toast.makeText(NewRecord.this, "Category name can't be empty. Try again", Toast.LENGTH_SHORT).show();
+
+                                }
+                            }
+                        });
                 builder.setNegativeButton("Cancel", (dialog, which) -> {
                     Toast.makeText(NewRecord.this, "", Toast.LENGTH_SHORT);
                 });
@@ -181,7 +204,7 @@ public class NewRecord extends AppCompatActivity {
             String date = formater.format(todayDate);
             String amountString = editTxtAmount.getText().toString();
             if (!amountString.equals("") || amountString.equals(null)) {
-                if(selectedCategoryId>=0) {
+                if (selectedCategoryId >= 0) {
                     Database recordsDB = new Database(NewRecord.this);
                     RecordsModel newRecord = new RecordsModel(-1, Integer.parseInt(amountString), date, selectedCategoryId, selectedRecordType, user.getCurrency());
                     boolean successfullInsert = recordsDB.addRecord(newRecord);
@@ -190,7 +213,7 @@ public class NewRecord extends AppCompatActivity {
                     } else {
                         Toast.makeText(NewRecord.this, "Something went wrong", Toast.LENGTH_SHORT).show();
                     }
-                }else{
+                } else {
 
                     error.setText("You must choose a category");
                 }

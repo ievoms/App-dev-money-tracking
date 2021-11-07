@@ -9,6 +9,7 @@ import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -48,6 +49,7 @@ class Expanse_list_adapter extends RecyclerView.Adapter<Expanse_list_adapter.MyV
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public BreakIterator RecordType;
         private TextView Category;
+        private ImageView Image;
         private TextView Account_name;
         private TextView Amount;
         private TextView Date;
@@ -57,6 +59,7 @@ class Expanse_list_adapter extends RecyclerView.Adapter<Expanse_list_adapter.MyV
             Category = view.findViewById(R.id.Txt_home_cat);
             Amount = view.findViewById(R.id.Txt_home_amount);
             Date = view.findViewById(R.id.Txt_home_record_date);
+            Image = view.findViewById(R.id.Txt_hom_image);
 
         }
 
@@ -100,6 +103,7 @@ class Expanse_list_adapter extends RecyclerView.Adapter<Expanse_list_adapter.MyV
             holder.Amount.setTextColor(Color.GREEN);
         }
         holder.Category.setText(category.getCategoryName());
+        holder.Image.setBackgroundResource(category.getCategoryImg());
     }
 
     @Override
