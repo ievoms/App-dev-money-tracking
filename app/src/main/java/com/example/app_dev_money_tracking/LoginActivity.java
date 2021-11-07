@@ -16,6 +16,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Currency;
+import java.util.Locale;
+
 public class LoginActivity extends AppCompatActivity {
 
     EditText emailInput, passwordInput;
@@ -70,12 +73,12 @@ public class LoginActivity extends AppCompatActivity {
         LoginValidator loginValidator = new LoginValidator().invoke();
         String email = loginValidator.getEmail();
         String password = loginValidator.getPassword();
+
         if (loginValidator.isValid()) {
             Database db = new Database(LoginActivity.this);
             UserModel userModel = db.getUserByEmail(email);
             if (userModel != null) {
                 if (userModel.getPassword().equals(password)) {
-//                        Toast.makeText(LoginActivity.this, "SUCCESS", Toast.LENGTH_SHORT).show();
                     settings.setUserEmail(email);
                     startActivity(new Intent(LoginActivity.this, Home_activity.class));
                 } else {

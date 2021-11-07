@@ -33,51 +33,57 @@
                 android:background="#512DA8"
                 tools:context=".Convert_currency_activity">
 
-                <Spinner
-                    android:id="@+id/DD_cur_from"
-                    android:layout_width="330dp"
-                    android:layout_height="55dp"
-                    android:layout_marginTop="16dp"
-                    android:backgroundTint="#2BA5A1"
+                <TextView
+                    android:id="@+id/textView5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
+                    android:text="Change currency for whole app"
+                    android:textSize="20dp"
+                    android:textColor="#FFFFFF"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.492"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView" />
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="@+id/change_user_currency_spinner"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <Spinner
-                    android:id="@+id/DD_cur_to"
+                    android:id="@+id/change_user_currency_spinner"
                     android:layout_width="330dp"
                     android:layout_height="55dp"
                     android:layout_marginTop="12dp"
                     android:backgroundTint="#2BA5A1"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.506"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView2" />
+                    app:layout_constraintTop_toBottomOf="@+id/textView5"
+                    tools:ignore="MissingConstraints" />
 
-                <EditText
-                    android:id="@+id/Txt_conv_from"
-                    android:layout_width="300dp"
+                <Button
+                    android:id="@+id/change_user_currency_button"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:background="@drawable/button_background"
-                    android:backgroundTint="#2BA5A1"
-                    android:ems="10"
-                    android:gravity="center_horizontal|center_vertical"
-                    android:inputType="numberDecimal"
-                    android:maxLength="20"
-                    android:minHeight="48dp"
-                    android:text="1.0"
+                    android:layout_marginTop="24dp"
                     android:textColor="#FFFFFF"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.42"
+                    android:text="Change"
+                    app:layout_constraintEnd_toEndOf="@+id/change_user_currency_spinner"
+                    app:layout_constraintHorizontal_bias="1.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/DD_cur_from" />
+                    app:layout_constraintTop_toBottomOf="@+id/change_user_currency_spinner" />
+
+                <TextView
+                    android:id="@+id/textView6"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="12dp"
+                    android:background="#2BA5A1"
+                    app:layout_constraintTop_toBottomOf="@+id/change_user_currency_button"
+                    tools:layout_editor_absoluteX="0dp" />
 
                 <EditText
                     android:id="@+id/Txt_conv_to"
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="32dp"
+                    android:layout_marginTop="12dp"
                     android:background="@drawable/button_background"
                     android:backgroundTint="#2BA5A1"
                     android:ems="10"
@@ -88,7 +94,7 @@
                     android:text="1.0"
                     android:textColor="#FFFFFF"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.409"
+                    app:layout_constraintHorizontal_bias="0.414"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/DD_cur_to" />
 
@@ -96,27 +102,68 @@
                     android:id="@+id/textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="132dp"
+                    android:layout_marginTop="20dp"
                     android:text="Convert From"
                     android:textColor="#FFFFFF"
                     android:textSize="20sp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.171"
+                    app:layout_constraintHorizontal_bias="0.169"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toBottomOf="@+id/textView6" />
+
+                <Spinner
+                    android:id="@+id/DD_cur_from"
+                    android:layout_width="330dp"
+                    android:layout_height="55dp"
+                    android:layout_marginTop="20dp"
+                    android:backgroundTint="#2BA5A1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.481"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+                <EditText
+                    android:id="@+id/Txt_conv_from"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="28dp"
+                    android:background="@drawable/button_background"
+                    android:backgroundTint="#2BA5A1"
+                    android:ems="10"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:inputType="numberDecimal"
+                    android:maxLength="20"
+                    android:minHeight="48dp"
+                    android:text="1.0"
+                    android:textColor="#FFFFFF"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.414"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/DD_cur_from" />
 
                 <TextView
                     android:id="@+id/textView2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="20dp"
                     android:text="Convert to"
                     android:textColor="#FFFFFF"
                     android:textSize="20sp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.158"
+                    app:layout_constraintHorizontal_bias="0.154"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/Txt_conv_from" />
+
+                <Spinner
+                    android:id="@+id/DD_cur_to"
+                    android:layout_width="330dp"
+                    android:layout_height="55dp"
+                    android:layout_marginTop="16dp"
+                    android:backgroundTint="#2BA5A1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.493"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
                 <Button
                     android:id="@+id/Btn_convert"
@@ -128,10 +175,11 @@
                     android:textColor="#FFFFFF"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.503"
+                    app:layout_constraintHorizontal_bias="0.481"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/Txt_conv_to"
-                    app:layout_constraintVertical_bias="0.121" />
+                    app:layout_constraintVertical_bias="0.31" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
 
