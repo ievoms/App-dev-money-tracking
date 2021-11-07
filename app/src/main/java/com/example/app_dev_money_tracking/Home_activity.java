@@ -214,19 +214,21 @@ public class Home_activity extends AppCompatActivity {
 
     private void loadData() {
         List<Categories> categories = db.getCategories();
-        Map<Integer, Long> counted = records.stream()
-                .collect(Collectors.groupingBy(RecordsModel::getCategoryId, Collectors.counting()));
-
         ArrayList<PieEntry> entries = new ArrayList<>();
+        if (records != null) {
+            Map<Integer, Long> counted = records.stream()
+                    .collect(Collectors.groupingBy(RecordsModel::getCategoryId, Collectors.counting()));
 
-        int totalRecords = records.size();
 
-        counted.forEach((key, value) -> {
-            Categories cat = categories.stream().filter(c -> c.getId() == key).findAny().get();
-            float weight = value.floatValue() / totalRecords;
-            entries.add(new PieEntry(weight, cat.getCategoryName()));
+            int totalRecords = records.size();
 
-        });
+            counted.forEach((key, value) -> {
+                Categories cat = categories.stream().filter(c -> c.getId() == key).findAny().get();
+                float weight = value.floatValue() / totalRecords;
+                entries.add(new PieEntry(weight, cat.getCategoryName()));
+
+            });
+        }
 
         ArrayList<Integer> colors = new ArrayList<>();
         for (int color : ColorTemplate.MATERIAL_COLORS) {
