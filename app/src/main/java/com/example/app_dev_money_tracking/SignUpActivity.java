@@ -70,7 +70,7 @@ public class SignUpActivity extends AppCompatActivity {
                 else {
                     Database db = new Database(SignUpActivity.this);
                     if (db.getUserByEmail(email) == null) {
-                        UserModel userModel = new UserModel(-1, email, password,0);
+                        UserModel userModel = new UserModel(-1, email, password,0,0);
                         boolean successFullInsert = db.addUser(userModel);
                         if (successFullInsert) {
                             startActivity(new Intent(SignUpActivity.this, LoginActivity.class));

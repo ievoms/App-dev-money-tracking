@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 
@@ -55,8 +56,10 @@ public class Convert_currency_activity extends AppCompatActivity
         navigationView.setCheckedItem(R.id.nav_converter);
         View header = navigationView.getHeaderView(0);
         TextView emailDisplay = header.findViewById(R.id.userEmailDisplay);
-        User_settings user_settings = User_settings.instanciate("user1", this);
-        emailDisplay.setText(user_settings.getUserEmail());
+        User_settings settings = User_settings.instanciate("user1", getApplicationContext());
+        Database db = new Database(this);
+        UserModel user = db.getUserByEmail(settings.getUserEmail());
+        emailDisplay.setText(settings.getUserEmail());
         navigationView.setNavigationItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.nav_home:
@@ -69,7 +72,14 @@ public class Convert_currency_activity extends AppCompatActivity
                     startActivity(new Intent(Convert_currency_activity.this, CategoriesActivity.class));
                     break;
                 case R.id.nav_converter:
-                    startActivity(new Intent(Convert_currency_activity.this, Convert_currency_activity.class));
+                    if (user.getAdmin() == 0) {
+                        Toast.makeText(Convert_currency_activity.this, "This feature only available for premium members", Toast.LENGTH_SHORT).show();
+                    } else {
+                        startActivity(new Intent(Convert_currency_activity.this, Convert_currency_activity.class));
+                    }
+                    break;
+                case R.id.nav_tryPremium:
+                    startActivity(new Intent(Convert_currency_activity.this, PremiumContent.class));
                     break;
             }
             return true;

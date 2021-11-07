@@ -19,5 +19,9 @@
             android:id="@+id/nav_converter"
             android:icon="@drawable/investment"
             android:title="Currency converter" />
+        <item
+            android:id="@+id/nav_tryPremium"
+            android:icon="@drawable/investment"
+            android:title="Try premium" />
     </group>
 </menu>

@@ -68,6 +68,8 @@ public class NewRecord extends AppCompatActivity {
         setContentView(R.layout.activity_new_record);
 
         User_settings settings = User_settings.instanciate("user1", getApplicationContext());
+        Database db = new Database(this);
+        UserModel user = db.getUserByEmail(settings.getUserEmail());
 
         btn_open_category_input = (Button) findViewById(R.id.open_category_input);
 //        imgViewClose = (ImageView)findViewById(R.id.imageClose);
@@ -234,7 +236,14 @@ public class NewRecord extends AppCompatActivity {
                     startActivity(new Intent(NewRecord.this, CategoriesActivity.class));
                     break;
                 case R.id.nav_converter:
-                    startActivity(new Intent(NewRecord.this, Convert_currency_activity.class));
+                    if (user.getAdmin() == 0) {
+                        Toast.makeText(NewRecord.this, "This feature only available for premium members", Toast.LENGTH_SHORT).show();
+                    } else {
+                        startActivity(new Intent(NewRecord.this, Convert_currency_activity.class));
+                    }
+                    break;
+                case R.id.nav_tryPremium:
+                    startActivity(new Intent(NewRecord.this, PremiumContent.class));
                     break;
             }
             return true;
