@@ -10,13 +10,15 @@ public class RecordsModel {
     private String date;
     private int categoryId;
     private RecordTypeKey recordType;
+    private String currency;
 
-    public RecordsModel(int id, int amount, String date, int categoryId, RecordTypeKey recordType) {
+    public RecordsModel(int id, int amount, String date, int categoryId, RecordTypeKey recordType,String currency) {
         this.id = id;
         this.amount = amount;
         this.date = date;
         this.categoryId = categoryId;
         this.recordType = recordType;
+        this.currency=currency;
     }
 
     public int getId() {
@@ -59,4 +61,11 @@ public class RecordsModel {
         this.recordType = recordType;
     }
 
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
 }

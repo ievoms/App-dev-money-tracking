@@ -33,8 +33,14 @@ import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.material.navigation.NavigationView;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+
 import java.util.Calendar;
+
+import java.util.Currency;
+
 import java.util.List;
 
 public class Home_activity extends AppCompatActivity {
@@ -43,7 +49,11 @@ public class Home_activity extends AppCompatActivity {
     private RecyclerView Records_recycler;
     private User_settings user_settings;
     private DrawerLayout drawer;
+
     private Button show_more;
+
+
+    UserModel user;
 
 
     @Override
@@ -53,8 +63,9 @@ public class Home_activity extends AppCompatActivity {
 
         user_settings = User_settings.instanciate("user1", this);
         Database db = new Database(this);
-        UserModel user = db.getUserByEmail(user_settings.getUserEmail());
+        user = db.getUserByEmail(user_settings.getUserEmail());
         int balance = user.getBalance();
+        String userCurrency = user.getCurrency();
         records = db.getRecords();
         EditText balanceText = findViewById(R.id.homeBalanceDisplay);
         Button adjustBalance = findViewById(R.id.btn_adjust_b);
@@ -87,7 +98,9 @@ public class Home_activity extends AppCompatActivity {
         });
 
         balanceText.setText(String.valueOf(balance));
-        calculatedBalance.setText(String.valueOf(calculateCurrentBalance(records, balance)));
+        Currency c = Currency.getInstance(user.getCurrency());
+        String currencySymbol = c.getSymbol();
+        calculatedBalance.setText(String.valueOf(calculateCurrentBalance(records, balance)+currencySymbol));
 
         user_settings.set_currency("EUR");
 
@@ -144,12 +157,22 @@ public class Home_activity extends AppCompatActivity {
     private int calculateCurrentBalance(List<RecordsModel> records, int balance) {
         int expences = 0;
         int intakes = 0;
+        NumberFormat formatter = new DecimalFormat("#0.00");
         if (records != null) {
             for (RecordsModel record : records) {
+                double amount =record.getAmount();
                 if (record.getRecordType().equals(RecordTypeKey.E)) {
-                    expences += record.getAmount();
+                    if (!user.getCurrency().equals(record.getCurrency())) {
+                        Currency_conversion_data curr = new Currency_conversion_data(Home_activity.this);
+                        amount = Double.parseDouble(formatter.format(curr.convert(record.getCurrency(), user.getCurrency(), amount)));
+                    }
+                    expences += amount;
                 } else {
-                    intakes += record.getAmount();
+                    if (!user.getCurrency().equals(record.getCurrency())) {
+                        Currency_conversion_data curr = new Currency_conversion_data(Home_activity.this);
+                        amount = Double.parseDouble(formatter.format(curr.convert(record.getCurrency(), user.getCurrency(), amount)));
+                    }
+                    intakes += amount;
                 }
             }
             return balance - expences + intakes;
@@ -164,7 +187,7 @@ public class Home_activity extends AppCompatActivity {
 
 
     private void setAdapters() {
-        Expanse_list_adapter adapter_exp = new Expanse_list_adapter(records);
+        Expanse_list_adapter adapter_exp = new Expanse_list_adapter(Home_activity.this,records);
         RecyclerView.LayoutManager layout_manager2 = new LinearLayoutManager(getApplicationContext());
         Records_recycler.setLayoutManager(layout_manager2);
         Records_recycler.setItemAnimator(new DefaultItemAnimator());

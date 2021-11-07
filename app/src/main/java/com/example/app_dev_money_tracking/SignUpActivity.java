@@ -16,6 +16,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Currency;
+import java.util.Locale;
+
 public class SignUpActivity extends AppCompatActivity {
     EditText emailInput, passwordInput, password2Input;
     TextView emailError, passwordError, password2Error;
@@ -70,7 +73,9 @@ public class SignUpActivity extends AppCompatActivity {
                 else {
                     Database db = new Database(SignUpActivity.this);
                     if (db.getUserByEmail(email) == null) {
-                        UserModel userModel = new UserModel(-1, email, password,0,0);
+                        Locale locale = Locale.getDefault();
+                        Currency currency = Currency.getInstance(locale);
+                        UserModel userModel = new UserModel(-1, email, password,0,0,currency.toString());
                         boolean successFullInsert = db.addUser(userModel);
                         if (successFullInsert) {
                             startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
