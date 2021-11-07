@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:padding="10dp"
+    android:orientation="vertical"
+    android:background="#FFF"
+    android:layout_height="match_parent">
+
+    <GridView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:listSelector="#0e079f"
+        android:id="@+id/simpleGridView"
+        android:padding="1dp"
+        android:numColumns="5"
+        android:horizontalSpacing="3dp"
+        android:verticalSpacing="3dp"/>
+</LinearLayout>

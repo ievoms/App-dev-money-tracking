@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
@@ -22,10 +23,12 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,15 +54,22 @@ public class NewRecord extends AppCompatActivity {
     private EditText editTxtAmount;
     private TextView categoryName,error;
 
+    //Listview
+    private ListView lv_categoriesName;
+
     private LinearLayout category_text_linear;
 
-    private RecyclerView categoryRecycler;
-    private CategoriesAdapter adapter;
+//    private RecyclerView categoryRecycler;
+//    private CategoriesAdapter adapter;
 
     private ArrayList<Categories> categoriesList;
     private DrawerLayout drawer;
     private int selectedCategoryId=0;
     private RecordTypeKey selectedRecordType= RecordTypeKey.E;
+
+    // New stuff
+    Database myDB;
+    ArrayAdapter adapter;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -81,73 +91,51 @@ public class NewRecord extends AppCompatActivity {
         txtOperationRecord = (TextView) findViewById(R.id.operationSignRecord);
         txtCategoryChoose = (TextView) findViewById(R.id.categoryChooseHeading);
         txtChosenCategory = (TextView) findViewById(R.id.chosenCategory);
-        category_text_linear = (LinearLayout) findViewById(R.id.text_layout_category_item);
-        categoryName = (TextView) findViewById(R.id.categories_item_name);
+//        category_text_linear = (LinearLayout) findViewById(R.id.text_layout_category_item);
+//        categoryName = (TextView) findViewById(R.id.categories_item_name);
         error= findViewById(R.id.new_record_error);
+
+        // Listview
+
+        lv_categoriesName = (ListView) findViewById(R.id.lv_categories_list);
+        ArrayList<Category> arrayList = new ArrayList<>();
+//        lv_categoriesName.setAdapter(null);
+        arrayList.clear();
+        arrayList = db.getCategories();
+        CategoryAdapter categoryAdapter = new CategoryAdapter(this, R.layout.categories_item, arrayList);
+        lv_categoriesName.setAdapter(categoryAdapter);
+//        categoryAdapter.notifyDataSetChanged();
+
+
 
 
         btnExpense.setBackgroundColor(Color.rgb(153, 50, 204));
         editTxtAmount.setMovementMethod(null);
 
 
-        categoryRecycler = (RecyclerView) findViewById(R.id.CategoriesRecycle);
-        categoriesList = settings.retrieveRecordList();
-        if (categoriesList == null) {
-            categoriesList = Categories.getData(this);
-        }
-        adapter = new CategoriesAdapter(categoriesList, this);
-        categoryRecycler.setHasFixedSize(true);
-        LinearLayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        categoryRecycler.setLayoutManager(manager);
-        categoryRecycler.setAdapter(adapter);
+//        categoryRecycler = (RecyclerView) findViewById(R.id.CategoriesRecycle);
+//        categoriesList = settings.retrieveRecordList();
+//        if (categoriesList == null) {
+//            categoriesList = Categories.getData(this);
+//        }
+//        adapter = new CategoriesAdapter(categoriesList, this);
+//        categoryRecycler.setHasFixedSize(true);
+//        LinearLayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+//        categoryRecycler.setLayoutManager(manager);
+//        categoryRecycler.setAdapter(adapter);
 
-        adapter.setOnItemClickListener(new CategoriesAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(Categories categories, int position) {
-                Toast.makeText(getApplicationContext(), "Category " + categories.getCategoryName() + " was chosen", Toast.LENGTH_SHORT).show();
-                txtChosenCategory.setText(categories.getCategoryName());
-                selectedCategoryId = position;
-            }
-        });
+//        adapter.setOnItemClickListener(new CategoriesAdapter.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(Categories categories, int position) {
+//                Toast.makeText(getApplicationContext(), "Category " + categories.getCategoryName() + " was chosen", Toast.LENGTH_SHORT).show();
+//                txtChosenCategory.setText(categories.getCategoryName());
+//                selectedCategoryId = position;
+//            }
+//        });
 
 
         // Actions for user creating new category
-        btn_open_category_input.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(NewRecord.this);
-                final View new_categ_layout = getLayoutInflater().inflate(R.layout.user_category_input_layout, null);
-                builder.setView(new_categ_layout);
 
-                builder.setPositiveButton("Create", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        EditText cat_name_input = new_categ_layout.findViewById(R.id.category_input);
-                        if (cat_name_input.getText().toString().length() != 0) {
-                            Toast.makeText(NewRecord.this, "Your category was created", Toast.LENGTH_SHORT).show();
-                            Categories newRecord = new Categories(cat_name_input.getText().toString(), R.drawable.car);
-                            categoriesList.add(newRecord);
-
-                            settings.saveRecordList(categoriesList);
-                            adapter.notifyDataSetChanged();
-                        } else {
-                            Toast.makeText(NewRecord.this, "Category name can't be empty. Try again", Toast.LENGTH_SHORT).show();
-
-                        }
-                    }
-                });
-                builder.setNegativeButton("Cancel", (dialog, which) -> {
-                    Toast.makeText(NewRecord.this, "", Toast.LENGTH_SHORT);
-                });
-
-                builder.setTitle("New Category");
-                builder.setMessage("Add your new category");
-
-
-                AlertDialog dialog = builder.create();
-                dialog.show();
-            }
-        });
 
         btnExpense.setOnClickListener(view -> {
             btnExpense.setBackgroundColor(Color.rgb(153, 50, 204));
@@ -170,8 +158,8 @@ public class NewRecord extends AppCompatActivity {
             selectedRecordType=RecordTypeKey.I;
 //                txtAccountChoose.setText("Account");
         });
-        btnAddRecord.setOnClickListener(v -> {
 
+        btnAddRecord.setOnClickListener(v -> {
             DateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
             Date todayDate = new Date();
             String date = formater.format(todayDate);
@@ -264,4 +252,21 @@ public class NewRecord extends AppCompatActivity {
             super.onBackPressed();
         }
     }
+
+    public void openCreateCategoryPage(View v) {
+        startActivity(new Intent(NewRecord.this, CreateCategory.class));
+    }
+
+//    void displayData(ArrayList<Category> arrayList) {
+//        Cursor cursor = myDB.readCategory();
+//            if (cursor.getCount() == 0) {
+//                Toast.makeText(this, "No category found", Toast.LENGTH_SHORT).show();
+//            } else {
+//                while (cursor.moveToNext()) {
+//                    String name = cursor.getString(0);
+//                    int imgNumber = cursor.getInt(1);
+//                    arrayList.add(new Category(name, imgNumber));
+//                }
+//            }
+//    }
 }

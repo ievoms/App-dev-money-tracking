@@ -18,11 +18,11 @@ import java.util.ArrayList;
 
 public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.CategoriesHolder> {
 
-    private ArrayList<Categories> categoriesList;
+    private ArrayList<Category> categoriesList;
     private Context context;
     private OnItemClickListener listener;
 
-    public CategoriesAdapter(ArrayList<Categories> categoriesList, Context context) {
+    public CategoriesAdapter(ArrayList<Category> categoriesList, Context context) {
         this.categoriesList = categoriesList;
         this.context = context;
     }
@@ -36,8 +36,8 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
 
     @Override
     public void onBindViewHolder(@NonNull CategoriesHolder holder, int position) {
-        Categories categories = categoriesList.get(position);
-        holder.setData(categories);
+        Category category = categoriesList.get(position);
+        holder.setData(category);
     }
 
     @Override
@@ -51,8 +51,8 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
 
         public CategoriesHolder(@NonNull View itemView) {
             super(itemView);
-            categoryName = (TextView) itemView.findViewById(R.id.categories_item_name);
-            categoryImage = (ImageView) itemView.findViewById(R.id.categories_item_image);
+//            categoryName = (TextView) itemView.findViewById(R.id.categories_item_name);
+//            categoryImage = (ImageView) itemView.findViewById(R.id.categories_item_image);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -66,14 +66,14 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
             });
         }
 
-        public void setData(Categories categories) {
-            this.categoryName.setText(categories.getCategoryName());
-            this.categoryImage.setBackgroundResource(categories.getCategoryImg());
+        public void setData(Category categories) {
+            this.categoryName.setText(categories.getName());
+            this.categoryImage.setBackgroundResource(categories.getImage());
         }
     }
 
     public interface OnItemClickListener {
-        void onItemClick(Categories categories, int position);
+        void onItemClick(Category categories, int position);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
