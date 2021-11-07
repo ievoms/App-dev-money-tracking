@@ -139,7 +139,7 @@ public class All_records extends AppCompatActivity
 
     public void set_adapters()
     {
-        Expanse_list_adapter adapter_exp = new Expanse_list_adapter(filtered_records);
+        Expanse_list_adapter adapter_exp = new Expanse_list_adapter(All_records.this,filtered_records);
         RecyclerView.LayoutManager layout_manager2 = new LinearLayoutManager(getApplicationContext());
         Records_recycler.setLayoutManager(layout_manager2);
         Records_recycler.setItemAnimator(new DefaultItemAnimator());

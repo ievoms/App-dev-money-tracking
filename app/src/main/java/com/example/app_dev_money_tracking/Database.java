@@ -103,28 +103,6 @@ public class Database extends SQLiteOpenHelper {
         return records;
     }
 
-    public List<RecordsModel> getRecordsFiltered( String _date) {
-        List<RecordsModel> records = new ArrayList<>();
-        SQLiteDatabase db = this.getReadableDatabase();
-        String queryString = "SELECT * FROM " + RECORDS_TABLE + " WHERE " + COLUMN_DATE + " >= " + _date ;
-        Cursor cursor = db.rawQuery(queryString, null);
-        if (cursor.moveToFirst()) {
-            do {
-                int recordsId = cursor.getInt(0);
-                int amount = cursor.getInt(1);
-                String date = cursor.getString(2);
-                int categoryId = cursor.getInt(3);
-                String recordType = cursor.getString(4);
-                RecordTypeKey recordEnum = RecordTypeKey.valueOf(recordType);
-                RecordsModel newRecord = new RecordsModel(recordsId, amount, date, categoryId, recordEnum);
-                records.add(newRecord);
-            } while (cursor.moveToNext());
-        } else return null;
-        cursor.close();
-        db.close();
-        return records;
-    }
-
     public boolean addUser(UserModel userModel) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
