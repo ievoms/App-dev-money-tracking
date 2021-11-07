@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class CategoriesActivity extends AppCompatActivity {
     private LinearLayout category_text_linear;
@@ -25,7 +26,7 @@ public class CategoriesActivity extends AppCompatActivity {
     private RecyclerView categoryRecycler;
     private CategoriesAdapter adapter;
 
-    private ArrayList<Categories> categoriesList;
+    private List<Categories> categoriesList;
     private DrawerLayout drawer;
 
     @Override
@@ -38,10 +39,10 @@ public class CategoriesActivity extends AppCompatActivity {
         UserModel user = db.getUserByEmail(settings.getUserEmail());
 
         categoryRecycler = findViewById(R.id.recViewCategories);
-        categoriesList = settings.retrieveRecordList();
-        if (categoriesList == null) {
-            categoriesList = Categories.getData(this);
-        }
+        categoriesList = db.getCategories();
+//        if (categoriesList == null) {
+//            categoriesList = Categories.getData(this);
+//        }
         adapter = new CategoriesAdapter(categoriesList, this);
         categoryRecycler.setHasFixedSize(true);
         LinearLayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);

@@ -41,6 +41,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class NewRecord extends AppCompatActivity {
 
@@ -56,9 +57,9 @@ public class NewRecord extends AppCompatActivity {
     private RecyclerView categoryRecycler;
     private CategoriesAdapter adapter;
 
-    private ArrayList<Categories> categoriesList;
+    private List<Categories> categoriesList;
     private DrawerLayout drawer;
-    private int selectedCategoryId = 0;
+    private int selectedCategoryId =-1;
     private RecordTypeKey selectedRecordType = RecordTypeKey.E;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -93,10 +94,10 @@ public class NewRecord extends AppCompatActivity {
 
 
         categoryRecycler = (RecyclerView) findViewById(R.id.CategoriesRecycle);
-        categoriesList = settings.retrieveRecordList();
-        if (categoriesList == null) {
-            categoriesList = Categories.getData(this);
-        }
+        categoriesList = db.getCategories();
+//        if (categoriesList == null) {
+//            categoriesList = Categories.getData(this);
+//        }
         adapter = new CategoriesAdapter(categoriesList, this);
         categoryRecycler.setHasFixedSize(true);
         LinearLayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -108,7 +109,7 @@ public class NewRecord extends AppCompatActivity {
             public void onItemClick(Categories categories, int position) {
                 Toast.makeText(getApplicationContext(), "Category " + categories.getCategoryName() + " was chosen", Toast.LENGTH_SHORT).show();
                 txtChosenCategory.setText(categories.getCategoryName());
-                selectedCategoryId = position;
+                selectedCategoryId = position+1;
             }
         });
 
@@ -127,10 +128,11 @@ public class NewRecord extends AppCompatActivity {
                         EditText cat_name_input = new_categ_layout.findViewById(R.id.category_input);
                         if (cat_name_input.getText().toString().length() != 0) {
                             Toast.makeText(NewRecord.this, "Your category was created", Toast.LENGTH_SHORT).show();
-                            Categories newRecord = new Categories(cat_name_input.getText().toString(), R.drawable.car);
-                            categoriesList.add(newRecord);
+                            Categories newCategory = new Categories(-1,cat_name_input.getText().toString(), R.drawable.car);
 
-                            settings.saveRecordList(categoriesList);
+                            categoriesList.add(newCategory);
+                            db.addCategory(newCategory);
+//                            categoriesList = db.getCategories();
                             adapter.notifyDataSetChanged();
                         } else {
                             Toast.makeText(NewRecord.this, "Category name can't be empty. Try again", Toast.LENGTH_SHORT).show();
@@ -179,13 +181,18 @@ public class NewRecord extends AppCompatActivity {
             String date = formater.format(todayDate);
             String amountString = editTxtAmount.getText().toString();
             if (!amountString.equals("") || amountString.equals(null)) {
-                Database recordsDB = new Database(NewRecord.this);
-                RecordsModel newRecord = new RecordsModel(-1, Integer.parseInt(amountString), date, selectedCategoryId, selectedRecordType, user.getCurrency());
-                boolean successfullInsert = recordsDB.addRecord(newRecord);
-                if (successfullInsert) {
-                    startActivity(new Intent(NewRecord.this, Home_activity.class));
-                } else {
-                    Toast.makeText(NewRecord.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                if(selectedCategoryId>=0) {
+                    Database recordsDB = new Database(NewRecord.this);
+                    RecordsModel newRecord = new RecordsModel(-1, Integer.parseInt(amountString), date, selectedCategoryId, selectedRecordType, user.getCurrency());
+                    boolean successfullInsert = recordsDB.addRecord(newRecord);
+                    if (successfullInsert) {
+                        startActivity(new Intent(NewRecord.this, Home_activity.class));
+                    } else {
+                        Toast.makeText(NewRecord.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                    }
+                }else{
+
+                    error.setText("You must choose a category");
                 }
             } else {
                 error.setText("Amount field can not be blank");

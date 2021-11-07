@@ -5,15 +5,27 @@ import android.content.Context;
 import java.util.ArrayList;
 
 public class Categories {
+    private int id;
     private String categoryName;
     private int categoryImg;
 
-    public Categories() {}
+    public Categories() {
+    }
 
-    public Categories(String categoryName, int categoryImg) {
+    public Categories(int id, String categoryName, int categoryImg) {
+        this.id = id;
         this.categoryName = categoryName;
         this.categoryImg = categoryImg;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getCategoryName() {
         return categoryName;
     }
@@ -33,11 +45,11 @@ public class Categories {
     static public ArrayList<Categories> getData(Context ctx) {
         ArrayList<Categories> categoriesList = new ArrayList<Categories>();
         String[] categories = {"Food & Drinks", "Shopping", "Housing", "Transportation", "Vehicle", "Entertainment", "Medical",
-                "Investments", };
+                "Investments",};
         int[] images = {R.drawable.cutlery, R.drawable.shoppingbag, R.drawable.home, R.drawable.bus,
                 R.drawable.car, R.drawable.entertainment, R.drawable.healthinsurance, R.drawable.investment};
 
-        for(int i=0; i<categories.length; i++) {
+        for (int i = 0; i < categories.length; i++) {
             Categories category = new Categories();
             category.setCategoryName(categories[i]);
             category.setCategoryImg(images[i]);

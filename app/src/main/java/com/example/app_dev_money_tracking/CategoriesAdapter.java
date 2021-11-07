@@ -15,14 +15,15 @@ import com.example.app_dev_money_tracking.Categories;
 import com.example.app_dev_money_tracking.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.CategoriesHolder> {
 
-    private ArrayList<Categories> categoriesList;
+    private List<Categories> categoriesList;
     private Context context;
     private OnItemClickListener listener;
 
-    public CategoriesAdapter(ArrayList<Categories> categoriesList, Context context) {
+    public CategoriesAdapter(List<Categories> categoriesList, Context context) {
         this.categoriesList = categoriesList;
         this.context = context;
     }
@@ -42,7 +43,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
 
     @Override
     public int getItemCount() {
-        return categoriesList.size();
+        return categoriesList == null ? 0 :  categoriesList.size();
     }
 
     class CategoriesHolder extends RecyclerView.ViewHolder {

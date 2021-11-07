@@ -50,7 +50,6 @@ public class PremiumContent extends AppCompatActivity {
                 } else {
                     Toast.makeText(PremiumContent.this, "Something went wrong", Toast.LENGTH_SHORT).show();
                 }
-
             } else {
                 user.setAdmin(0);
                 boolean updated = db.updateUser(user);
@@ -61,7 +60,6 @@ public class PremiumContent extends AppCompatActivity {
                 } else {
                     Toast.makeText(PremiumContent.this, "Something went wrong", Toast.LENGTH_SHORT).show();
                 }
-
             }
         });
 

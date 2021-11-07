@@ -12,10 +12,12 @@ import androidx.annotation.Nullable;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Database extends SQLiteOpenHelper {
     public static final String RECORDS_TABLE = "RECORDS_TABLE";
+    public static final String CATEGORIES_TABLE = "CATEGORIES_TABLE";
     public static final String COLUMN_ID = "ID";
     public static final String COLUMN_AMOUNT = "AMOUNT";
     public static final String COLUMN_DATE = "DATE";
@@ -27,6 +29,8 @@ public class Database extends SQLiteOpenHelper {
     public static final String COLUMN_BALANCE = "BALANCE";
     public static final String COLUMN_ADMIN = "ADMIN";
     public static final String COLUMN_CURRENCY = "CURRENCY";
+    public static final String COLUMN_IMAGE = "IMAGE";
+    public static final String COLUMN_NAME = "NAME";
 
     private static final String CREATE_TABLE_LOGIN = "CREATE TABLE IF NOT EXISTS " + LOGIN_TABLE +
             " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -44,6 +48,11 @@ public class Database extends SQLiteOpenHelper {
             COLUMN_RECORD_TYPE + " INTEGER, " +
             COLUMN_CURRENCY + " TEXT )";
 
+    private static final String CREATE_TABLE_CATEGORIES = "CREATE TABLE IF NOT EXISTS " + CATEGORIES_TABLE +
+            " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            COLUMN_NAME + " TEXT, " +
+            COLUMN_IMAGE + " INTEGER )";
+
     public Database(@Nullable Context context) {
         super(context, "moneyApp.db", null, 1);
     }
@@ -52,6 +61,7 @@ public class Database extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_TABLE_LOGIN);
         db.execSQL(CREATE_TABLE_RECORDS);
+        db.execSQL(CREATE_TABLE_CATEGORIES);
     }
 
     public boolean addRecord(RecordsModel record) {
@@ -100,7 +110,7 @@ public class Database extends SQLiteOpenHelper {
         contentValues.put(COLUMN_LOGIN_PASSWORD, userModel.getPassword());
         contentValues.put(COLUMN_BALANCE, 0);
         contentValues.put(COLUMN_ADMIN, 0);
-        contentValues.put(COLUMN_CURRENCY,userModel.getCurrency());
+        contentValues.put(COLUMN_CURRENCY, userModel.getCurrency());
         long insert = db.insert(LOGIN_TABLE, null, contentValues);
         if (insert == -1) {
             return false;
@@ -134,8 +144,58 @@ public class Database extends SQLiteOpenHelper {
                 int balance = cursor.getInt(cursor.getColumnIndex(COLUMN_BALANCE));
                 int admin = cursor.getInt(cursor.getColumnIndex(COLUMN_ADMIN));
                 String currency = cursor.getString(cursor.getColumnIndex(COLUMN_CURRENCY));
-                UserModel user = new UserModel(id, email, password, balance,admin, currency);
+                UserModel user = new UserModel(id, email, password, balance, admin, currency);
                 return user;
+            } else return null;
+        } else return null;
+    }
+
+    public boolean addCategory(Categories category) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COLUMN_NAME, category.getCategoryName());
+        contentValues.put(COLUMN_IMAGE, category.getCategoryImg());
+
+        long insert = db.insert(CATEGORIES_TABLE, null, contentValues);
+        if (insert == -1) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public List<Categories> getCategories() {
+        List<Categories> categories = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String queryString = "SELECT * FROM " + CATEGORIES_TABLE;
+        Cursor cursor = db.rawQuery(queryString, null);
+        if (cursor.moveToFirst()) {
+            do {
+                int id = cursor.getInt(0);
+                String name = cursor.getString(1);
+                int image = cursor.getInt(2);
+                Categories newCategory = new Categories(id, name, image);
+                categories.add(newCategory);
+            } while (cursor.moveToNext());
+        } else return new ArrayList<>();
+        cursor.close();
+        db.close();
+        return categories;
+    }
+
+    public Categories getCategoryById(int categoryId) {
+        Categories category;
+        SQLiteDatabase db = this.getReadableDatabase();
+        String queryString = "SELECT * FROM " + CATEGORIES_TABLE + " WHERE " + COLUMN_ID + " = '" + categoryId + "'";
+        Cursor cursor = db.rawQuery(queryString, null);
+        cursor.moveToFirst();
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                int id = cursor.getInt(0);
+                String name = cursor.getString(1);
+                int image = cursor.getInt(2);
+                category = new Categories(id, name, image);
+                return category;
             } else return null;
         } else return null;
     }
@@ -145,6 +205,7 @@ public class Database extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + LOGIN_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + RECORDS_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + CATEGORIES_TABLE);
         onCreate(db);
     }
 }
