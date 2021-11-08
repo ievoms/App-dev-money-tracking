@@ -18,15 +18,18 @@ import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 
+import java.util.ArrayList;
+
 public class Convert_currency_activity extends AppCompatActivity
 {
     ArrayAdapter<String> currencies;
     Spinner cur_from;
-    Spinner cur_to, changeCurrencySelect;
+    Spinner cur_to, changeCurrencySelect,chooseCurrency;
     Button Btn_convert, changeCurrencyButton;
     TextView Txt_cur_from;
     TextView Txt_cur_to;
     private DrawerLayout drawer;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +43,7 @@ public class Convert_currency_activity extends AppCompatActivity
         Btn_convert = findViewById(R.id.Btn_convert);
         Txt_cur_from = findViewById(R.id.Txt_conv_from);
         Txt_cur_to = findViewById(R.id.Txt_conv_to);
+        chooseCurrency= findViewById(R.id.chooseCurrency);
 
         currencies = new ArrayAdapter<>(Convert_currency_activity.this,
                 android.R.layout.simple_list_item_1,
@@ -49,6 +53,12 @@ public class Convert_currency_activity extends AppCompatActivity
         cur_from.setAdapter(currencies);
         cur_to.setAdapter(currencies);
         changeCurrencySelect.setAdapter(currencies);
+
+        ArrayAdapter<String> chooseCurAdapter = new ArrayAdapter<>(Convert_currency_activity.this,
+                android.R.layout.simple_list_item_1,
+                new String[]{ "exchangerate","nocodeapi"});
+        chooseCurAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        chooseCurrency.setAdapter(chooseCurAdapter);
 
         User_settings settings = User_settings.instanciate("user1", getApplicationContext());
         Database db = new Database(this);
@@ -63,12 +73,20 @@ public class Convert_currency_activity extends AppCompatActivity
 
         Btn_convert.setOnClickListener(v -> {
             String[] currency_codes = getResources().getStringArray(R.array.currency);
+
+            int api = chooseCurrency.getSelectedItemPosition();
             String value_from = currency_codes[cur_from.getSelectedItemPosition()];
             String value_to = currency_codes[cur_to.getSelectedItemPosition()];
             ;
             Currency_conversion_data curr = new Currency_conversion_data(Convert_currency_activity.this);
             Double amount = Double.parseDouble(Txt_cur_from.getText().toString());
-            double converted = curr.convert(value_from, value_to, amount);
+            double converted=0;
+            if(api == 0){
+                converted = curr.convert(value_from, value_to, amount);
+            }else{
+                converted = curr.convert2(value_from, value_to, amount);
+            }
+
             Txt_cur_to.setText(converted + "");
         });
 

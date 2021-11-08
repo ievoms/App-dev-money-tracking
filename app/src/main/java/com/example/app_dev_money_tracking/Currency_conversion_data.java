@@ -28,6 +28,8 @@ class Currency_conversion_data
     double amount;
     LoadingDialog ldialog;
     Context ctx;
+    int apiId;
+
 
     private class get_data_async extends AsyncTask<String, String, String>
     {
@@ -45,6 +47,7 @@ class Currency_conversion_data
         this.ctx = ctx;
         ldialog = new LoadingDialog(ctx);
         ldialog.setCanceledOnTouchOutside(false);
+//        this.apiId=apiId;
     }
 
     public double convert(String codeFrom, String codeTo, double amount)
@@ -55,6 +58,36 @@ class Currency_conversion_data
         this.amount = amount;
         url_to_execute = "https://api.exchangerate.host/convert?from="
                 + codeFrom + "&to=" + codeTo + "&amount=" + amount;
+        get_data_async async_data = new get_data_async();
+        JSONObject jsonObject = null;
+        try {
+            String js = async_data.execute().get();
+            try {
+                jsonObject = new JSONObject(js);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            try {
+                double a = jsonObject.getDouble("result");
+                res = a;
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+        ldialog.dismiss();
+        return res;
+    }
+    public double convert2(String codeFrom, String codeTo, double amount)
+    {
+
+        ldialog.show();
+        this.codeTo = codeTo;
+        this.codeFrom = codeFrom;
+        this.amount = amount;
+        url_to_execute = "https://v1.nocodeapi.com/ievoms/cx/vODhAKUkQmtWbRmv/rates/convert?"+
+        "&amount=" + amount+"&from="+ codeFrom + "&to=" + codeTo ;
         get_data_async async_data = new get_data_async();
         JSONObject jsonObject = null;
         try {
