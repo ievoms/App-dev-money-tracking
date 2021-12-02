@@ -14,6 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.App_dev_money_tracking">
         <activity
+            android:name=".splash"
+            android:exported="false" />
+        <activity
             android:name=".All_records"
             android:exported="false" />
         <activity
@@ -31,7 +34,8 @@
         <activity
             android:name=".NewRecord"
             android:exported="true"
-            android:label="Add new record" />
+            android:label="Add new record"
+            android:parentActivityName=".Home_activity" />
         <activity
             android:name=".Home_activity"
             android:exported="true"

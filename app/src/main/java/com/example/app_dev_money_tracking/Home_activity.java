@@ -11,9 +11,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.DatePickerDialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -57,7 +60,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class Home_activity extends AppCompatActivity {
+public class Home_activity extends AppCompatActivity
+{
     private PieChart pieChart;
     private List<RecordsModel> records;
     private RecyclerView Records_recycler;
@@ -73,11 +77,17 @@ public class Home_activity extends AppCompatActivity {
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
         user_settings = User_settings.instanciate("user1", this);
+//      Create notification channel
+        createNotificationChannel("TrackReminder",
+                "Notifications from money tracking app",
+                Notification.CHANNEL_ID);
+
         db = new Database(this);
         user = db.getUserByEmail(user_settings.getUserEmail());
         int balance = user.getBalance();
@@ -110,6 +120,9 @@ public class Home_activity extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
+                //Call notification
+                Notification.ShowNotification("Smart wallet", "Don't forget to track your daily finances!",
+                        NewRecord.class,Notification.notificationID,getApplicationContext());
                 startActivity(new Intent(Home_activity.this, All_records.class));
             }
         });
@@ -171,7 +184,8 @@ public class Home_activity extends AppCompatActivity {
 
     }
 
-    private int calculateCurrentBalance(List<RecordsModel> records, int balance) {
+    private int calculateCurrentBalance(List<RecordsModel> records, int balance)
+    {
         int expences = 0;
         int intakes = 0;
         NumberFormat formatter = new DecimalFormat("#0.00");
@@ -197,13 +211,14 @@ public class Home_activity extends AppCompatActivity {
         return balance;
     }
 
-    private View.OnClickListener onAddRecordButtonClick() {
+    private View.OnClickListener onAddRecordButtonClick()
+    {
         return v -> startActivity(new Intent(Home_activity.this, NewRecord.class));
     }
 
 
-
-    private void setAdapters() {
+    private void setAdapters()
+    {
         Expanse_list_adapter adapter_exp = new Expanse_list_adapter(Home_activity.this, records);
         RecyclerView.LayoutManager layout_manager2 = new LinearLayoutManager(getApplicationContext());
         Records_recycler.setLayoutManager(layout_manager2);
@@ -212,7 +227,8 @@ public class Home_activity extends AppCompatActivity {
     }
 
 
-    private void SetupPieChart() {
+    private void SetupPieChart()
+    {
         pieChart.setDrawHoleEnabled(true);
         pieChart.setUsePercentValues(true);
         pieChart.setDrawEntryLabels(false);
@@ -236,7 +252,8 @@ public class Home_activity extends AppCompatActivity {
         l.setEnabled(true);
     }
 
-    private void loadData() {
+    private void loadData()
+    {
         List<Categories> categories = db.getCategories();
         ArrayList<PieEntry> entries = new ArrayList<>();
         if (records != null) {
@@ -275,9 +292,11 @@ public class Home_activity extends AppCompatActivity {
         pieChart.setData(data);
         pieChart.invalidate();
         pieChart.animateY(1400, Easing.EaseInOutQuad);
-        pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+        pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener()
+        {
             @Override
-            public void onValueSelected(Entry e, Highlight h) {
+            public void onValueSelected(Entry e, Highlight h)
+            {
                 ArrayList<RecordsModel> records2 = new ArrayList<>();
                 int hIndex = (int) h.getX();
                 PieEntry entry = entries.get(hIndex);
@@ -296,19 +315,37 @@ public class Home_activity extends AppCompatActivity {
             }
 
             @Override
-            public void onNothingSelected() {
+            public void onNothingSelected()
+            {
 
             }
         });
     }
 
     @Override
-    public void onBackPressed() {
+    public void onBackPressed()
+    {
 
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
+        }
+    }
+
+    //Creating a channel for Notifications
+    private void createNotificationChannel(String channel_name, String channel_description, String CHANNEL_ID)
+    {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = channel_name;
+            String description = channel_description;
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
         }
     }
 
