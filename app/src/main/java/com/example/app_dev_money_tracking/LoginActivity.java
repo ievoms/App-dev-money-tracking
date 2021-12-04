@@ -106,8 +106,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private OnClickListener onLoginButtonClick() {
         return v -> {
-            startActivity(new Intent(LoginActivity.this, splash.class));
-//            onLoginButtonFunction(v);
+//            startActivity(new Intent(LoginActivity.this, splash.class));
+            onLoginButtonFunction(v);
         };
     }
 
@@ -123,7 +123,7 @@ public class LoginActivity extends AppCompatActivity {
             if (userModel != null) {
                 if (userModel.getPassword().equals(password)) {
                     settings.setUserEmail(email);
-                    startActivity(new Intent(LoginActivity.this, Home_activity.class));
+                    startActivity(new Intent(LoginActivity.this, splash.class));
                     finish();
                 } else {
                     Toast.makeText(LoginActivity.this, "Password is incorrect", Toast.LENGTH_SHORT).show();
@@ -221,7 +221,7 @@ public class LoginActivity extends AppCompatActivity {
                     db.addUser(user);
                     settings.setUserEmail(email);
                 }
-                startActivity(new Intent(LoginActivity.this, Home_activity.class));
+                startActivity(new Intent(LoginActivity.this, splash.class));
                 finish();
 
             }
