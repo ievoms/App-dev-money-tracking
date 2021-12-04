@@ -75,7 +75,7 @@ public class SignUpActivity extends AppCompatActivity {
                     if (db.getUserByEmail(email) == null) {
                         Locale locale = Locale.getDefault();
                         Currency currency = Currency.getInstance(locale);
-                        UserModel userModel = new UserModel(-1, email, password,0,0,currency.toString());
+                        UserModel userModel = new UserModel(-1, email, password,0,0,"",currency.toString());
                         boolean successFullInsert = db.addUser(userModel);
                         if (successFullInsert) {
                             startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
