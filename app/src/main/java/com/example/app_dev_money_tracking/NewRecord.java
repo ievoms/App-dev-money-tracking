@@ -35,6 +35,7 @@ import android.widget.Toast;
 
 import com.example.app_dev_money_tracking.RecordTypeModel.RecordTypeKey;
 import com.google.android.material.navigation.NavigationView;
+import com.squareup.picasso.Picasso;
 
 import java.text.DateFormat;
 import java.text.Format;
@@ -255,6 +256,12 @@ public class NewRecord extends AppCompatActivity {
         View header = navigationView.getHeaderView(0);
         TextView emailDisplay = header.findViewById(R.id.userEmailDisplay);
         User_settings user_settings = User_settings.instanciate("user1", this);
+        ImageView imageDisplay = header.findViewById(R.id.userImageDisplay);
+        String facebookId= db.getUserByEmail(user_settings.getUserEmail()).getFbid();
+        if(!facebookId.equals("")){
+
+            Picasso.get().load("https://graph.facebook.com/"+facebookId+"/picture?type=large").into(imageDisplay);
+        }
         emailDisplay.setText(user_settings.getUserEmail());
         navigationView.setNavigationItemSelectedListener(item -> {
             switch (item.getItemId()) {
@@ -276,6 +283,9 @@ public class NewRecord extends AppCompatActivity {
                     break;
                 case R.id.nav_tryPremium:
                     startActivity(new Intent(NewRecord.this, PremiumContent.class));
+                    break;
+                case R.id.nav_logout:
+                    startActivity(new Intent(NewRecord.this, Logout.class));
                     break;
             }
             return true;

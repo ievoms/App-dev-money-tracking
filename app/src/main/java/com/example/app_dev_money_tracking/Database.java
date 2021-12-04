@@ -28,6 +28,7 @@ public class Database extends SQLiteOpenHelper {
     public static final String COLUMN_LOGIN_PASSWORD = "LOGIN_PASSWORD";
     public static final String COLUMN_BALANCE = "BALANCE";
     public static final String COLUMN_ADMIN = "ADMIN";
+    public static final String COLUMN_THIRD_PARTY_LOGIN = "THIRD_PARTY_LOGIN";
     public static final String COLUMN_CURRENCY = "CURRENCY";
     public static final String COLUMN_IMAGE = "IMAGE";
     public static final String COLUMN_NAME = "NAME";
@@ -38,6 +39,7 @@ public class Database extends SQLiteOpenHelper {
             COLUMN_LOGIN_PASSWORD + " TEXT, " +
             COLUMN_ADMIN + " INTEGER DEFAULT 0, " +
             COLUMN_BALANCE + " INTEGER, " +
+            COLUMN_THIRD_PARTY_LOGIN + " INTEGER, " +
             COLUMN_CURRENCY + " TEXT )";
 
     private static final String CREATE_TABLE_RECORDS = "CREATE TABLE IF NOT EXISTS " + RECORDS_TABLE +
@@ -110,6 +112,7 @@ public class Database extends SQLiteOpenHelper {
         contentValues.put(COLUMN_LOGIN_PASSWORD, userModel.getPassword());
         contentValues.put(COLUMN_BALANCE, 0);
         contentValues.put(COLUMN_ADMIN, 0);
+        contentValues.put(COLUMN_THIRD_PARTY_LOGIN, userModel.getFbid());
         contentValues.put(COLUMN_CURRENCY, userModel.getCurrency());
         long insert = db.insert(LOGIN_TABLE, null, contentValues);
         if (insert == -1) {
@@ -126,6 +129,7 @@ public class Database extends SQLiteOpenHelper {
         contentValues.put(COLUMN_LOGIN_PASSWORD, user.getPassword());
         contentValues.put(COLUMN_BALANCE, user.getBalance());
         contentValues.put(COLUMN_ADMIN, user.getAdmin());
+        contentValues.put(COLUMN_ADMIN, user.getFbid());
         contentValues.put(COLUMN_CURRENCY, user.getCurrency());
         int affectedRows = db.update(LOGIN_TABLE, contentValues, "ID = " + user.getId(), null);
         return affectedRows == 0 ? false : true;
@@ -143,8 +147,9 @@ public class Database extends SQLiteOpenHelper {
                 String password = cursor.getString(cursor.getColumnIndex(COLUMN_LOGIN_PASSWORD));
                 int balance = cursor.getInt(cursor.getColumnIndex(COLUMN_BALANCE));
                 int admin = cursor.getInt(cursor.getColumnIndex(COLUMN_ADMIN));
+                String fbId = cursor.getString(cursor.getColumnIndex(COLUMN_THIRD_PARTY_LOGIN));
                 String currency = cursor.getString(cursor.getColumnIndex(COLUMN_CURRENCY));
-                UserModel user = new UserModel(id, email, password, balance, admin, currency);
+                UserModel user = new UserModel(id, email, password, balance, admin,fbId, currency);
                 return user;
             } else return null;
         } else return null;

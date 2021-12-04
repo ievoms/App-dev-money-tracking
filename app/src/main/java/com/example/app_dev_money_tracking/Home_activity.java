@@ -19,6 +19,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,6 +45,7 @@ import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.material.navigation.NavigationView;
+import com.squareup.picasso.Picasso;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -137,6 +139,12 @@ public class Home_activity extends AppCompatActivity {
         navigationView.setCheckedItem(R.id.nav_home);
         View header = navigationView.getHeaderView(0);
         TextView emailDisplay = header.findViewById(R.id.userEmailDisplay);
+        ImageView imageDisplay = header.findViewById(R.id.userImageDisplay);
+        String facebookId= db.getUserByEmail(user_settings.getUserEmail()).getFbid();
+        if(!facebookId.equals("")){
+
+            Picasso.get().load("https://graph.facebook.com/"+facebookId+"/picture?type=large").into(imageDisplay);
+        }
         emailDisplay.setText(user_settings.getUserEmail());
         navigationView.setNavigationItemSelectedListener(item -> {
             switch (item.getItemId()) {
@@ -158,6 +166,9 @@ public class Home_activity extends AppCompatActivity {
                     break;
                 case R.id.nav_tryPremium:
                     startActivity(new Intent(Home_activity.this, PremiumContent.class));
+                    break;
+                case R.id.nav_logout:
+                    startActivity(new Intent(Home_activity.this, Logout.class));
                     break;
             }
             return true;

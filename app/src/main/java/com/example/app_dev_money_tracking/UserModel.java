@@ -6,15 +6,18 @@ public class UserModel {
     private String password;
     private int balance;
     private int admin;
+    private String fbid;
     private String currency;
 
-    public UserModel(int id, String email, String password, int balance, int admin,String currency) {
+
+    public UserModel(int id, String email, String password, int balance, int admin, String fbid, String currency) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.balance = balance;
-        this.admin=admin;
-        this.currency=currency;
+        this.admin = admin;
+        this.fbid = fbid;
+        this.currency = currency;
     }
 
     public int getId() {
@@ -63,5 +66,13 @@ public class UserModel {
 
     public void setCurrency(String currency) {
         this.currency = currency;
+    }
+
+    public String getFbid() {
+        return fbid;
+    }
+
+    public void setFbid(String fbid) {
+        this.fbid = fbid;
     }
 }
