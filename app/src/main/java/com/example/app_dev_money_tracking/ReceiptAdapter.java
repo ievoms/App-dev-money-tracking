@@ -1,6 +1,8 @@
 package com.example.app_dev_money_tracking;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,11 +11,11 @@ import android.widget.ImageView;
 
 import java.util.ArrayList;
 
-public class IconAdapter extends BaseAdapter {
+public class ReceiptAdapter extends BaseAdapter {
     Context context;
-    ArrayList<Integer> icons;
+    ArrayList<Bitmap> icons;
     LayoutInflater inflater;
-    public IconAdapter(Context context, ArrayList<Integer> pictures) {
+    public ReceiptAdapter(Context context, ArrayList<Bitmap> pictures) {
         this.context = context;
         this.icons = pictures;
     }
@@ -40,7 +42,7 @@ public class IconAdapter extends BaseAdapter {
             view = inflater.inflate(R.layout.icon_layout, viewGroup, false);
         }
         ImageView imageView = view.findViewById(R.id.categoryIcon);
-        imageView.setImageResource(icons.get(i));
+        imageView.setImageBitmap(Bitmap.createScaledBitmap(icons.get(i), 130, 130, false));
         return view;
     }
 }

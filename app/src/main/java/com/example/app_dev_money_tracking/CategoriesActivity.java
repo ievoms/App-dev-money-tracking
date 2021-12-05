@@ -11,11 +11,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,6 +60,12 @@ public class CategoriesActivity extends AppCompatActivity {
         View header = navigationView.getHeaderView(0);
         TextView emailDisplay = header.findViewById(R.id.userEmailDisplay);
         User_settings user_settings = User_settings.instanciate("user1", this);
+        ImageView imageDisplay = header.findViewById(R.id.userImageDisplay);
+        String facebookId= db.getUserByEmail(user_settings.getUserEmail()).getFbid();
+        if(!facebookId.equals("")){
+
+            Picasso.get().load("https://graph.facebook.com/"+facebookId+"/picture?type=large").into(imageDisplay);
+        }
         emailDisplay.setText(user_settings.getUserEmail());
         navigationView.setNavigationItemSelectedListener(item -> {
             switch (item.getItemId()) {
@@ -77,8 +85,15 @@ public class CategoriesActivity extends AppCompatActivity {
                         startActivity(new Intent(CategoriesActivity.this, Convert_currency_activity.class));
                     }
                     break;
+
+                case R.id.nav_receipts:
+                    startActivity(new Intent(CategoriesActivity.this, ReceiptGallery.class));
+                    break;
                 case R.id.nav_tryPremium:
                     startActivity(new Intent(CategoriesActivity.this, PremiumContent.class));
+                    break;
+                case R.id.nav_logout:
+                    startActivity(new Intent(CategoriesActivity.this, Logout.class));
                     break;
             }
             return true;

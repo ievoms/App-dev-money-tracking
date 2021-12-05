@@ -20,6 +20,10 @@
             android:icon="@drawable/investment"
             android:title="Currency converter" />
         <item
+            android:id="@+id/nav_receipts"
+            android:icon="@drawable/utilities"
+            android:title="Receipts" />
+        <item
             android:id="@+id/nav_tryPremium"
             android:icon="@drawable/investment"
             android:title="Try premium" />

@@ -128,6 +128,9 @@ public class Convert_currency_activity extends AppCompatActivity
                         startActivity(new Intent(Convert_currency_activity.this, Convert_currency_activity.class));
                     }
                     break;
+                case R.id.nav_receipts:
+                    startActivity(new Intent(Convert_currency_activity.this, ReceiptGallery.class));
+                    break;
                 case R.id.nav_tryPremium:
                     startActivity(new Intent(Convert_currency_activity.this, PremiumContent.class));
                     break;

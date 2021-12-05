@@ -6,17 +6,31 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.CallbackManager;
+import com.facebook.FacebookActivity;
+import com.facebook.share.Share;
+import com.facebook.share.ShareApi;
+import com.facebook.share.model.ShareHashtag;
+import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.widget.ShareButton;
+import com.facebook.share.widget.ShareDialog;
 import com.google.android.material.navigation.NavigationView;
+import com.squareup.picasso.Picasso;
 
 public class PremiumContent extends AppCompatActivity {
     private User_settings user_settings;
     private DrawerLayout drawer;
+    Button shareFacebookButton;
+    CallbackManager callbackManager;
+    ShareDialog shareDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,9 +41,27 @@ public class PremiumContent extends AppCompatActivity {
         Database db = new Database(this);
         UserModel user = db.getUserByEmail(user_settings.getUserEmail());
 
-
         TextView Status = findViewById(R.id.premium_user_status);
         Button tryPremiumButton = findViewById(R.id.try_premium_button);
+        shareFacebookButton = findViewById(R.id.share_facebook_Button);
+        callbackManager = CallbackManager.Factory.create();
+        shareDialog = new ShareDialog(this);
+
+
+        shareFacebookButton.setOnClickListener(v -> {
+            if (ShareDialog.canShow(ShareLinkContent.class)) {
+                ShareLinkContent linkContent = new ShareLinkContent.Builder()
+                        .setContentUrl(Uri.parse("https://quizmart.io/"))
+                        .setShareHashtag(new ShareHashtag.Builder()
+                                .setHashtag("#moneyTrackingApp")
+                                .build())
+                        .setQuote("I reached my saving goal for this month. Download money tracking app to make saving money easy")
+                        .build();
+                shareDialog.show(linkContent);
+            }
+        });
+
+
         if (user.getAdmin() == 0) {
             Status.setText("");
             tryPremiumButton.setText("Try now!!!");
@@ -63,7 +95,6 @@ public class PremiumContent extends AppCompatActivity {
             }
         });
 
-
         // Menu navigation
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -73,6 +104,11 @@ public class PremiumContent extends AppCompatActivity {
         navigationView.setCheckedItem(R.id.nav_tryPremium);
         View header = navigationView.getHeaderView(0);
         TextView emailDisplay = header.findViewById(R.id.userEmailDisplay);
+        ImageView imageDisplay = header.findViewById(R.id.userImageDisplay);
+        String facebookId= db.getUserByEmail(user_settings.getUserEmail()).getFbid();
+        if(!facebookId.equals("")){
+            Picasso.get().load("https://graph.facebook.com/"+facebookId+"/picture?type=large").into(imageDisplay);
+        }
         emailDisplay.setText(user_settings.getUserEmail());
         navigationView.setNavigationItemSelectedListener(item -> {
             switch (item.getItemId()) {
@@ -92,8 +128,14 @@ public class PremiumContent extends AppCompatActivity {
                         startActivity(new Intent(PremiumContent.this, Convert_currency_activity.class));
                     }
                     break;
+                case R.id.nav_receipts:
+                    startActivity(new Intent(PremiumContent.this, ReceiptGallery.class));
+                    break;
                 case R.id.nav_tryPremium:
                     startActivity(new Intent(PremiumContent.this, PremiumContent.class));
+                    break;
+                case R.id.nav_logout:
+                    startActivity(new Intent(PremiumContent.this, Logout.class));
                     break;
 
             }
@@ -107,4 +149,5 @@ public class PremiumContent extends AppCompatActivity {
         toggle.syncState();
         //
     }
+
 }

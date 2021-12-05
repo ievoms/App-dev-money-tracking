@@ -57,9 +57,6 @@ public class LoginActivity extends AppCompatActivity {
         return v -> startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
     }
 
-    private OnClickListener onSocialButtonClick() {
-        return v -> Toast.makeText(LoginActivity.this, "Feature coming soon", Toast.LENGTH_SHORT).show();
-    }
 
     private OnClickListener onLoginButtonClick() {
         return v -> {
