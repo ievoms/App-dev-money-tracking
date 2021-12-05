@@ -1,5 +1,6 @@
 package com.example.app_dev_money_tracking;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -136,6 +137,9 @@ public class PremiumContent extends AppCompatActivity {
                     break;
                 case R.id.nav_logout:
                     startActivity(new Intent(PremiumContent.this, Logout.class));
+                    break;
+                case R.id.nav_myPlannedPayments:
+                    startActivity(new Intent(PremiumContent.this, PlannedPayments.class));
                     break;
 
             }

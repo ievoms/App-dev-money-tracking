@@ -12,11 +12,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -29,6 +31,7 @@ public class Convert_currency_activity extends AppCompatActivity
     TextView Txt_cur_from;
     TextView Txt_cur_to;
     private DrawerLayout drawer;
+    User_settings user_settings;
 
 
     @Override
@@ -60,9 +63,9 @@ public class Convert_currency_activity extends AppCompatActivity
         chooseCurAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         chooseCurrency.setAdapter(chooseCurAdapter);
 
-        User_settings settings = User_settings.instanciate("user1", getApplicationContext());
+        user_settings = User_settings.instanciate("user1", getApplicationContext());
         Database db = new Database(this);
-        UserModel user = db.getUserByEmail(settings.getUserEmail());
+        UserModel user = db.getUserByEmail(user_settings.getUserEmail());
 
         // does not work, need to fix
         if (user.getCurrency() != null) {
@@ -109,7 +112,13 @@ public class Convert_currency_activity extends AppCompatActivity
         navigationView.setCheckedItem(R.id.nav_converter);
         View header = navigationView.getHeaderView(0);
         TextView emailDisplay = header.findViewById(R.id.userEmailDisplay);
-        emailDisplay.setText(settings.getUserEmail());
+        ImageView imageDisplay = header.findViewById(R.id.userImageDisplay);
+        String facebookId= db.getUserByEmail(user_settings.getUserEmail()).getFbid();
+        if(!facebookId.equals("")){
+
+            Picasso.get().load("https://graph.facebook.com/"+facebookId+"/picture?type=large").into(imageDisplay);
+        }
+        emailDisplay.setText(user_settings.getUserEmail());
         navigationView.setNavigationItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.nav_home:
@@ -133,6 +142,12 @@ public class Convert_currency_activity extends AppCompatActivity
                     break;
                 case R.id.nav_tryPremium:
                     startActivity(new Intent(Convert_currency_activity.this, PremiumContent.class));
+                    break;
+                case R.id.nav_logout:
+                    startActivity(new Intent(Convert_currency_activity.this, Logout.class));
+                    break;
+                case R.id.nav_myPlannedPayments:
+                    startActivity(new Intent(Convert_currency_activity.this, PlannedPayments.class));
                     break;
             }
             return true;

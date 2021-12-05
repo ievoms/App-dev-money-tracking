@@ -142,7 +142,6 @@ public class NewRecord extends AppCompatActivity {
                 gridView.setAdapter(iconAdapter);
                 builder.setView(categoryLayout);
 
-                System.out.println("==============="+pictures.get(0));
                 final int[] iconId = {pictures.get(0)};
                 gridView.setOnItemClickListener((adapterView, view1, i, l) -> {
                     ImageView image = view1.findViewById(R.id.categoryIcon);
@@ -289,6 +288,9 @@ public class NewRecord extends AppCompatActivity {
                     break;
                 case R.id.nav_logout:
                     startActivity(new Intent(NewRecord.this, Logout.class));
+                    break;
+                case R.id.nav_myPlannedPayments:
+                    startActivity(new Intent(NewRecord.this, PlannedPayments.class));
                     break;
             }
             return true;

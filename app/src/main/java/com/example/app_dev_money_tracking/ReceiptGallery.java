@@ -44,7 +44,7 @@ public class ReceiptGallery extends AppCompatActivity {
         ArrayList<Bitmap> pictures = db.getReceiptsImages();
 
         ReceiptAdapter iconAdapter = new ReceiptAdapter(ReceiptGallery.this, pictures);
-        GridView gridView = findViewById(R.id.simpleGridView);
+        GridView gridView = findViewById(R.id.receiptsGrid);
         gridView.setAdapter(iconAdapter);
         Button photoButton = this.findViewById(R.id.button1);
         photoButton.setOnClickListener(v -> {
@@ -97,6 +97,9 @@ public class ReceiptGallery extends AppCompatActivity {
                     break;
                 case R.id.nav_logout:
                     startActivity(new Intent(ReceiptGallery.this, Logout.class));
+                    break;
+                case R.id.nav_myPlannedPayments:
+                    startActivity(new Intent(ReceiptGallery.this, PlannedPayments.class));
                     break;
             }
             return true;

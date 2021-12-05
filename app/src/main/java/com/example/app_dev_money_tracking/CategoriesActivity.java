@@ -95,6 +95,9 @@ public class CategoriesActivity extends AppCompatActivity {
                 case R.id.nav_logout:
                     startActivity(new Intent(CategoriesActivity.this, Logout.class));
                     break;
+                case R.id.nav_myPlannedPayments:
+                    startActivity(new Intent(CategoriesActivity.this, PlannedPayments.class));
+                    break;
             }
             return true;
         });

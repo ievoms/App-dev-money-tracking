@@ -39,9 +39,9 @@ public class ReceiptAdapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         if(view == null) {
             inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(R.layout.icon_layout, viewGroup, false);
+            view = inflater.inflate(R.layout.receipt, viewGroup, false);
         }
-        ImageView imageView = view.findViewById(R.id.categoryIcon);
+        ImageView imageView = view.findViewById(R.id.receiptImage);
         imageView.setImageBitmap(Bitmap.createScaledBitmap(icons.get(i), 130, 130, false));
         return view;
     }

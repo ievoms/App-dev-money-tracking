@@ -93,26 +93,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <ImageView
-        android:id="@+id/loginFacebookIcon"
-        android:layout_width="65dp"
-        android:layout_height="73dp"
-        android:layout_marginStart="136dp"
-        android:layout_marginTop="44dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/loginButton"
-        app:srcCompat="@mipmap/ic_facebook_foreground" />
 
-    <ImageView
-        android:id="@+id/loginGoogleIcon"
-        android:layout_width="68dp"
-        android:layout_height="70dp"
-        android:layout_marginTop="44dp"
+    <com.facebook.login.widget.LoginButton
+        android:id="@+id/loginFacebookIcon"
+        android:layout_width="220dp"
+        android:layout_height="31dp"
+        android:layout_marginTop="56dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/loginFacebookIcon"
-        app:layout_constraintTop_toBottomOf="@+id/loginButton"
-        app:srcCompat="@mipmap/ic_google_foreground" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/loginButton" />
 
     <TextView
         android:id="@+id/loginEmailError"
@@ -138,7 +127,7 @@
         android:layout_width="174dp"
         android:layout_height="22dp"
         android:layout_marginTop="16dp"
-        android:text="Or Sign In Width"
+        android:text="OR"
         android:textAlignment="center"
         android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
@@ -151,23 +140,23 @@
         style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="94dp"
         android:layout_height="40dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="36dp"
         android:text="Sign Up"
         android:textAllCaps="false"
         android:textColor="@color/accentRed"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.709"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/loginGoogleIcon" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/loginText2"
+        app:layout_constraintTop_toBottomOf="@+id/loginFacebookIcon" />
 
     <TextView
         android:id="@+id/loginText2"
         android:layout_width="172dp"
         android:layout_height="41dp"
         android:layout_marginTop="36dp"
+        android:gravity="center_vertical"
         android:text="Dont have an account? "
-        android:textAlignment="center"
         android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.338"
