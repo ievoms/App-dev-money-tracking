@@ -42,6 +42,11 @@ public class Categories {
         this.categoryImg = categoryImg;
     }
 
+    @Override
+    public String toString() {
+        return  categoryName;
+    }
+
     static public ArrayList<Categories> getData(Context ctx) {
         ArrayList<Categories> categoriesList = new ArrayList<Categories>();
         String[] categories = {"Food & Drinks", "Shopping", "Housing", "Transportation", "Vehicle", "Entertainment", "Medical",

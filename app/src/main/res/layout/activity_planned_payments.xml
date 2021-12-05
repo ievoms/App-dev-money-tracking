@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:orientation="vertical"
+    android:paddingLeft="10dp"
+    android:paddingTop="20dp"
+    android:paddingBottom="20dp"
+    android:paddingRight="10dp"
+    tools:context=".PlannedPayments">
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvPlannedPayments"
+        android:layout_width="match_parent"
+        android:layout_height="570dp"
+        />
+
+    <TextView
+        android:layout_width="320dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_not_any_planned"
+        android:text="There is not any planned payment yet"
+        android:textColor="#808080"
+        android:textSize="15sp"
+        android:textAlignment="center"
+        android:layout_gravity="center"
+        android:visibility="invisible"
+        />
+
+
+    <Button
+        android:id="@+id/btn_open_new_planned_payment"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:layout_marginBottom="20dp"
+        android:layout_gravity="bottom|end"
+        android:background="@drawable/circle"
+        android:drawableTop="@drawable/ic_baseline_add_24"
+        android:paddingTop="15dp" />
+
+
+
+</LinearLayout>
