@@ -7,6 +7,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 import androidx.annotation.Nullable;
 
@@ -18,6 +20,7 @@ import java.util.List;
 public class Database extends SQLiteOpenHelper {
     public static final String RECORDS_TABLE = "RECORDS_TABLE";
     public static final String CATEGORIES_TABLE = "CATEGORIES_TABLE";
+    public static final String RECEIPT_TABLE = "RECEIPT_TABLE";
     public static final String PLANNED_TABLE = "PLANNED_TABLE";
     public static final String COLUMN_ID = "ID";
     public static final String COLUMN_AMOUNT = "AMOUNT";
@@ -64,6 +67,10 @@ public class Database extends SQLiteOpenHelper {
             " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +  COLUMN_NOTE + " TEXT, " +
             COLUMN_PLAN_AMOUNT + " INTEGER, " + COLUMN_CATEGORY_ID + " INTEGER, " + COLUMN_STATUS + " TEXT, " + COLUMN_CURRENCY + " TEXT, " + COLUMN_RECORD_TYPE + " INTEGER, " + COLUMN_PLANNED_DATE + " TEXT )";
 
+    private static final String CREATE_TABLE_RECEIPT = "CREATE TABLE IF NOT EXISTS " + RECEIPT_TABLE +
+            " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            COLUMN_IMAGE + " BLOB )";
+
     public Database(@Nullable Context context) {
         super(context, "moneyApp.db", null, 2);
     }
@@ -74,6 +81,7 @@ public class Database extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_RECORDS);
         db.execSQL(CREATE_TABLE_CATEGORIES);
         db.execSQL(CREATE_TABLE_PLANNED);
+        db.execSQL(CREATE_TABLE_RECEIPT);
     }
 
     public boolean addRecord(RecordsModel record) {
@@ -139,7 +147,7 @@ public class Database extends SQLiteOpenHelper {
         contentValues.put(COLUMN_LOGIN_PASSWORD, user.getPassword());
         contentValues.put(COLUMN_BALANCE, user.getBalance());
         contentValues.put(COLUMN_ADMIN, user.getAdmin());
-        contentValues.put(COLUMN_ADMIN, user.getFbid());
+        contentValues.put(COLUMN_THIRD_PARTY_LOGIN, user.getFbid());
         contentValues.put(COLUMN_CURRENCY, user.getCurrency());
         int affectedRows = db.update(LOGIN_TABLE, contentValues, "ID = " + user.getId(), null);
         return affectedRows == 0 ? false : true;
@@ -306,12 +314,41 @@ public class Database extends SQLiteOpenHelper {
         return affectedRows == 0 ? false : true;
     }
 
+    public boolean addReceipt(Receipt receipt) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COLUMN_IMAGE, receipt.getCategoryImg());
+        long insert = db.insert(RECEIPT_TABLE, null, contentValues);
+        if (insert == -1) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public  ArrayList<Bitmap> getReceiptsImages() {
+        ArrayList<Bitmap> images = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String queryString = "SELECT * FROM " + RECEIPT_TABLE;
+        Cursor cursor = db.rawQuery(queryString, null);
+        if (cursor.moveToFirst()) {
+            do {
+                byte[] image = cursor.getBlob(1);
+                Bitmap bmp = BitmapFactory.decodeByteArray(image, 0, image.length);
+                images.add(bmp);
+            } while (cursor.moveToNext());
+        } else return new ArrayList<>();
+        cursor.close();
+        db.close();
+        return images;
+    }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + LOGIN_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + RECORDS_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + CATEGORIES_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + RECEIPT_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + PLANNED_TABLE);
         onCreate(db);
     }

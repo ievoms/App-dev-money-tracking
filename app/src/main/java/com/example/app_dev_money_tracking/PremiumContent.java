@@ -129,11 +129,17 @@ public class PremiumContent extends AppCompatActivity {
                         startActivity(new Intent(PremiumContent.this, Convert_currency_activity.class));
                     }
                     break;
+                case R.id.nav_receipts:
+                    startActivity(new Intent(PremiumContent.this, ReceiptGallery.class));
+                    break;
                 case R.id.nav_tryPremium:
                     startActivity(new Intent(PremiumContent.this, PremiumContent.class));
                     break;
                 case R.id.nav_logout:
                     startActivity(new Intent(PremiumContent.this, Logout.class));
+                    break;
+                case R.id.nav_myPlannedPayments:
+                    startActivity(new Intent(PremiumContent.this, PlannedPayments.class));
                     break;
 
             }

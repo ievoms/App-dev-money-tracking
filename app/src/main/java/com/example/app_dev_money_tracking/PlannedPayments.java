@@ -13,10 +13,12 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
+import com.squareup.picasso.Picasso;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -43,7 +45,8 @@ public class PlannedPayments extends AppCompatActivity {
     PlannedPaymentsAdapter plannedPaymentsAdapter;
     RecyclerView.LayoutManager layoutManager;
     List<PlannedPaymentsModel> paymentsList;
-
+    private Database db;
+    private DrawerLayout drawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,9 +54,9 @@ public class PlannedPayments extends AppCompatActivity {
         setContentView(R.layout.activity_planned_payments);
         init();
 
-        User_settings settings = User_settings.instanciate("user1", getApplicationContext());
-        Database db = new Database(this);
-        UserModel user = db.getUserByEmail(settings.getUserEmail());
+        User_settings user_settings = User_settings.instanciate("user1", getApplicationContext());
+        db = new Database(this);
+        user = db.getUserByEmail(user_settings.getUserEmail());
 
         int balance = user.getBalance();
         paymentsList = plannedPaymentsDB.getPlannedPayments();
@@ -76,6 +79,63 @@ public class PlannedPayments extends AppCompatActivity {
                 startActivity(new Intent(PlannedPayments.this, NewPlannedPayment.class));
             }
         });
+
+        // Menu navigation
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        drawer = findViewById(R.id.drawer_layout);
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setCheckedItem(R.id.nav_myPlannedPayments);
+        View header = navigationView.getHeaderView(0);
+        TextView emailDisplay = header.findViewById(R.id.userEmailDisplay);
+        ImageView imageDisplay = header.findViewById(R.id.userImageDisplay);
+        String facebookId= db.getUserByEmail(user_settings.getUserEmail()).getFbid();
+        if(!facebookId.equals("")){
+            Picasso.get().load("https://graph.facebook.com/"+facebookId+"/picture?type=large").into(imageDisplay);
+        }
+        emailDisplay.setText(user_settings.getUserEmail());
+        navigationView.setNavigationItemSelectedListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.nav_home:
+                    startActivity(new Intent(PlannedPayments.this, Home_activity.class));
+                    break;
+                case R.id.nav_new_record:
+                    startActivity(new Intent(PlannedPayments.this, NewRecord.class));
+                    break;
+                case R.id.nav_categories:
+                    startActivity(new Intent(PlannedPayments.this, CategoriesActivity.class));
+                    break;
+                case R.id.nav_converter:
+                    if (user.getAdmin() == 0) {
+                        Toast.makeText(PlannedPayments.this, "This feature only available for premium members", Toast.LENGTH_SHORT).show();
+                    } else {
+                        startActivity(new Intent(PlannedPayments.this, Convert_currency_activity.class));
+                    }
+                    break;
+                case R.id.nav_receipts:
+                    startActivity(new Intent(PlannedPayments.this, ReceiptGallery.class));
+                    break;
+                case R.id.nav_tryPremium:
+                    startActivity(new Intent(PlannedPayments.this, PremiumContent.class));
+                    break;
+                case R.id.nav_logout:
+                    startActivity(new Intent(PlannedPayments.this, Logout.class));
+                    break;
+                case R.id.nav_myPlannedPayments:
+                    startActivity(new Intent(PlannedPayments.this, PlannedPayments.class));
+                    break;
+
+            }
+
+            return true;
+        });
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+        //
     }
 
     public void compareDates(List<PlannedPaymentsModel> list, Database db, int balance) {

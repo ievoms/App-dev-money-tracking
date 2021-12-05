@@ -44,6 +44,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -67,11 +68,12 @@ public class NewRecord extends AppCompatActivity {
     private int selectedCategoryId = -1;
     private RecordTypeKey selectedRecordType = RecordTypeKey.E;
 
-    int[] pictures = {R.drawable.charity, R.drawable.clotheshanger, R.drawable.commission, R.drawable.debt, R.drawable.dumbbell,
-            R.drawable.family, R.drawable.fastfoodd, R.drawable.giftboxwithbow, R.drawable.governance, R.drawable.graduationcapp,
-            R.drawable.healthcare, R.drawable.housedecorationn, R.drawable.insurance, R.drawable.investment,
-            R.drawable.key, R.drawable.movies, R.drawable.pawprint, R.drawable.piggybankk, R.drawable.salary, R.drawable.subscription,
-            R.drawable.utilities, R.drawable.car, R.drawable.shoppingbag};
+    ArrayList<Integer> pictures = new ArrayList<>(
+            Arrays.asList(R.drawable.charity, R.drawable.clotheshanger, R.drawable.commission, R.drawable.debt, R.drawable.dumbbell,
+                    R.drawable.family, R.drawable.fastfoodd, R.drawable.giftboxwithbow, R.drawable.governance, R.drawable.graduationcapp,
+                    R.drawable.healthcare, R.drawable.housedecorationn, R.drawable.insurance, R.drawable.investment,
+                    R.drawable.key, R.drawable.movies, R.drawable.pawprint, R.drawable.piggybankk, R.drawable.salary, R.drawable.subscription,
+                    R.drawable.utilities, R.drawable.car, R.drawable.shoppingbag));
     GridView gridView;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -140,30 +142,30 @@ public class NewRecord extends AppCompatActivity {
                 gridView.setAdapter(iconAdapter);
                 builder.setView(categoryLayout);
 
-                final int[] iconId = {pictures[0]};
+                final int[] iconId = {pictures.get(0)};
                 gridView.setOnItemClickListener((adapterView, view1, i, l) -> {
                     ImageView image = view1.findViewById(R.id.categoryIcon);
                     image.setBackgroundColor(Color.GRAY);
-                    iconId[0] = pictures[i];
+                    iconId[0] = pictures.get(i);
                 });
 
-                        builder.setPositiveButton("Create", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                EditText cat_name_input = categoryLayout.findViewById(R.id.category_input);
-                                if (cat_name_input.getText().toString().length() != 0) {
-                                    Toast.makeText(NewRecord.this, "Your category was created", Toast.LENGTH_SHORT).show();
-                                    Categories newCategory = new Categories(-1, cat_name_input.getText().toString(), iconId[0]);
+                builder.setPositiveButton("Create", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        EditText cat_name_input = categoryLayout.findViewById(R.id.category_input);
+                        if (cat_name_input.getText().toString().length() != 0) {
+                            Toast.makeText(NewRecord.this, "Your category was created", Toast.LENGTH_SHORT).show();
+                            Categories newCategory = new Categories(-1, cat_name_input.getText().toString(), iconId[0]);
 
-                                    categoriesList.add(newCategory);
-                                    db.addCategory(newCategory);
-                                    adapter.notifyDataSetChanged();
-                                } else {
-                                    Toast.makeText(NewRecord.this, "Category name can't be empty. Try again", Toast.LENGTH_SHORT).show();
+                            categoriesList.add(newCategory);
+                            db.addCategory(newCategory);
+                            adapter.notifyDataSetChanged();
+                        } else {
+                            Toast.makeText(NewRecord.this, "Category name can't be empty. Try again", Toast.LENGTH_SHORT).show();
 
-                                }
-                            }
-                        });
+                        }
+                    }
+                });
                 builder.setNegativeButton("Cancel", (dialog, which) -> {
                     Toast.makeText(NewRecord.this, "", Toast.LENGTH_SHORT);
                 });
@@ -286,6 +288,9 @@ public class NewRecord extends AppCompatActivity {
                     break;
                 case R.id.nav_logout:
                     startActivity(new Intent(NewRecord.this, Logout.class));
+                    break;
+                case R.id.nav_myPlannedPayments:
+                    startActivity(new Intent(NewRecord.this, PlannedPayments.class));
                     break;
             }
             return true;

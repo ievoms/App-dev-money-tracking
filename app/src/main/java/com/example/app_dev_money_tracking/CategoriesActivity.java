@@ -85,11 +85,18 @@ public class CategoriesActivity extends AppCompatActivity {
                         startActivity(new Intent(CategoriesActivity.this, Convert_currency_activity.class));
                     }
                     break;
+
+                case R.id.nav_receipts:
+                    startActivity(new Intent(CategoriesActivity.this, ReceiptGallery.class));
+                    break;
                 case R.id.nav_tryPremium:
                     startActivity(new Intent(CategoriesActivity.this, PremiumContent.class));
                     break;
                 case R.id.nav_logout:
                     startActivity(new Intent(CategoriesActivity.this, Logout.class));
+                    break;
+                case R.id.nav_myPlannedPayments:
+                    startActivity(new Intent(CategoriesActivity.this, PlannedPayments.class));
                     break;
             }
             return true;
