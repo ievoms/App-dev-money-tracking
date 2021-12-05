@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.app_dev_money_tracking" >
+    package="com.example.app_dev_money_tracking">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -12,7 +12,13 @@
         android:label="Money tracking"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.App_dev_money_tracking" >
+        android:theme="@style/Theme.App_dev_money_tracking">
+        <activity
+            android:name=".PlannedPayments"
+            android:exported="true" />
+        <activity
+            android:name=".NewPlannedPayment"
+            android:exported="true" />
         <activity
             android:name=".Logout"
             android:exported="true" />
@@ -69,7 +75,7 @@
             android:exported="true" />
         <activity
             android:name=".LoginActivity"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

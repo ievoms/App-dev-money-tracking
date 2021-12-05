@@ -66,6 +66,7 @@ public class Home_activity extends AppCompatActivity
 {
     private PieChart pieChart;
     private List<RecordsModel> records;
+    private List<PlannedPaymentsModel> plannedPayments;
     private RecyclerView Records_recycler;
     private User_settings user_settings;
     private DrawerLayout drawer;
@@ -95,6 +96,7 @@ public class Home_activity extends AppCompatActivity
         int balance = user.getBalance();
         String userCurrency = user.getCurrency();
         records = db.getRecords();
+        plannedPayments = db.getPlannedPayments();
         EditText balanceText = findViewById(R.id.homeBalanceDisplay);
         Button adjustBalance = findViewById(R.id.btn_adjust_b);
         show_more = findViewById(R.id.Btn_show_more);
@@ -110,7 +112,7 @@ public class Home_activity extends AppCompatActivity
             boolean inserted = db.updateUser(user);
             if (inserted) {
                 Toast.makeText(Home_activity.this, "Balance updated", Toast.LENGTH_SHORT).show();
-                calculatedBalance.setText(String.valueOf(calculateCurrentBalance(records, user.getBalance())));
+                calculatedBalance.setText(String.valueOf(calculateCurrentBalance(records, user.getBalance(), plannedPayments)));
             } else {
                 Toast.makeText(Home_activity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
             }
@@ -132,7 +134,7 @@ public class Home_activity extends AppCompatActivity
         balanceText.setText(String.valueOf(balance));
         Currency c = Currency.getInstance(user.getCurrency());
         String currencySymbol = c.getSymbol();
-        calculatedBalance.setText(String.valueOf(calculateCurrentBalance(records, balance) + currencySymbol));
+        calculatedBalance.setText(String.valueOf(calculateCurrentBalance(records, balance, plannedPayments) + currencySymbol));
 
         user_settings.set_currency("EUR");
 
@@ -183,6 +185,9 @@ public class Home_activity extends AppCompatActivity
                 case R.id.nav_logout:
                     startActivity(new Intent(Home_activity.this, Logout.class));
                     break;
+                case R.id.nav_myPlannedPayments:
+                    startActivity(new Intent(Home_activity.this, PlannedPayments.class));
+                    break;
             }
             return true;
         });
@@ -195,7 +200,7 @@ public class Home_activity extends AppCompatActivity
 
     }
 
-    private int calculateCurrentBalance(List<RecordsModel> records, int balance)
+    private int calculateCurrentBalance(List<RecordsModel> records, int balance, List<PlannedPaymentsModel> planneds)
     {
         int expences = 0;
         int intakes = 0;
@@ -217,9 +222,18 @@ public class Home_activity extends AppCompatActivity
                     intakes += amount;
                 }
             }
-            return balance - expences + intakes;
+
         }
-        return balance;
+        if(planneds != null) {
+            for(PlannedPaymentsModel plannedPayment : planneds) {
+                double plannedAmount = plannedPayment.getAmount();
+                if(plannedPayment.getStatus().equals("Done")) {
+                    expences += plannedAmount;
+                }
+            }
+        }
+        return balance - expences + intakes;
+//        return balance;
     }
 
     private View.OnClickListener onAddRecordButtonClick()
