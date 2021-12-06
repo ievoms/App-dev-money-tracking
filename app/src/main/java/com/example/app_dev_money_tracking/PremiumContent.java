@@ -44,6 +44,7 @@ public class PremiumContent extends AppCompatActivity {
 
         TextView Status = findViewById(R.id.premium_user_status);
         Button tryPremiumButton = findViewById(R.id.try_premium_button);
+
         shareFacebookButton = findViewById(R.id.share_facebook_Button);
         callbackManager = CallbackManager.Factory.create();
         shareDialog = new ShareDialog(this);

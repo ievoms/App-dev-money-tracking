@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +29,7 @@ public class PlannedPaymentsAdapter extends RecyclerView.Adapter<PlannedPayments
         TextView amount;
         TextView status;
         TextView date;
+        ImageView image;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -36,6 +38,7 @@ public class PlannedPaymentsAdapter extends RecyclerView.Adapter<PlannedPayments
             amount = itemView.findViewById(R.id.tv_plannedPaymentList_amount);
             status = itemView.findViewById(R.id.tv_plannedPaymentList_status);
             date = itemView.findViewById(R.id.tv_plannedPaymentList_date);
+            image = itemView.findViewById(R.id.tv_plannedPaymentList_Image);
         }
     }
 
@@ -60,6 +63,7 @@ public class PlannedPaymentsAdapter extends RecyclerView.Adapter<PlannedPayments
         Database db = new Database(context);
         PlannedPaymentsModel plannedPayment = paymentsList.get(position);
         holder.categoryName.setText(db.getCategoryById(plannedPayment.getCategoryId()).getCategoryName());
+        holder.image.setBackgroundResource(db.getCategoryById(plannedPayment.getCategoryId()).getCategoryImg());
         holder.note.setText(plannedPayment.getNote());
         holder.amount.setText(plannedPayment.getCurrency() + " " + String.valueOf(plannedPayment.getAmount()));
         holder.status.setText(plannedPayment.getStatus());
