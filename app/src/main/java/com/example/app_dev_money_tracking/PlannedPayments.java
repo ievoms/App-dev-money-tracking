@@ -174,10 +174,6 @@ public class PlannedPayments extends AppCompatActivity {
             tv_no_any_planned.setVisibility(View.VISIBLE);
         }
     }
-
-    public void actionWhenDateReached(int i) {
-
-    }
 }
 
 

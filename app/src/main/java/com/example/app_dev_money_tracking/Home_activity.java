@@ -153,7 +153,6 @@ public class Home_activity extends AppCompatActivity {
         ImageView imageDisplay = header.findViewById(R.id.userImageDisplay);
         String facebookId= db.getUserByEmail(user_settings.getUserEmail()).getFbid();
         if(!facebookId.equals("")){
-
             Picasso.get().load("https://graph.facebook.com/"+facebookId+"/picture?type=large").into(imageDisplay);
         }
         emailDisplay.setText(user_settings.getUserEmail());
